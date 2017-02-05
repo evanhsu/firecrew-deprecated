@@ -1,0 +1,78 @@
+---
+# group_vars/production.yml
+# These variables apply to the PRODUCTION environment.
+#
+#
+# This is a list of all the user accounts, vhosts, databases, etc that should exist on the server.
+# The user name will also be used to create a home-folder, a vhost, and a database.
+#
+# NOTE: usernames are limited to 32 characters
+
+# Syntax and options for vhost entries are documented in the Readme.md file.
+
+GROUPS_LIST:
+
+  - &developers
+    name: "developers"
+    id: 1001
+  - &clients
+    name: "clients"
+    id: 1002
+
+
+
+DEVELOPERS_LIST:
+
+  - &evan
+    name: "evan"
+    id: 2001
+    groups:
+      - "developers"
+      - "sudo"
+    ssh_keys:
+      - "evan.pub"
+      - "evan_at_eva.pub"
+      - "evan_at_home.pub"
+
+
+postfix_settings:
+  postfix_domain: 'firecrew.us'
+  postfix_notify_email: 'support@firecrew.us'
+  postfix_use_smtp: true
+  # postfix_relayhost: '[mailtrap.io]'
+  # postfix_relayhost_user: 'abcdefg...'
+  # postfix_relayhost_pass: '1234567...'
+
+
+CLIENTS_LIST:
+
+  - &firecrew
+    name: "firecrew"
+    id: 3001
+    groups:
+      - "clients"
+
+user_groups:
+  - <<: *developers
+  - <<: *clients
+
+users:
+  - <<: *evan
+
+  - <<: *firecrew
+
+    databases:
+      - name: "firecrew"
+        collation: "utf8mb4_unicode_ci"
+        encoding: "utf8mb4"
+
+    vhosts:
+      - listen: "80"
+        server_name: "firecrew.us"
+        server_aliases:
+          - "www.firecrew.us"
+        php: true
+        root: "/home/firecrew/sites/firecrew.us/public"
+
+    cron:
+      - "* * * * * php /home/firecrew/sites/firecrew.us/artisan schedule:run >> /dev/null 2>&1"
