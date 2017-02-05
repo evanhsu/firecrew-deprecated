@@ -23,8 +23,11 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder ".", "/home/firecrew/sites/firecrew.us.dev", 
-    group: "firecrew", owner: "firecrew"
+  # Open up the permissions on the shared folder so ANYONE can write
+  # because permissions can't be changed after provisioning (no chown/chmod)
+  config.vm.synced_folder ".", 
+    "/home/firecrew/sites/firecrew.us.dev", 
+    mount_options: ["dmode=777", "fmode=666"]
 
 
   config.hostmanager.enabled = true
@@ -50,5 +53,11 @@ Vagrant.configure("2") do |config|
   #   vb.memory = "1024"
   # end
   #
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/sharedhost.yml"
+    ansible.inventory_path = "ansible/inventory/vagrant"
+    ansible.limit = "all"
+  end
 
 end
