@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Crews;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,4 +36,13 @@ class Crew extends Model
 	function people() {
 		return $this->belongsToMany(Person::class, 'crew_person');
 	}
+
+	function roster($year) {
+		return $this->people()->wherePivot('year',$year);
+	}
+
+	function items() {
+		return $this->hasMany(Items::class);
+	}
+
 }
