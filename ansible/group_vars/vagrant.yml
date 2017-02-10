@@ -66,6 +66,9 @@ users:
         collation: "utf8mb4_unicode_ci"
         encoding: "utf8mb4"
 
+    nodejs:
+      version: 6.9.5
+      
     vhosts:
       - listen: "80"
         server_name: "firecrew.us.dev"
