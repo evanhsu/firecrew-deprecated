@@ -68,6 +68,8 @@ users:
 
     nodejs:
       version: 6.9.5
+      packages:
+        - name: yarn
       
     vhosts:
       - listen: "80"
