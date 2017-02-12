@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class EtlDbSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CrewsTableSeeder::class);
-        $this->call(EtlDbSeeder::class);
+        //
+        DB::unprepared(file_get_contents('app/Console/ETL/siskiyou_general.sql'));
     }
 }

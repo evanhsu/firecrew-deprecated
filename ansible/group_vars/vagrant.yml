@@ -66,6 +66,10 @@ users:
         collation: "utf8mb4_unicode_ci"
         encoding: "utf8mb4"
 
+      - name: "siskiyou_general"
+        collation: "utf8mb4_unicode_ci"
+        encoding: "utf8mb4"
+
     nodejs:
       version: 6.9.5
       packages:
@@ -76,6 +80,8 @@ users:
         server_name: "firecrew.us.dev"
         server_aliases:
           - "www.firecrew.us.dev"
+          - "inventory.firecrew.us.dev"
+          - "budget.firecrew.us.dev"
         php: true
         root: "/home/firecrew/sites/firecrew.us.dev/public"
 

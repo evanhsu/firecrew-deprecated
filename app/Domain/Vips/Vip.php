@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Domain\People;
+namespace App\Domain\Vips;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Crews\Crew;
 use App\Domain\Items\Item;
 use App\Domain\Items\CanHaveItemsInterface;
 
-class Person extends Model implements CanHaveItemsInterface
+/**
+ *  A Vip is a temporary person who is created solely to check out an item.
+ *
+**/
+class Vip extends Model implements CanHaveItemsInterface
 {
     //
-    public function crews() {
-    	return $this->belongsToMany(Crew::class, 'crew_person');
-    }
-
-    public function crewYear($year) {
-    	return $this->crews()->wherePivot('year', $year);
+    public function crew() {
+    	return $this->belongsTo(Crew::class);
     }
 
     public function items()
