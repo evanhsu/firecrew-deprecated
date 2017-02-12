@@ -3,11 +3,12 @@
 namespace App\Domain\Items;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Items\CanHaveItemsInterface;
 
 class Item extends Model
 {
     //
-    public function LogEntries()
+    public function logEntries()
     {
     	return $this->morphMany(LogEntry::class, 'loggable');
     }
@@ -17,9 +18,15 @@ class Item extends Model
     	return $this->belongsTo(Crew::class);
     }
 
-    public function person()
+    public function checked_out_to()
     {
-    	return $this->belongsTo(Person::class);
+        return $this->morphTo();
+    }
+
+    public function checkOutTo(CanHaveItemsInterface $owner)
+    {
+        $this->checked_out_to()->associate($owner);
+        $this->save();
     }
 
 }

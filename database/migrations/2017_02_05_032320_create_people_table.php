@@ -16,12 +16,14 @@ class CreatePeopleTable extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->increments('id');
             $table->string('iqcs_number')->nullable();
-            $table->string('firstname');
-            $table->string('lastname');
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
             $table->boolean('male')->nullable();
             $table->datetime('birthdate')->nullable();
             $table->string('avatar_filename')->nullable();
+            $table->text('bio')->nullable();
             $table->boolean('has_purchase_card')->default(false);
+            $table->boolean('temporary')->default(false);
             $table->timestamps();
         });
     }

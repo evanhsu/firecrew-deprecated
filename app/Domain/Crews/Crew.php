@@ -3,34 +3,20 @@
 namespace App\Domain\Crews;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Items\Item;
+use App\Domain\People\Person;
 
 class Crew extends Model
 {
 	public static $types = [
-		'handcrew'	=> (object)[
-			'description' 	=> 'Type 2 Handcrew',
-		],
-		'hotshot'	=> (object)[
-			'description'	=> 'Interagency Hotshot Crew',
-		],
-		'engine'	=> (object)[
-			'description'	=> 'Engine Crew',
-		],
-		'helitack'	=> (object)[
-			'description'	=> 'Helitack Crew (not Short Haul or Rappel)',
-		],
-		'shorthaul'	=> (object)[
-			'description'	=> 'Short Haul',
-		],
-		'rappel'	=> (object)[
-			'description'	=> 'Rappel Crew',
-		],
-		'smokejumper'=>(object)[
-			'description'	=> 'Smokejumper Base',
-		],
-		'district'	=> (object)[
-			'description'	=> 'A Ranger District or fire compound',
-		],
+		'handcrew'	=> 'Type 2 Handcrew',
+		'hotshot'	=> 'Interagency Hotshot Crew',
+		'engine'	=> 'Engine Crew',
+		'helitack'	=> 'Helitack Crew (not Short Haul or Rappel)',
+		'shorthaul'	=> 'Short Haul',
+		'rappel'	=> 'Rappel Crew',
+		'smokejumper'=>'Smokejumper Base',
+		'district'	=> 'A Ranger District or fire compound',
 	];
 
 	function people() {
