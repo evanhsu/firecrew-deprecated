@@ -8,10 +8,12 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    @foreach($items as $item)
-                        <tr>
-                            <td>$item['id']</td>
-                        </tr>
+                    @foreach($categories as $category => $items)
+                        @if($items->first()->type == 'accountable')
+                            @include('items._accountableItemsTable')
+                        @else
+                            @include('items._bulkItemsTable')
+                        @endif
                     @endforeach
                 </div>
             </div>

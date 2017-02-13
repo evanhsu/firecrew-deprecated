@@ -4,6 +4,8 @@ namespace App\Domain\Items;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Items\CanHaveItemsInterface;
+use App\Domain\Crews\Crew;
+use App\Domain\LogEntries\LogEntry;
 
 class Item extends Model
 {

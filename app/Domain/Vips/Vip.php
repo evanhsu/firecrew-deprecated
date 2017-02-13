@@ -18,6 +18,10 @@ class Vip extends Model implements CanHaveItemsInterface
     	return $this->belongsTo(Crew::class);
     }
 
+    public function getFullNameAttribute() {
+        return $this->name;
+    }
+
     public function items()
     {
     	return $this->morphMany(Item::class, 'checked_out_to');
