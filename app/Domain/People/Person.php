@@ -17,6 +17,11 @@ class Person extends Model implements CanHaveItemsInterface
     	return $this->crews()->wherePivot('year', $year);
     }
 
+    public function getFullNameAttribute()
+    {
+        return $this->firstname . " " . $this->lastname;
+    }
+
     public function items()
     {
     	return $this->morphMany(Item::class, 'checked_out_to');

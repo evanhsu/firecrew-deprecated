@@ -28,7 +28,7 @@ class Crew extends Model
 	}
 
 	function items() {
-		return $this->hasMany(Items::class);
+		return $this->hasMany(Item::class);
 	}
 
 }

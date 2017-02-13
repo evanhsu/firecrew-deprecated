@@ -58,7 +58,6 @@ class ItemTest extends TestCase
     	$person->issueItem($item);
         $this->assertTrue($item->checked_out_to->id == $person->id);
         $this->assertTrue($person->items()->count() == 1);
-        $this->assertTrue($item::all()->count() == 1);
     }
 
     public function testItemCanBeCheckedOutToVip()
@@ -99,6 +98,5 @@ class ItemTest extends TestCase
     	$vip->issueItem($item);
         $this->assertTrue($item->checked_out_to->id == $vip->id);
         $this->assertTrue($vip->items()->count() == 1);
-        $this->assertTrue($item::all()->count() == 1);
     }
 }
