@@ -32,6 +32,8 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/crew/{crewId}/inventory', 'ItemsController@indexForCrew'); // /inventory/crew
+    Route::get('/crew/{crewId}/inventory', 'ItemsController@indexForCrew');
+    Route::post('/crew/{crewId}/items', 'ItemsController@create');
+    Route::patch('/item/{itemId}', 'ItemsController@update');
 });
 
