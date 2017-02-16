@@ -67218,72 +67218,104 @@ module.exports = function() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_material_ui_Table__ = __webpack_require__(357);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_material_ui_Table___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 
 
-var InventoryTable = function InventoryTable(props) {
+
+var ItemRow = function ItemRow(_ref) {
+	var item = _ref.item;
 	return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-		__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["Table"],
-		null,
+		__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRow"],
+		{ hoverable: true },
 		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-			__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeader"],
-			{ displaySelectAll: false, adjustForCheckbox: false },
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-				__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRow"],
-				null,
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeaderColumn"],
-					null,
-					'ID'
-				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeaderColumn"],
-					null,
-					'Serial #'
-				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeaderColumn"],
-					null,
-					'Category'
-				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeaderColumn"],
-					null,
-					'Description'
-				)
-			)
+			__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRowColumn"],
+			null,
+			item.id
 		),
 		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-			__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableBody"],
-			{ displayRowCheckbox: false, showRowHover: true, preScanRows: false },
-			props.items.map(function (item) {
-				return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRow"],
-					{ key: item.id, hoverable: true },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRowColumn"],
-						null,
-						item.id
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRowColumn"],
-						null,
-						item.serialNumber
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRowColumn"],
-						null,
-						item.category
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRowColumn"],
-						null,
-						item.description
-					)
-				);
-			})
+			__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRowColumn"],
+			null,
+			item.serialNumber
+		),
+		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRowColumn"],
+			null,
+			item.category
+		),
+		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRowColumn"],
+			null,
+			item.description
 		)
 	);
+};
+
+var InventoryTable = function (_Component) {
+	_inherits(InventoryTable, _Component);
+
+	function InventoryTable() {
+		_classCallCheck(this, InventoryTable);
+
+		return _possibleConstructorReturn(this, (InventoryTable.__proto__ || Object.getPrototypeOf(InventoryTable)).apply(this, arguments));
+	}
+
+	_createClass(InventoryTable, [{
+		key: 'render',
+		value: function render() {
+			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["Table"],
+				null,
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeader"],
+					{ displaySelectAll: false, adjustForCheckbox: false },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableRow"],
+						null,
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeaderColumn"],
+							null,
+							'ID'
+						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeaderColumn"],
+							null,
+							'Serial #'
+						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeaderColumn"],
+							null,
+							'Category'
+						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableHeaderColumn"],
+							null,
+							'Description'
+						)
+					)
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					__WEBPACK_IMPORTED_MODULE_1_material_ui_Table__["TableBody"],
+					{ displayRowCheckbox: false, showRowHover: true, preScanRows: false },
+					this.props.items.map(function (item) {
+						return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ItemRow, { key: item.id, item: item });
+					})
+				)
+			);
+		}
+	}]);
+
+	return InventoryTable;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+InventoryTable.PropTypes = {
+	items: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number
 };
 
 /* harmony default export */ __webpack_exports__["a"] = InventoryTable;
