@@ -5,7 +5,7 @@ class Example extends Component {
     render() {
         return (
             <div>
-                <h1>Cool, its working</h1>
+                <h1>Quantity: {this.props.quantity}</h1>
             </div>
         );
     }
@@ -13,8 +13,12 @@ class Example extends Component {
 
 export default Example;
 
+
 // We only want to try to render our component on pages that have a div with an ID
 // of "example"; otherwise, we will see an error in our console 
 if (document.getElementById('example')) {
-    ReactDOM.render(<Example />, document.getElementById('example'));
+    ReactDOM.render(
+    	<Example quantity={3} />,
+    	document.getElementById('example')
+	);
 }
