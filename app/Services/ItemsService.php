@@ -6,20 +6,38 @@ use App\Domain\Items\Item;
 
 class ItemsService
 {
-	public function byCategory(Crew $crew, $category = null)
+	public function byCategory(Crew $crew)
 	{
-		$categoriesQuery = $crew->items();
+		$itemsQuery = $crew->items();
+
+		$itemsQuery->orderBy('category', 'serial_number', 'description', 'size', 'color');
+
+		$items = $itemsQuery->get();
+
+		$items = $items->count() > 0 ? $items->groupBy('category') : collect();
+
+		return $items;
+	}
+
+	public function ofCategory(Crew $crew, $category = null)
+	{
+		$itemsQuery = $crew->items();
 
 		if($category) {
-			$categoriesQuery->where('category', $category);
+			$itemsQuery->where('category', 'like', $category);
 		}
 
-		$categoriesQuery->orderBy('category');
+		$itemsQuery->orderBy('category', 'serial_number', 'description', 'size', 'color');
 
-		$categories = $categoriesQuery->get();
+		$items = $itemsQuery->get();
 
-		$categories = $categories->count() > 0 ? $categories->groupBy('category') : collect();
+		return $items;
 
+	}
+
+	public function categories(Crew $crew)
+	{
+		$categories = $crew->items()->groupBy('category')->pluck('category');
 		return $categories;
 	}
 }

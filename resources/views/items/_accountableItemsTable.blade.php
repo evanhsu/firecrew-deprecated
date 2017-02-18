@@ -8,7 +8,7 @@
     <th style="width: 60px">Size</th>
     <th style="width: 50px">Color</th>
     <th style="width: 200px">Description</th>
-    <th style="width: 150px">Checkout Out To</th>
+    <th style="width: 150px">Checked Out To</th>
     <th style="width: 75px">Condition</th>
     <th style="width: 50px">Usable</th>
     <th style="width: 150px">Note</th>

@@ -15,12 +15,31 @@ class ItemsController extends Controller
         $this->items = $items;
     }
 
-    public function indexForCrew($crewId) {
+    public function indexForCrew(Request $request, $crewId) {
 
     	$crew = Crew::find($crewId);
-        $categories = $this->items->byCategory($crew);
+        $items = $this->items->ofCategory($crew, $request->input('category'));
+        $items = [
+            "category" => [
+                "name"  => $request->input('category'), 
+                "items"     => $items,
+            ],
+        ];
+        $categories = $this->items->categories($crew);
 
-    	return view('items.index', ['categories' => $categories]);
+        switch($request->input('format')) {
+            case 'json':
+                return $items;
+                break;
+
+            case 'html':
+            default:
+                return view('items.index', [
+                    'categories'    => $categories,
+                    'itemCategories'=> $items
+                ]);
+                break;
+        }
     }
 
     public function indexForPerson($personId) {
