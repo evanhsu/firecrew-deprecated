@@ -4,6 +4,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 const ItemRow = ({item}) => (
 	<TableRow hoverable>
 		<TableRowColumn>{item.id}</TableRowColumn>
+		<TableRowColumn>{item.quantity}</TableRowColumn>
         <TableRowColumn>{item.serialNumber}</TableRowColumn>
         <TableRowColumn>{item.category}</TableRowColumn>	
         <TableRowColumn>{item.description}</TableRowColumn>	
@@ -17,13 +18,14 @@ class InventoryTable extends Component {
 		    	<TableHeader displaySelectAll={false} adjustForCheckbox={false}>
 					<TableRow>
 						<TableHeaderColumn>ID</TableHeaderColumn>
+						<TableHeaderColumn>QTY</TableHeaderColumn>
 						<TableHeaderColumn>Serial #</TableHeaderColumn>
 						<TableHeaderColumn>Category</TableHeaderColumn>
 						<TableHeaderColumn>Description</TableHeaderColumn>
 					</TableRow>
 				</TableHeader>
 				<TableBody displayRowCheckbox={false} showRowHover preScanRows={false}>
-					{this.props.items.map((item) => (
+					{this.props.items && this.props.items.map((item) => (
 						<ItemRow key={item.id} item={item} />
 					))}
 				</TableBody>

@@ -8,8 +8,8 @@
 
             <div class="panel-body">
                 <ul>
-                @foreach($categories as $category => $items)
-                    <li><a href="#">{{ $category }}</a></li>
+                @foreach($categories as $category)
+                    <li><a href="/crew/1/inventory?category={{ $category }}">{{ $category }}</a></li>
                 @endforeach
                 </ul>
             </div>
@@ -20,7 +20,7 @@
 
                 <div class="panel-body">
                     <table class="table table-hover table-condensed" style="table-layout: fixed; width: 100%; font-size: 0.9em">
-                        @foreach($categories as $category => $items)
+                        @foreach($itemCategories as $category => $items)
                             @if($items->first()->type == 'accountable')
                                 @include('items._accountableItemsTable')
                             @else
