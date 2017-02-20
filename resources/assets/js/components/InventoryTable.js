@@ -35,7 +35,7 @@ class InventoryTable extends Component {
 }
 
 InventoryTable.PropTypes = {
-	items: PropTypes.number,
+	items: PropTypes.array,
 };
 
 export default InventoryTable;

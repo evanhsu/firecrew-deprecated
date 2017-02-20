@@ -19,7 +19,7 @@ class ItemsController extends Controller
 
     	$crew = Crew::find($crewId);
         $items = $this->items->ofCategory($crew, $request->input('category'));
-        $items = [
+        $categoryItems = [
             "category" => [
                 "name"  => $request->input('category'), 
                 "items"     => $items,
@@ -29,14 +29,13 @@ class ItemsController extends Controller
 
         switch($request->input('format')) {
             case 'json':
-                return $items;
+                return $categoryItems;
                 break;
 
             case 'html':
             default:
                 return view('items.index', [
-                    'categories'    => $categories,
-                    'itemCategories'=> $items
+                    'items'=> $categoryItems
                 ]);
                 break;
         }
