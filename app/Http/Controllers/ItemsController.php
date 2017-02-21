@@ -18,27 +18,40 @@ class ItemsController extends Controller
     public function indexForCrew(Request $request, $crewId) {
 
     	$crew = Crew::find($crewId);
-        $items = $this->items->ofCategory($crew, $request->input('category'));
-        $categoryItems = [
-            "category" => [
-                "name"  => $request->input('category'), 
-                "items"     => $items,
-            ],
-        ];
-        $categories = $this->items->categories($crew);
+        if($request->input('category')) {
+            $items = $this->items->ofCategory($crew, $request->input('category'));
+            $response = [
+                "category" => [
+                    "name"  => $request->input('category'), 
+                    "items"     => $items,
+                ]
+            ];
+        } else {
+            $categories = $this->items->byCategory($crew);
+            $response = [
+                "categories" => $categories,
+            ];
+        }
 
         switch($request->input('format')) {
             case 'json':
-                return $categoryItems;
+                return $response;
                 break;
 
             case 'html':
             default:
                 return view('items.index', [
-                    'items'=> $categoryItems
+                    'items'=> []
                 ]);
                 break;
         }
+    }
+
+    public function categoriesForCrew($crewId) {
+        $crew = Crew::find($crewId);
+        $categories = $this->items->categories($crew);
+
+        return $categories;
     }
 
     public function indexForPerson($personId) {

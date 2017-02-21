@@ -1,23 +1,33 @@
 require('./bootstrap');
 import React from 'react';
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import Perf from 'react-addons-perf';
+
 import mountInventory from './mountInventory';
 import CategoryItemsTable from './containers/CategoryItemsTable';
-import rootReducer from './reducers'
+import rootReducer from './reducers';
+import { fetchItemCategories } from './actions/inventoryActions';
 
 // Needed for onTouchTap (Material-UI)
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
-const initialState = {
-	itemCategories: [],
-	selectedItemCategory: null
-};
+// React perf addon - for debugging performance issues
+// window.Perf = Perf;
 
-const fireCrewStore = createStore(rootReducer, initialState);
+const store = createStore(
+	rootReducer,
+	// window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+	applyMiddleware(
+	    thunkMiddleware, // lets us dispatch() functions
+	)
+);
+
+store.dispatch(fetchItemCategories());
 
 if(document.getElementById('inventory')) {
-	mountInventory(fireCrewStore);
+	mountInventory(store);
 }

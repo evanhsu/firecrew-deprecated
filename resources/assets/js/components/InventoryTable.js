@@ -5,8 +5,10 @@ const ItemRow = ({item}) => (
 	<TableRow hoverable>
 		<TableRowColumn>{item.id}</TableRowColumn>
 		<TableRowColumn>{item.quantity}</TableRowColumn>
-        <TableRowColumn>{item.serialNumber}</TableRowColumn>
+        <TableRowColumn>{item.serial_number}</TableRowColumn>
         <TableRowColumn>{item.category}</TableRowColumn>	
+        <TableRowColumn>{item.size}</TableRowColumn>	
+        <TableRowColumn>{item.color}</TableRowColumn>	
         <TableRowColumn>{item.description}</TableRowColumn>	
     </TableRow>
 );
@@ -21,6 +23,8 @@ class InventoryTable extends Component {
 						<TableHeaderColumn>QTY</TableHeaderColumn>
 						<TableHeaderColumn>Serial #</TableHeaderColumn>
 						<TableHeaderColumn>Category</TableHeaderColumn>
+						<TableHeaderColumn>Size</TableHeaderColumn>
+						<TableHeaderColumn>Color</TableHeaderColumn>
 						<TableHeaderColumn>Description</TableHeaderColumn>
 					</TableRow>
 				</TableHeader>
