@@ -1,48 +1,57 @@
-export function itemCategories() {
-	return {
-		'GPS Units': {
-			name: 'GPS Units',
-			items: [
-				{
-					id: 1,
-					quantity: null,
-					category: 'GPS Units',
-					description: 'Garmin 76ST',
-					serial_number: 'jfur30k1',
-				},
-				{
-					id: 2,
-					quantity: null,
-					category: 'GPS Units',
-					description: 'Garmin 60',
-					serial_number: '884j99f',
-				},
-			]
-		},
-		'Nomex Pants': {
-			name: 'Nomex Pants',
-			items: [
-				{
-					id: 3,
-					quantity: 4,
-					category: 'Nomex Pants',
-					description: 'Standard GSA',
-					size: '30-34 Regular',
-					serial_number: null,
-				},
-				{
-					id: 4,
-					quantity: 2,
-					category: 'Nomex Pants',
-					description: 'Standard GSA',
-					size: '35-39 Short',
-					serial_number: null,
-				},
-			]
-		},
-	};
+import { 
+	SELECT_ITEM_CATEGORY,
+	REQUEST_ITEM_CATEGORY,
+	RECEIVE_ITEM_CATEGORY,
+	INVALIDATE_ITEM_CATEGORY,
+	REQUEST_ITEM_CATEGORIES,
+	RECEIVE_ITEM_CATEGORIES,
+	INVALIDATE_ITEM_CATEGORIES
+} from '../actions/inventoryActions';
+
+function category(state = { isFetching: false, didInvalidate: false, items: [] }, action) {
+	switch(action.type) {
+		case RECEIVE_ITEM_CATEGORY:
+			return Object.assign({}, state, {
+				items: action.items,
+				isFetching: false,
+				didInvalidate: false,
+				lastUpdated: action.receivedAt,
+			});
+		case REQUEST_ITEM_CATEGORY:
+			return Object.assign({}, state, {
+				isFetching: true,
+				didInvalidate: false,
+			});
+		case INVALIDATE_ITEM_CATEGORY:
+			return Object.assign({}, state, {
+				didInvalidate: true,
+			});
+		default:
+			return state;
+	}
 }
 
-export function selectedItemCategory() {
-	return 'Nomex Pants';
+export function itemCategories(state = {}, action) {
+	switch(action.type) {
+		case RECEIVE_ITEM_CATEGORY:
+			return Object.assign({}, state, {
+				[action.categoryName]: category(state[action.categoryName], action)
+			});
+		case RECEIVE_ITEM_CATEGORIES:
+			console.log('Update all categories');
+			return Object.assign({}, state, 
+				action.categories
+			);
+		default:
+			return state;
+	}
+}
+
+export function selectedItemCategory(state = '', action) {
+	switch(action.type) {
+		case SELECT_ITEM_CATEGORY:
+			return action.categoryName;
+		default:
+			return state;
+	}
 }

@@ -27,7 +27,7 @@ function mapStateToProps(state) {
 	const categoryName = state.selectedItemCategory;
 	return {
 		category: categoryName,
-		items: state.itemCategories ? state.itemCategories[categoryName].items : [],
+		items: state.itemCategories[categoryName] ? state.itemCategories[categoryName].items : [],
 	};
 }
 

@@ -16,6 +16,10 @@ class ItemsService
 
 		$items = $items->count() > 0 ? $items->groupBy('category') : collect();
 
+		$items->transform(function($values, $key) {
+			return [ 'name' => $key, 'items' => $values ];
+		});
+
 		return $items;
 	}
 
