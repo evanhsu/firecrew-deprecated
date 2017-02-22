@@ -16,11 +16,11 @@ import { fetchItemCategories } from './actions/inventoryActions';
 injectTapEventPlugin();
 
 // React perf addon - for debugging performance issues
-// window.Perf = Perf;
+window.Perf = Perf;
 
 const store = createStore(
 	rootReducer,
-	// window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 	applyMiddleware(
 	    thunkMiddleware, // lets us dispatch() functions
 	)
