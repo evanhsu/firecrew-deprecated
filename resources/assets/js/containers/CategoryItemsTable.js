@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import AccountableItemTable from '../components/AccountableItemTable';
+// import AccountableItemTable from '../components/AccountableItemTable';
+import AccountableCollapsibleTable from '../components/AccountableCollapsibleTable';
 import BulkItemTable from '../components/BulkItemTable';
 import BulkIssuedItemTable from '../components/BulkIssuedItemTable';
 
@@ -9,7 +10,7 @@ class CategoryItemsTable extends Component {
 		return (
 			<div>
 				<h1>{ this.props.category }</h1>
-				<AccountableItemTable items={this.props.accountableItems} /> 
+				<AccountableCollapsibleTable items={this.props.accountableItems} /> 
 				<BulkItemTable items={this.props.bulkItems} /> 
 				<BulkIssuedItemTable items={this.props.bulkIssuedItems} />
 			</div>
