@@ -1,9 +1,23 @@
 export const SELECT_ITEM_CATEGORY = 'SELECT_ITEM_CATEGORY';
 export const selectItemCategory = (categoryName) => {
-	console.log('Category selected:'+categoryName);
 	return {
 		type: SELECT_ITEM_CATEGORY,
 		categoryName,
+	}
+}
+
+export const TOGGLE_CATEGORY_MENU_DRAWER = 'TOGGLE_CATEGORY_MENU_DRAWER';
+export const toggleCategoryMenuDrawer = () => {
+	return {
+		type: TOGGLE_CATEGORY_MENU_DRAWER,
+	}
+}
+
+export const SET_CATEGORY_MENU_DRAWER_STATE = 'SET_CATEGORY_MENU_DRAWER_STATE';
+export const setCategoryMenuDrawerState = (open) => {
+	return {
+		type: SET_CATEGORY_MENU_DRAWER_STATE,
+		open,
 	}
 }
 
