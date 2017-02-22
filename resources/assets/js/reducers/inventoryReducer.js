@@ -8,6 +8,7 @@ import {
 	REQUEST_ITEM_CATEGORIES,
 	RECEIVE_ITEM_CATEGORIES,
 	INVALIDATE_ITEM_CATEGORIES,
+	EXPAND_TABLE_ROW,
 } from '../actions/inventoryActions';
 
 function category(state = { isFetching: false, didInvalidate: false, items: [] }, action) {
@@ -64,6 +65,15 @@ export function categoryMenuDrawerOpen(state = false, action) {
 			return !state.categoryMenuDrawerOpen;
 		case SET_CATEGORY_MENU_DRAWER_STATE:
 			return action.open;
+		default:
+			return state;
+	}
+}
+
+export function expandedRowKeys(state = [], action) {
+	switch(action.type) {
+		case EXPAND_TABLE_ROW:
+			return action.rows;
 		default:
 			return state;
 	}

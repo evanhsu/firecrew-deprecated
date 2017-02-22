@@ -107,3 +107,12 @@ export const fetchItemCategory = (categoryName) => {
 			)
 	}
 }
+
+
+export const EXPAND_TABLE_ROW = 'EXPAND_TABLE_ROW';
+export const expandTableRow = (rows) => {
+	return {
+		type: EXPAND_TABLE_ROW,
+		rows,
+	}
+}
