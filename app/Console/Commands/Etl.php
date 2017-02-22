@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use App\Domain\Items\Item;
 use App\Domain\People\Person;
 use App\Domain\Vips\Vip;
@@ -46,6 +47,30 @@ class Etl extends Command
      *  ]
     **/
     private $vipItemMap;
+
+
+    /**
+     *  Map old ImportedItem->id to new Item->id
+     *  [
+     *      OldItemID => NewItemID
+     *  ]
+    **/
+    private $newIdForImportedItem;
+
+    /**
+     *  Create a map of Items to their Parent Item.
+     *  The keys are ID's of NEW items.
+     *  The values are ID's of OLD items.
+     *
+     *  So to find the ID of the new parent for an Item:
+     *      $newItem->parent_id = $this->newIdForImportedItem[$this->oldParentIdForNewItem[$newItem->id]]
+     *
+     *  [
+     *      NewItemID => OldParentItemID
+     *  ]
+    **/
+    private $oldParentIdForNewItem;
+
     /**
      * Create a new command instance.
      *
@@ -57,6 +82,8 @@ class Etl extends Command
 
         $this->userIdMap = array();
         $this->vipItemMap = array();
+        $this->newIdForImportedItem = array();
+        $this->oldParentIdForNewItem = array();
     }
 
     /**
@@ -69,8 +96,10 @@ class Etl extends Command
         //
         shell_exec('mysql -u firecrew --database siskiyou_general < app/Console/ETL/siskiyou_general.sql');
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         // People
+        DB::table('people')->delete();
         ImportedPerson::all()->each(function($importedPerson) {
             $person = new Person();
             $person->iqcs_number = $importedPerson->iqcs_number;
@@ -88,6 +117,7 @@ class Etl extends Command
         });
 
         // VIP
+        DB::table('vips')->delete();
         ImportedVip::all()->each(function($importedVip) {
             $vip = new Vip();
             $vip->name = $importedVip->name;
@@ -99,13 +129,14 @@ class Etl extends Command
 
 
         // Items
+        DB::table('items')->delete();
         ImportedItem::all()->each(function($importedItem) {
             $item = new Item();
             $item->crew_id = 1;
             $item->serial_number = $importedItem->serial_no;
             $item->quantity = $importedItem->quantity;
             $item->category = $importedItem->item_type;
-            $item->type = is_null($importedItem->serial_no) ? 'bulk' : 'accountable';
+            $item->type = empty($importedItem->serial_no) ? 'bulk' : 'accountable';
             $item->color = $importedItem->color;
             $item->size = $importedItem->size;
             $item->description = $importedItem->description;
@@ -117,6 +148,18 @@ class Etl extends Command
             $item->source = $importedItem->item_source;
             $item->save();
 
+            $this->newIdForImportedItem[$importedItem->id] = $item->id;
+
+            // Keep track of this item if it needs a parent_id (it's a bulk_issued item)
+            // bulk_issued items in the old db had their parent_id stored in the 'item_source' column
+            if(
+                is_null($importedItem->serial_no) 
+                && ($importedItem->checked_out_to_id != -1)
+                && (ImportedItem::find($importedItem->item_source))
+            ) {
+                $this->oldParentIdForNewItem[$item->id] = $importedItem->item_source;
+            }
+
             if($importedItem->person()->count() > 0) {
                 $personId = $this->userIdMap[$importedItem->person->id];
                 $item->checkOutTo(Person::find($personId));
@@ -126,5 +169,15 @@ class Etl extends Command
                 $item->checkOutTo(Vip::find($vipId));
             }
         });
+
+        // Update the parent_id for bulk_issued items
+        foreach($this->oldParentIdForNewItem as $newId => $oldParentId) {
+            $item = Item::find($newId);
+            $item->parent_id = $this->newIdForImportedItem[$oldParentId];
+            $item->save();
+        };
+
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

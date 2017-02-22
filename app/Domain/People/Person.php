@@ -8,7 +8,9 @@ use App\Domain\Items\CanHaveItemsInterface;
 
 class Person extends Model implements CanHaveItemsInterface
 {
-    //
+    protected $appends = ['full_name'];
+
+    
     public function crews() {
     	return $this->belongsToMany(Crew::class, 'crew_person');
     }
