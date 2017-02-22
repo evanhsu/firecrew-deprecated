@@ -3,12 +3,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import { selectItemCategory } from '../actions/inventoryActions';
+import { selectItemCategory, setCategoryMenuDrawerState } from '../actions/inventoryActions';
 
 class CategoryMenu extends Component {
 
 	handleClick = (category) => {
 		return () => {
+			this.props.dispatch(setCategoryMenuDrawerState(false))
 			this.props.dispatch(selectItemCategory(category));
 		}
 	}

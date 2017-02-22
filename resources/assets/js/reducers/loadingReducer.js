@@ -1,11 +1,8 @@
 import { 
-	SELECT_ITEM_CATEGORY,
 	REQUEST_ITEM_CATEGORY,
 	RECEIVE_ITEM_CATEGORY,
-	INVALIDATE_ITEM_CATEGORY,
 	REQUEST_ITEM_CATEGORIES,
 	RECEIVE_ITEM_CATEGORIES,
-	INVALIDATE_ITEM_CATEGORIES
 } from '../actions/inventoryActions';
 
 export function loading(state = {}, action) {
