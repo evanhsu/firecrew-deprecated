@@ -28,6 +28,12 @@ This project is packaged with a Vagrantfile and an Ansible playbook to construct
 
 You may then run seeders if you want.
 
+2) On your HOST machine, navigate to the project folder and run:
+
+	$ yarn
+	$ yarn run watch
+
+	
 ### Viewing in the browser
 
 After building the project in your vagrant machine, you should be able to view the site in your browser at:
