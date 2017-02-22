@@ -13,7 +13,9 @@ use App\Domain\Items\CanHaveItemsInterface;
 **/
 class Vip extends Model implements CanHaveItemsInterface
 {
-    //
+    protected $appends = ['full_name'];
+
+    
     public function crew() {
     	return $this->belongsTo(Crew::class);
     }

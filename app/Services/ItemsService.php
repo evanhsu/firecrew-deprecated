@@ -8,9 +8,12 @@ class ItemsService
 {
 	public function byCategory(Crew $crew)
 	{
-		$itemsQuery = $crew->items();
-
-		$itemsQuery->orderBy('category', 'serial_number', 'description', 'size', 'color');
+		$itemsQuery = $crew->items()->with('checked_out_to')
+			->orderBy('category', 'asc')
+			->orderBy('serial_number', 'asc')
+			->orderBy('description', 'asc')
+			->orderBy('size', 'asc')
+			->orderBy('color', 'asc');
 
 		$items = $itemsQuery->get();
 
@@ -25,15 +28,21 @@ class ItemsService
 
 	public function ofCategory(Crew $crew, $category = null)
 	{
-		$itemsQuery = $crew->items();
+		$itemsQuery = $crew->items()->with('checked_out_to');
 
 		if($category) {
-			$itemsQuery->where('category', 'like', $category);
+			$itemsQuery->where('items.category', 'like', $category);
 		}
 
-		$itemsQuery->orderBy('category', 'serial_number', 'description', 'size', 'color');
+		$itemsQuery
+			->orderBy('category', 'asc')
+			->orderBy('serial_number', 'asc')
+			->orderBy('description', 'asc')
+			->orderBy('size', 'asc')
+			->orderBy('color', 'asc');
 
 		$items = $itemsQuery->get();
+
 
 		return $items;
 
