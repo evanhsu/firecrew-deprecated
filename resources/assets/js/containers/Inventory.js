@@ -1,23 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import ReactDrawer from 'react-drawer';
 import CategoryMenu from './CategoryMenu';
 import CategoryItemsTable from './CategoryItemsTable';
 import LoadingIndicator from './LoadingIndicator';
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
-import { setCategoryMenuDrawerState } from '../actions/inventoryActions';
-
+import { toggleCategoryMenuDrawer } from '../actions/inventoryActions';
+ 
 class Inventory extends Component {
 
-	setDrawerState = (open) => {
-		return () => this.props.dispatch(setCategoryMenuDrawerState(open));
-	}
+	toggleDrawerState = () => (
+		this.props.dispatch(toggleCategoryMenuDrawer())
+	); 
 
 	render() {
 		return (
 			<div className="col-xs-12">
 				<div className="drawer-toggle-button">
-					<RaisedButton label='Categories' primary onTouchTap={this.setDrawerState(true)} />
+					<RaisedButton label='Categories' primary onClick={this.toggleDrawerState} />
 				</div>
 				<div className="panel panel-primary">
 					<div className="panel-heading">
@@ -28,7 +29,7 @@ class Inventory extends Component {
 				          docked={false}
 				          width={350}
 				          open={this.props.categoryMenuDrawerOpen}
-				          onRequestChange={this.setDrawerState(false)}
+				          onRequestChange={this.toggleDrawerState}
 				        >
 				        	<CategoryMenu />
 				        </Drawer>
@@ -47,7 +48,7 @@ Inventory.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		categoryMenuDrawerOpen: state.categoryMenuDrawerOpen
+		categoryMenuDrawerOpen: state.categoryMenuDrawerOpen,
 	};
 }
 

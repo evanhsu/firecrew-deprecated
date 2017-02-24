@@ -1,17 +1,46 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import AccountableItemTable from '../components/AccountableItemTable';
-// import AccountableCollapsibleTable from '../components/AccountableCollapsibleTable';
 import BulkItemTable from '../components/BulkItemTable';
 import BulkIssuedItemTable from '../components/BulkIssuedItemTable';
+import ItemRowPopover from '../components/ItemRowPopover';
+import { itemRowSelected, itemRowDeselected } from '../actions/inventoryActions';
 
 class CategoryItemsTable extends Component {
+	handleRowClick = (event, form) => {
+		event.preventDefault();
+		return this.props.dispatch(itemRowSelected(event.currentTarget, form));
+	};
+
+	handleRowFormRequestClose = () => {
+		return this.props.dispatch(itemRowDeselected());
+	};
+
+	itemRowFormOpen = () => {
+		return this.props.selectedItemRow === null ? false : true;
+	};
+
 	render() {
+		// return (
+		// 	<div>
+		// 		<h1>{ this.props.category }</h1>
+		// 		<AccountableItemTable items={this.props.accountableItems} onRowClick={this.handleRowClick} />
+		// 		<BulkItemTable items={this.props.bulkItems} /> 
+		// 		<BulkIssuedItemTable items={this.props.bulkIssuedItems} />
+
+		// 		<ItemRowPopover 
+		// 			anchorEl={this.props.selectedItemRow}
+		// 			open={this.itemRowFormOpen()}
+		// 			onRequestClose={this.handleRowFormRequestClose}
+		// 		>
+		// 			{this.props.itemRowFormContents}
+		// 		 </ItemRowPopover> */
+		// 	</div>
+		// );
 		return (
 			<div>
 				<h1>{ this.props.category }</h1>
-				{/*<AccountableCollapsibleTable items={this.props.accountableItems} />*/}
-				<AccountableItemTable items={this.props.accountableItems} />
+				<AccountableItemTable items={this.props.accountableItems} onRowClick={this.handleRowClick} />
 				<BulkItemTable items={this.props.bulkItems} /> 
 				<BulkIssuedItemTable items={this.props.bulkIssuedItems} />
 			</div>
@@ -20,13 +49,20 @@ class CategoryItemsTable extends Component {
 }
 
 CategoryItemsTable.propTypes = {
+	accountableItems: PropTypes.arrayOf(PropTypes.object),
+	bulkItems: PropTypes.arrayOf(PropTypes.object),
+	bulkIssuedItems: PropTypes.arrayOf(PropTypes.object),
 	category: PropTypes.string,
-	items: PropTypes.arrayOf(PropTypes.object),
+	selectedItemRow: PropTypes.object,
+	itemRowFormContents: PropTypes.any,
 }
 
 CategoryItemsTable.defaultProps = {
 	category: null,
-	items: [],
+	accountableItems: [],
+	bulkItems: [],
+	bulkIssuedItems: [],
+	selectedItemRow: null,
 }
 
 function mapStateToProps(state) {
@@ -45,6 +81,8 @@ function mapStateToProps(state) {
 		accountableItems: state.itemCategories[categoryName] ? accountableItems(state.itemCategories[categoryName].items) : [],
 		bulkItems: state.itemCategories[categoryName] ? bulkItems(state.itemCategories[categoryName].items) : [],
 		bulkIssuedItems: state.itemCategories[categoryName] ? bulkIssuedItems(state.itemCategories[categoryName].items) : [],
+		selectedItemRow: state.selectedItemRow,
+		itemRowFormContents: state.itemRowFormContents,
 	};
 }
 

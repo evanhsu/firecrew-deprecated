@@ -6,18 +6,26 @@ export const selectItemCategory = (categoryName) => {
 	}
 }
 
+export const ITEM_ROW_SELECTED = 'ITEM_ROW_SELECTED';
+export const itemRowSelected = (row, form) => {
+	return {
+		type: ITEM_ROW_SELECTED,
+		row,
+		form,
+	}
+}
+
+export const ITEM_ROW_DESELECTED = 'ITEM_ROW_DESELECTED';
+export const itemRowDeselected = (row, form) => {
+	return {
+		type: ITEM_ROW_DESELECTED,
+	}
+}
+
 export const TOGGLE_CATEGORY_MENU_DRAWER = 'TOGGLE_CATEGORY_MENU_DRAWER';
 export const toggleCategoryMenuDrawer = () => {
 	return {
 		type: TOGGLE_CATEGORY_MENU_DRAWER,
-	}
-}
-
-export const SET_CATEGORY_MENU_DRAWER_STATE = 'SET_CATEGORY_MENU_DRAWER_STATE';
-export const setCategoryMenuDrawerState = (open) => {
-	return {
-		type: SET_CATEGORY_MENU_DRAWER_STATE,
-		open,
 	}
 }
 
@@ -36,11 +44,25 @@ export const requestItemCategories = () => {
  */
 export const RECEIVE_ITEM_CATEGORIES = 'RECEIVE_ITEM_CATEGORIES';
 export const receiveItemCategories = (categories) => {
-	return function(dispatch) {
-		for (let category of Object.values(categories)) {
-			dispatch(receiveItemCategory(category.name, { category: category } ));
-		}
+	let categoriesTransformed = {};
+
+	for (let category of Object.values(categories)) {
+		// dispatch(receiveItemCategory(category.name, { category: category } ));
+		Object.assign(categoriesTransformed, {
+			[category.name]: {
+				type: RECEIVE_ITEM_CATEGORY,
+				categoryName: category.name,
+				items: category.items,
+				receivedAt: Date.now(),
+			}
+		});
 	}
+
+	return {
+		type: RECEIVE_ITEM_CATEGORIES,
+		categories: categoriesTransformed,
+	}
+
 }
 
 export const INVALIDATE_ITEM_CATEGORIES = 'INVALIDATE_ITEM_CATEGORIES';
@@ -109,10 +131,19 @@ export const fetchItemCategory = (categoryName) => {
 }
 
 
-export const EXPAND_TABLE_ROW = 'EXPAND_TABLE_ROW';
-export const expandTableRow = (rows) => {
-	return {
-		type: EXPAND_TABLE_ROW,
-		rows,
-	}
-}
+// export const EXPAND_TABLE_ROW = 'EXPAND_TABLE_ROW';
+// export const expandTableRow = (rows) => {
+// 	return {
+// 		type: EXPAND_TABLE_ROW,
+// 		rows,
+// 	}
+// }
+
+
+// export const SET_BOTTOM_DRAWER_STATE = 'SET_BOTTOM_DRAWER_STATE';
+// export const setBottomDrawerState = (open) => {
+// 	return {
+// 		type: SET_BOTTOM_DRAWER_STATE,
+// 		open,
+// 	}
+// }

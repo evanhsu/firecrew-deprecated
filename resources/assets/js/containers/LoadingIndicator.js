@@ -15,11 +15,11 @@ LoadingIndicator.propTypes = {
 }
 
 LoadingIndicator.defaultProps = {
-	loading: {false},
+	loading: false,
 }
 
 function mapStateToProps(state) {
-	const categoryName = state.selectedItemCategory;
+	// const categoryName = state.selectedItemCategory;
 	return {
 		// loading: state.itemCategories[categoryName] ? state.itemCategories[categoryName].isFetching : false,
 		loading: state.loading,

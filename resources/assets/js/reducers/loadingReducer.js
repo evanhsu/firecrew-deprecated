@@ -5,7 +5,7 @@ import {
 	RECEIVE_ITEM_CATEGORIES,
 } from '../actions/inventoryActions';
 
-export function loading(state = {}, action) {
+export function loading(state = false, action) {
 	switch(action.type) {
 		case REQUEST_ITEM_CATEGORIES:
 		case REQUEST_ITEM_CATEGORY:

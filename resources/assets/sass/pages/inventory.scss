@@ -1,4 +1,5 @@
 #inventory {
+
 	padding-left: 40px;
 
 	.drawer-toggle-button {
@@ -9,4 +10,21 @@
 		transform-origin: left top 0;
 	}
 
+	.expandablerow-enter {
+		max-height: 0px;
+	}
+
+	.expandablerow-enter.expandablerow-enter-active {
+		max-height: 100px; //$expandable-row-height;
+		transition: max-height 1000ms ease-in;
+	}
+
+	.expandablerow-leave {
+		max-height: 100px; //$expandable-row-height;
+	}
+
+	.expandablerow-leave.expandablerow-leave-active {
+		max-height: 0;
+		transition: max-height 150ms ease-out;
+	}
 }
