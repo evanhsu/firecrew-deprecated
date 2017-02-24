@@ -1,14 +1,14 @@
 import { 
 	SELECT_ITEM_CATEGORY,
 	TOGGLE_CATEGORY_MENU_DRAWER,
-	SET_CATEGORY_MENU_DRAWER_STATE,
 	REQUEST_ITEM_CATEGORY,
 	RECEIVE_ITEM_CATEGORY,
 	INVALIDATE_ITEM_CATEGORY,
 	REQUEST_ITEM_CATEGORIES,
 	RECEIVE_ITEM_CATEGORIES,
 	INVALIDATE_ITEM_CATEGORIES,
-	EXPAND_TABLE_ROW,
+	ITEM_ROW_SELECTED,
+	ITEM_ROW_DESELECTED,	
 } from '../actions/inventoryActions';
 
 function category(state = { isFetching: false, didInvalidate: false, items: [] }, action) {
@@ -41,10 +41,8 @@ export function itemCategories(state = {}, action) {
 				[action.categoryName]: category(state[action.categoryName], action)
 			});
 		case RECEIVE_ITEM_CATEGORIES:
-			console.log('Update all categories');
-			return Object.assign({}, state, 
-				action.categories
-			);
+			return action.categories; // REPLACE the entire state.itemCategories
+
 		default:
 			return state;
 	}
@@ -62,18 +60,31 @@ export function selectedItemCategory(state = '', action) {
 export function categoryMenuDrawerOpen(state = false, action) {
 	switch(action.type) {
 		case TOGGLE_CATEGORY_MENU_DRAWER:
-			return !state.categoryMenuDrawerOpen;
-		case SET_CATEGORY_MENU_DRAWER_STATE:
-			return action.open;
+			return !state;
+		case SELECT_ITEM_CATEGORY:
+			return false;
 		default:
 			return state;
 	}
 }
 
-export function expandedRowKeys(state = [], action) {
+export function selectedItemRow(state = null, action) {
 	switch(action.type) {
-		case EXPAND_TABLE_ROW:
-			return action.rows;
+		case ITEM_ROW_SELECTED:
+			return action.row;
+		case ITEM_ROW_DESELECTED:
+			return null;
+		default:
+			return state;
+	}
+}
+
+export function itemRowFormContents(state = null, action) {
+	switch(action.type) {
+		case ITEM_ROW_SELECTED:
+			return action.form;
+		case ITEM_ROW_DESELECTED:
+			return null;
 		default:
 			return state;
 	}
