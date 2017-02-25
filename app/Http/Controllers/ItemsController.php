@@ -15,7 +15,11 @@ class ItemsController extends Controller
         $this->items = $items;
     }
 
-    public function indexForCrew(Request $request, $crewId) {
+    /**
+     *  
+     *
+     */
+    public function indexForCrewByCategory(Request $request, $crewId) {
 
     	$crew = Crew::find($crewId);
         if($request->input('category')) {
@@ -45,6 +49,38 @@ class ItemsController extends Controller
                 ]);
                 break;
         }
+    }
+
+    /**
+     *  Returns a flat collection of ALL items belonging to the specified Crew
+     *
+     */
+    public function indexForCrew(Request $request, $crewId) {
+
+        $crew = Crew::find($crewId);
+        if($request->input('category')) {
+            $items = $this->items->forCrewByCategory($crew, $request->input('category'));
+        } else {
+            $items = $this->items->byCrew($crew);
+        }
+
+        $response = [
+            "items" => $items
+        ];
+
+        switch($request->input('format')) {
+            case 'json':
+                return $response;
+                break;
+
+            case 'html':
+            default:
+                return view('items.index', [
+                    'items'=> []
+                ]);
+                break;
+        }
+        
     }
 
     public function categoriesForCrew($crewId) {

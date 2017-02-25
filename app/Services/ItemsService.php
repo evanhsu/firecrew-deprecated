@@ -6,7 +6,12 @@ use App\Domain\Items\Item;
 
 class ItemsService
 {
-	public function byCategory(Crew $crew)
+	public function byCrew(Crew $crew)
+	{
+		return $crew->items()->get();
+	}
+
+	public function forCrewByCategory(Crew $crew)
 	{
 		$itemsQuery = $crew->items()->with('checked_out_to')
 			->orderBy('category', 'asc')
@@ -43,14 +48,16 @@ class ItemsService
 
 		$items = $itemsQuery->get();
 
-
 		return $items;
-
 	}
 
 	public function categories(Crew $crew)
 	{
-		$categories = $crew->items()->groupBy('category')->pluck('category');
+		$categories = $crew->items()
+			->select('category')
+			->distinct()
+			->orderBy('category', 'asc')
+			->pluck('category');
 		return $categories;
 	}
 }
