@@ -1,14 +1,18 @@
+import Immutable, { fromJS } from 'immutable';
 import { 
 	SELECT_ITEM_CATEGORY,
 	TOGGLE_CATEGORY_MENU_DRAWER,
-	REQUEST_ITEM_CATEGORY,
-	RECEIVE_ITEM_CATEGORY,
-	INVALIDATE_ITEM_CATEGORY,
-	REQUEST_ITEM_CATEGORIES,
-	RECEIVE_ITEM_CATEGORIES,
-	INVALIDATE_ITEM_CATEGORIES,
+	REQUEST_ITEMS,
+	RECEIVE_ITEMS_SUCCESS,
+	RECEIVE_ITEMS_FAILURE,
 	ITEM_ROW_SELECTED,
-	ITEM_ROW_DESELECTED,	
+	ITEM_ROW_DESELECTED,
+	DECREMENT_ITEM_REQUEST,
+	DECREMENT_ITEM_SUCCESS,	
+	DECREMENT_ITEM_FAILURE,	
+	INCREMENT_ITEM_REQUEST,
+	INCREMENT_ITEM_SUCCESS,	
+	INCREMENT_ITEM_FAILURE,
 } from '../actions/inventoryActions';
 
 function category(state = { isFetching: false, didInvalidate: false, items: [] }, action) {
@@ -34,19 +38,39 @@ function category(state = { isFetching: false, didInvalidate: false, items: [] }
 	}
 }
 
-export function itemCategories(state = {}, action) {
+export function itemCategories(state = Immutable.Map(), action) {
 	switch(action.type) {
 		case RECEIVE_ITEM_CATEGORY:
-			return Object.assign({}, state, {
-				[action.categoryName]: category(state[action.categoryName], action)
-			});
+			return fromJS(
+				Object.assign({}, state, {
+					[action.categoryName]: category(state[action.categoryName], action)
+				})
+			);
 		case RECEIVE_ITEM_CATEGORIES:
-			return action.categories; // REPLACE the entire state.itemCategories
-
+			return fromJS(action.categories); // REPLACE the entire state.itemCategories
+		case DECREMENT_ITEM_REQUEST:
+			return state;
 		default:
 			return state;
 	}
 }
+
+// export function items(state = {}, action) {
+// 	switch(action.type) {
+// 		case RECEIVE_ITEM_CATEGORY:
+// 			return fromJS(
+// 				Object.assign({}, state, {
+// 					[action.categoryName]: category(state[action.categoryName], action)
+// 				})
+// 			);
+// 		case RECEIVE_ITEM_CATEGORIES:
+// 			return fromJS(action.categories); // REPLACE the entire state.itemCategories
+// 		case DECREMENT_ITEM_REQUEST:
+// 			return Object.assign()
+// 		default:
+// 			return state;
+// 	}
+// }
 
 export function selectedItemCategory(state = '', action) {
 	switch(action.type) {
@@ -71,7 +95,7 @@ export function categoryMenuDrawerOpen(state = false, action) {
 export function selectedItemRow(state = null, action) {
 	switch(action.type) {
 		case ITEM_ROW_SELECTED:
-			return action.row;
+			return action.row === state ? state : action.row;
 		case ITEM_ROW_DESELECTED:
 			return null;
 		default:
@@ -79,13 +103,3 @@ export function selectedItemRow(state = null, action) {
 	}
 }
 
-export function itemRowFormContents(state = null, action) {
-	switch(action.type) {
-		case ITEM_ROW_SELECTED:
-			return action.form;
-		case ITEM_ROW_DESELECTED:
-			return null;
-		default:
-			return state;
-	}
-}

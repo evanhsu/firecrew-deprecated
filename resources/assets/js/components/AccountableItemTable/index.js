@@ -65,10 +65,10 @@ const HeaderRow = () => {
 	);
 };
 
-const ItemRow = ({item, onTouchTap}) => {
+const ItemRow = ({item, onTouchTap, onExpandChange}) => {
 	return (
-		<Card style={rowStyle} onTouchTap={(event) => onTouchTap(event, <RowForm item={item} />)}>
-	        <CardText style={rowStyle} actAsExpander>
+		<Card style={rowStyle} onExpandChange={onExpandChange}>
+	        <CardText style={rowStyle} actAsExpander onTouchTap={(event) => onTouchTap(event)}>
 	        	<span style={mdColStyle}>{item.serial_number}</span>
 		        <span style={lgColStyle}>{item.description}</span>	
 		        <span style={smColStyle}>{item.size}</span>	
@@ -97,7 +97,7 @@ const ItemRow = ({item, onTouchTap}) => {
 const RowForm = ({item}) => {
 	return (
         <Card style={rowStyle}>
-			<CardText expandable style={formContainerStyle}>
+			<CardText style={formContainerStyle}>
 		    	<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${item.id}-serial-number`} defaultValue={item.serial_number} /></span>
 		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} defaultValue={item.description} /></span>	
 		        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${item.id}-size`} defaultValue={item.size} /></span>	
@@ -112,28 +112,17 @@ const RowForm = ({item}) => {
 	);
 };
 
-const Test = ({item}) => {
-	return (
-		<div>Evan {item}</div>
-	);
-};
-
-
-
 class AccountableItemTable extends Component {
-	handleRowClick = ({item}) => {
-		return (event) => this.props.onRowClick(event,<Test item={item} />);
-	};
-
 	render() {
 		if(this.props.items.length == 0) {
 			return null;
 		} else {
+			const items = this.props.items.toArray(); // Convert from Immutable List to js Array
 			return (
 				<div>
 			    	<HeaderRow />
-					{this.props.items && this.props.items.map((item) => (
-						<ItemRow key={item.id} item={item} onTouchTap={this.props.onRowClick} />
+					{this.props.items && items.map((item) => (
+						<ItemRow key={item.id} item={item} onTouchTap={this.props.onRowClick} onExpandChange={this.props.onRowRequestClose} />
 					))}
 			    </div>
 			);
@@ -144,6 +133,8 @@ class AccountableItemTable extends Component {
 AccountableItemTable.PropTypes = {
 	items: PropTypes.array,
 	onRowClick: PropTypes.func,
+	onRowRequestClose: PropTypes.func,
 };
 
 export default AccountableItemTable;
+

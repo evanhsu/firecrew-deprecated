@@ -1,20 +1,14 @@
-import { combineReducers } from 'redux';
-import { 
-	itemCategories,
-	selectedItemCategory,
-	categoryMenuDrawerOpen,
-	selectedItemRow,
-	itemRowFormContents,
-	} from './inventoryReducer';
-import { loading } from './loadingReducer';
+import { combineReducers } from 'redux-immutable';
+import { List, Map } from 'immutable';
+
+// import { categoryMenuDrawerOpen } from './navigationReducer';
+import { items } from './itemsReducer';
+// import { loading } from './loadingReducer';
 
 const rootReducer = combineReducers({
-	itemCategories,
-	selectedItemCategory,
-	categoryMenuDrawerOpen,
-	loading,
-	selectedItemRow,
-	itemRowFormContents,
+	// categoryMenuDrawerOpen: categoryMenuDrawerOpen,
+	items: items,
+	// loading: loading,
 });
 
 export default rootReducer;

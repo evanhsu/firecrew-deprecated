@@ -4,12 +4,20 @@ import AccountableItemTable from '../components/AccountableItemTable';
 import BulkItemTable from '../components/BulkItemTable';
 import BulkIssuedItemTable from '../components/BulkIssuedItemTable';
 import ItemRowPopover from '../components/ItemRowPopover';
-import { itemRowSelected, itemRowDeselected } from '../actions/inventoryActions';
+import { itemRowSelected, itemRowDeselected, incrementItem, decrementItem } from '../actions/inventoryActions';
 
 class CategoryItemsTable extends Component {
-	handleRowClick = (event, form) => {
-		event.preventDefault();
-		return this.props.dispatch(itemRowSelected(event.currentTarget, form));
+	handleDecrement = (itemId) => {
+		return () => this.props.dispatch(decrementItem(this.props.category, itemId));
+	};
+
+	handleIncrement = (itemId) => {
+		return () => this.props.dispatch(incrementItem(this.props.category, itemId));
+	};
+
+	handleRowClick = (event) => {
+		// event.preventDefault(); 
+		return this.props.dispatch(itemRowSelected(event.currentTarget));
 	};
 
 	handleRowFormRequestClose = () => {
@@ -40,9 +48,15 @@ class CategoryItemsTable extends Component {
 		return (
 			<div>
 				<h1>{ this.props.category }</h1>
-				<AccountableItemTable items={this.props.accountableItems} onRowClick={this.handleRowClick} />
-				<BulkItemTable items={this.props.bulkItems} /> 
-				<BulkIssuedItemTable items={this.props.bulkIssuedItems} />
+				<AccountableItemTable items={this.props.accountableItems} onRowClick={this.handleRowClick} onRowRequestClose={this.handleRowFormRequestClose} />
+				<BulkItemTable 
+					items={this.props.bulkItems} 
+					onRowClick={this.handleRowClick} 
+					onRowRequestClose={this.handleRowFormRequestClose} 
+					handleIncrement={this.handleIncrement}
+					handleDecrement={this.handleDecrement}
+				/> 
+				<BulkIssuedItemTable items={this.props.bulkIssuedItems} onRowClick={this.handleRowClick} onRowRequestClose={this.handleRowFormRequestClose} />
 			</div>
 		);
 	}
@@ -78,11 +92,10 @@ function mapStateToProps(state) {
 	}
 	return {
 		category: categoryName,
-		accountableItems: state.itemCategories[categoryName] ? accountableItems(state.itemCategories[categoryName].items) : [],
-		bulkItems: state.itemCategories[categoryName] ? bulkItems(state.itemCategories[categoryName].items) : [],
-		bulkIssuedItems: state.itemCategories[categoryName] ? bulkIssuedItems(state.itemCategories[categoryName].items) : [],
+		accountableItems: accountableItems(state.get('items')),
+		bulkItems: bulkItems(state.get('items')),
+		bulkIssuedItems: bulkIssuedItems(state.get('items')),
 		selectedItemRow: state.selectedItemRow,
-		itemRowFormContents: state.itemRowFormContents,
 	};
 }
 
