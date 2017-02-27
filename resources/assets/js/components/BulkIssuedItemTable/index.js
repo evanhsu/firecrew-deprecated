@@ -1,0 +1,129 @@
+import React, { Component, PropTypes } from 'react';
+import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+
+const cellStyle = {
+	paddingLeft: 5,
+	paddingRight: 5,
+	minHeight: 20,
+	display: 'inline-block',
+	overflowWrap: 'break-word',
+	textOverflow: 'ellipsis',
+};
+
+const rowStyle = {
+	minHeight: 20,
+	padding: 0,
+};
+
+const headerRowStyle = {
+	fontSize: 16,
+	fontWeight: 600,
+	minHeight: 20,
+	padding: 0,
+};
+
+const formContainerStyle = {
+	backgroundColor: "#fafafa",
+	border: '3px solid #2eb2fd',
+	boxShadow: '3px 3px 8px #888888',
+	padding: 0,
+};
+
+const textFieldStyle = {
+	fontSize: 14,
+	paddingRight: 5,
+};
+
+const smColWidth = { width: 70 };
+const mdColWidth = { width: 120 };
+const lgColWidth = { width: 180 };
+
+const smColStyle = Object.assign({}, cellStyle, smColWidth);
+const mdColStyle = Object.assign({}, cellStyle, mdColWidth);
+const lgColStyle = Object.assign({}, cellStyle, lgColWidth);
+
+const smTextFieldStyle = Object.assign({}, textFieldStyle, smColWidth);
+const mdTextFieldStyle = Object.assign({}, textFieldStyle, mdColWidth);
+const lgTextFieldStyle = Object.assign({}, textFieldStyle, lgColWidth);
+
+const HeaderRow = () => {
+	return (
+		<Card expandable={false}>
+			<CardText color="#888888" style={headerRowStyle}>
+				<span style={mdColStyle}>Qty</span>
+				<span style={lgColStyle}>Description</span>
+				<span style={lgColStyle}>Issued To</span>
+				<span style={mdColStyle}>Size</span>
+				<span style={mdColStyle}>Color</span>
+				<span style={lgColStyle}>Updated</span>
+			</CardText>
+		</Card>
+	);
+};
+
+const ItemRow = ({item, onTouchTap, onExpandChange}) => {
+	return (
+		<Card style={rowStyle} onExpandChange={onExpandChange}>
+	        <CardText style={rowStyle} actAsExpander onTouchTap={(event) => onTouchTap(event)}>
+	        	<span style={mdColStyle}>{item.quantity}</span>
+		        <span style={lgColStyle}>{item.description}</span>	
+		        <span style={lgColStyle}>{item.checked_out_to && item.checked_out_to.full_name}</span>	
+		        <span style={mdColStyle}>{item.size}</span>	
+		        <span style={mdColStyle}>{item.color}</span>	
+		        <span style={lgColStyle}>{item.updated_at}</span>
+			</CardText>
+			<CardText expandable style={formContainerStyle}>
+		    	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
+		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
+		        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checked_out_to && item.checked_out_to.full_name} /></span>	
+		        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-size`} 			defaultValue={item.size} /></span>	
+		        <span style={mdColStyle}><TextField floatingLabelText="Color" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
+		        <span style={lgColStyle}></span>
+		    </CardText>
+	    </Card>
+    );
+}
+
+/*
+const RowForm = ({item}) => {
+	return (
+        <Card style={rowStyle}>
+			<CardText style={formContainerStyle}>
+		    	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
+		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
+		        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checked_out_to && item.checked_out_to.full_name} /></span>	
+		        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-size`} 			defaultValue={item.size} /></span>	
+		        <span style={mdColStyle}><TextField floatingLabelText="Color" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
+		        <span style={lgColStyle}></span>
+		    </CardText>
+        </Card>
+	);
+};
+*/
+class BulkIssuedItemTable extends Component {
+	render() {
+		if(this.props.items.length == 0) {
+			return null;
+		} else {
+			const items = this.props.items.toArray(); // Convert from Immutable List to js Array
+			return (
+				<div>
+			    	<HeaderRow />
+					{this.props.items && items.map((item) => (
+						<ItemRow key={item.id} item={item} onTouchTap={this.props.onRowClick} onExpandChange={this.props.onRowRequestClose} />
+					))}
+			    </div>
+			);
+		}
+	};
+}
+
+BulkIssuedItemTable.PropTypes = {
+	items: PropTypes.array,
+	onRowClick: PropTypes.func,
+	onRowRequestClose: PropTypes.func,
+};
+
+export default BulkIssuedItemTable;
+

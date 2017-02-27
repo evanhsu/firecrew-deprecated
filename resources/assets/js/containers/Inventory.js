@@ -48,7 +48,7 @@ Inventory.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		categoryMenuDrawerOpen: state.categoryMenuDrawerOpen,
+		categoryMenuDrawerOpen: state.get('categoryMenuDrawerOpen'),
 	};
 }
 

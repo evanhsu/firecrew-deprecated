@@ -1,18 +1,18 @@
 import { 
-	REQUEST_ITEM_CATEGORY,
-	RECEIVE_ITEM_CATEGORY,
-	REQUEST_ITEM_CATEGORIES,
-	RECEIVE_ITEM_CATEGORIES,
+	REQUEST_ITEMS,
+	RECEIVE_ITEMS_SUCCESS,
+	RECEIVE_ITEMS_FAILURE,
 } from '../actions/inventoryActions';
 
-export function loading(state = false, action) {
+const initialState = false;
+
+export const loading = (state = initialState, action) => {
 	switch(action.type) {
-		case REQUEST_ITEM_CATEGORIES:
-		case REQUEST_ITEM_CATEGORY:
+		case REQUEST_ITEMS:
 			return true;
 
-		case RECEIVE_ITEM_CATEGORIES:
-		case RECEIVE_ITEM_CATEGORY:
+		case RECEIVE_ITEMS_SUCCESS:
+		case RECEIVE_ITEMS_FAILURE:
 			return false;
 
 		default:
