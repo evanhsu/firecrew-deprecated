@@ -48,7 +48,11 @@ class CategoryItemsTable extends Component {
 		return (
 			<div>
 				<h1>{ this.props.category }</h1>
-				<AccountableItemTable items={this.props.accountableItems} onRowClick={this.handleRowClick} onRowRequestClose={this.handleRowFormRequestClose} />
+				<AccountableItemTable 
+					items={this.props.accountableItems}
+					onRowClick={this.handleRowClick}
+					onRowRequestClose={this.handleRowFormRequestClose}
+				/>
 				<BulkItemTable 
 					items={this.props.bulkItems} 
 					onRowClick={this.handleRowClick} 
@@ -56,16 +60,20 @@ class CategoryItemsTable extends Component {
 					handleIncrement={this.handleIncrement}
 					handleDecrement={this.handleDecrement}
 				/> 
-				<BulkIssuedItemTable items={this.props.bulkIssuedItems} onRowClick={this.handleRowClick} onRowRequestClose={this.handleRowFormRequestClose} />
+				<BulkIssuedItemTable 
+					items={this.props.bulkIssuedItems}
+					onRowClick={this.handleRowClick}
+					onRowRequestClose={this.handleRowFormRequestClose}
+				/>
 			</div>
 		);
 	}
 }
 
 CategoryItemsTable.propTypes = {
-	accountableItems: PropTypes.arrayOf(PropTypes.object),
-	bulkItems: PropTypes.arrayOf(PropTypes.object),
-	bulkIssuedItems: PropTypes.arrayOf(PropTypes.object),
+	accountableItems: PropTypes.object,
+	bulkItems: PropTypes.object,
+	bulkIssuedItems: PropTypes.object,
 	category: PropTypes.string,
 	selectedItemRow: PropTypes.object,
 	itemRowFormContents: PropTypes.any,
@@ -80,7 +88,9 @@ CategoryItemsTable.defaultProps = {
 }
 
 function mapStateToProps(state) {
-	const categoryName = state.selectedItemCategory;
+	console.log(state.get('items').toJS());
+
+	const categoryName = state.get('selectedItemCategory');
 	const accountableItems = (items) => {
 		return items.filter((item) => (item.type == 'accountable'));
 	}

@@ -14,7 +14,6 @@ const initialState = fromJS({
 });
 
 export const items = (state = initialState, action) => {
-	console.log(state);
 	switch(action.type) {
 		case RECEIVE_ITEMS_SUCCESS:
 			return state.set('items', action.items);
