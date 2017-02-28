@@ -16,18 +16,57 @@ class ItemsController extends Controller
     }
 
     /**
+     * Convert snake_case Model Attributes to camelCase for API response
+     *
+     */
+    public function itemTransformer($item)
+    {
+        $transformedItem = [
+            'id'                => $item->id,
+            'crewId'            => $item->crew_id,
+            'parentId'          => $item->parent_id,
+            'serialNumber'      => $item->serial_number,
+            'quantity'          => $item->quantity,
+            'type'              => $item->type,
+            'category'          => $item->category,
+            'color'             => $item->color,
+            'itemSize'          => $item->size,
+            'description'       => $item->description,
+            'condition'         => $item->condition,
+            'checkedOutTo'      => $item->checked_out_to,
+            'note'              => $item->note,
+            'usable'            => $item->usable,
+            'restockTrigger'    => $item->restock_trigger,
+            'restockToQuantity' => $item->restock_to_quantity,
+            'source'            => $item->source,
+            'createdAt'         => $item->created_at,
+            'updatedAt'         => $item->updated_at,
+        ];
+
+        // foreach($item->toArray() as $key => $value) {
+            // $transformedItem[camel_case($key)] = $value;
+        // } 
+
+        return $transformedItem;
+    }
+
+    /**
      *  
      *
      */
-    public function indexForCrewByCategory(Request $request, $crewId) {
+    public function indexForCrewByCategory(Request $request, $crewId) 
+    {
 
     	$crew = Crew::find($crewId);
         if($request->input('category')) {
             $items = $this->items->ofCategory($crew, $request->input('category'));
+            $itemsTransformed = [];
+            $items->each($itemsTransformed->push(itemTransformer($item)));
+
             $response = [
                 "category" => [
                     "name"  => $request->input('category'), 
-                    "items"     => $items,
+                    "items"     => $itemsTransformed,
                 ]
             ];
         } else {
@@ -64,8 +103,12 @@ class ItemsController extends Controller
             $items = $this->items->byCrew($crew);
         }
 
+        $itemsTransformed = $items->map(function($item) {
+            return $this->itemTransformer($item);
+        });
+
         $response = [
-            "items" => $items
+            "items" => $itemsTransformed
         ];
 
         switch($request->input('format')) {

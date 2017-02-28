@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Iterable, Map, List } from 'immutable';
+import { List } from 'immutable';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import { selectItemCategory } from '../actions/inventoryActions';
@@ -30,17 +30,24 @@ class CategoryMenu extends Component {
 }
 
 CategoryMenu.propTypes = {
-	categories: PropTypes.arrayOf(PropTypes.string),
+	categories: PropTypes.object,
 }
 
 CategoryMenu.defaultProps = {
-	categories: [],
+	categories: List(),
 }
 
+const categoryListFromItems = (items) => {
+	return items
+			.map((item) => item.category)
+			.toSet()
+			.toList()
+			.sort();
+};
+
 function mapStateToProps(state) {
-	// console.log(state.get('items'));
 	return {
-		categories: [],//state.get('items').keys().map((category) => category),
+		categories: categoryListFromItems(state.getIn(['items', 'data'])),
 	};
 }
 

@@ -8,7 +8,7 @@ class ItemsService
 {
 	public function byCrew(Crew $crew)
 	{
-		return $crew->items()->get();
+		return $crew->items()->with('checked_out_to')->get();
 	}
 
 	public function forCrewByCategory(Crew $crew)
