@@ -4,9 +4,8 @@ import {
 	TOGGLE_CATEGORY_MENU_DRAWER,
 } from '../actions/inventoryActions';
 
-const initialState = List();
-
-export function selectedItemCategory(state = '', action) {
+const initialState = null;
+export function selectedItemCategory(state = initialState, action) {
 	switch(action.type) {
 		case SELECT_ITEM_CATEGORY:
 			return action.categoryName;

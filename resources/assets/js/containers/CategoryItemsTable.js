@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import { List } from 'immutable';
 import AccountableItemTable from '../components/AccountableItemTable';
 import BulkItemTable from '../components/BulkItemTable';
 import BulkIssuedItemTable from '../components/BulkIssuedItemTable';
@@ -81,30 +82,30 @@ CategoryItemsTable.propTypes = {
 
 CategoryItemsTable.defaultProps = {
 	category: null,
-	accountableItems: [],
-	bulkItems: [],
-	bulkIssuedItems: [],
+	accountableItems: List(),
+	bulkItems: List(),
+	bulkIssuedItems: List(),
 	selectedItemRow: null,
 }
 
 function mapStateToProps(state) {
-	console.log(state.get('items').toJS());
-
 	const categoryName = state.get('selectedItemCategory');
 	const accountableItems = (items) => {
-		return items.filter((item) => (item.type == 'accountable'));
+		return items.filter((item) => {
+			return ((item.type == 'accountable') && (item.category == categoryName));
+		});
 	}
 	const bulkItems = (items) => {
-		return items.filter((item) => (item.type == 'bulk' && item.parent_id === null));
+		return items.filter((item) => (item.type == 'bulk' && item.parentId === null && item.category == categoryName));
 	}
 	const bulkIssuedItems = (items) => {
-		return items.filter((item) => (item.type == 'bulk' && item.parent_id !== null));
+		return items.filter((item) => (item.type == 'bulk' && item.parentd !== null && item.category == categoryName));
 	}
 	return {
 		category: categoryName,
-		accountableItems: accountableItems(state.get('items')),
-		bulkItems: bulkItems(state.get('items')),
-		bulkIssuedItems: bulkIssuedItems(state.get('items')),
+		accountableItems: accountableItems(state.getIn(['items', 'data'])),
+		bulkItems: bulkItems(state.getIn(['items', 'data'])),
+		bulkIssuedItems: bulkIssuedItems(state.getIn(['items', 'data'])),
 		selectedItemRow: state.selectedItemRow,
 	};
 }

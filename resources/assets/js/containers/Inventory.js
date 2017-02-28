@@ -23,6 +23,7 @@ class Inventory extends Component {
 				<div className="panel panel-primary">
 					<div className="panel-heading">
 						<h1 className="panel-title">Inventory</h1>
+						<LoadingIndicator />
 					</div> 
 					<div className="panel-body">
 						<Drawer
@@ -34,7 +35,6 @@ class Inventory extends Component {
 				        	<CategoryMenu />
 				        </Drawer>
 				        <CategoryItemsTable />
-						<LoadingIndicator />
 					</div>
 				</div>
 			</div>

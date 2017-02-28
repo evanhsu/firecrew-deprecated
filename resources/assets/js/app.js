@@ -1,6 +1,6 @@
 require('./bootstrap');
 import React from 'react';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS, Map, List } from 'immutable';
 import thunkMiddleware from 'redux-thunk';
 import ReactDOM from 'react-dom';

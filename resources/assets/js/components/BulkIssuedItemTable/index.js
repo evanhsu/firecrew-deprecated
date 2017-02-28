@@ -68,16 +68,16 @@ const ItemRow = ({item, onTouchTap, onExpandChange}) => {
 	        <CardText style={rowStyle} actAsExpander onTouchTap={(event) => onTouchTap(event)}>
 	        	<span style={mdColStyle}>{item.quantity}</span>
 		        <span style={lgColStyle}>{item.description}</span>	
-		        <span style={lgColStyle}>{item.checked_out_to && item.checked_out_to.full_name}</span>	
-		        <span style={mdColStyle}>{item.size}</span>	
+		        <span style={lgColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>	
+		        <span style={mdColStyle}>{item.itemSize}</span>	
 		        <span style={mdColStyle}>{item.color}</span>	
 		        <span style={lgColStyle}>{item.updated_at}</span>
 			</CardText>
 			<CardText expandable style={formContainerStyle}>
 		    	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
 		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
-		        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checked_out_to && item.checked_out_to.full_name} /></span>	
-		        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-size`} 			defaultValue={item.size} /></span>	
+		        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checkedOutTo && item.checkedOutTo.get('full_name')} /></span>	
+		        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-item-size`} 		defaultValue={item.itemSize} /></span>	
 		        <span style={mdColStyle}><TextField floatingLabelText="Color" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
 		        <span style={lgColStyle}></span>
 		    </CardText>
@@ -85,25 +85,9 @@ const ItemRow = ({item, onTouchTap, onExpandChange}) => {
     );
 }
 
-/*
-const RowForm = ({item}) => {
-	return (
-        <Card style={rowStyle}>
-			<CardText style={formContainerStyle}>
-		    	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
-		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
-		        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checked_out_to && item.checked_out_to.full_name} /></span>	
-		        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-size`} 			defaultValue={item.size} /></span>	
-		        <span style={mdColStyle}><TextField floatingLabelText="Color" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
-		        <span style={lgColStyle}></span>
-		    </CardText>
-        </Card>
-	);
-};
-*/
 class BulkIssuedItemTable extends Component {
 	render() {
-		if(this.props.items.length == 0) {
+		if(this.props.items.size == 0) {
 			return null;
 		} else {
 			const items = this.props.items.toArray(); // Convert from Immutable List to js Array

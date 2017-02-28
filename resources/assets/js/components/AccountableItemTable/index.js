@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+import { List, ListItem } from 'material-ui/List';
 
 const cellStyle = {
 	paddingLeft: 5,
@@ -67,24 +68,54 @@ const HeaderRow = () => {
 
 const ItemRow = ({item, onTouchTap, onExpandChange}) => {
 	return (
-		<Card style={rowStyle} onExpandChange={onExpandChange}>
-	        <CardText style={rowStyle} actAsExpander onTouchTap={(event) => onTouchTap(event)}>
-	        	<span style={mdColStyle}>{item.serial_number}</span>
+	        <ListItem style={rowStyle} onTouchTap={(event) => onTouchTap(event)}
+	        	nestedItems={[
+	        		<ListItem style={rowStyle}>
+						<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${item.id}-serial_number`} defaultValue={item.serialNumber} /></span>
+				        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} defaultValue={item.description} /></span>	
+				        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${item.id}-item_size`} defaultValue={item.itemSize} /></span>	
+				        <span style={smColStyle}><TextField floatingLabelText="Color" inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} defaultValue={item.color} /></span>	
+						<span style={mdColStyle}><TextField floatingLabelText="Issued To" inputStyle={mdTextFieldStyle} name={`item-${item.id}-checked_out_to`} defaultValue={item.checkedOutTo} /></span>
+				        <span style={smColStyle}><TextField floatingLabelText="Usable" inputStyle={smTextFieldStyle} name={`item-${item.id}-usable`} defaultValue={item.usable} /></span>	
+				        <span style={mdColStyle}><TextField floatingLabelText="Condition" inputStyle={mdTextFieldStyle} name={`item-${item.id}-condition`} defaultValue={item.condition} /></span>	
+				        <span style={lgColStyle}><TextField floatingLabelText="Note" inputStyle={lgTextFieldStyle} name={`item-${item.id}-note`} defaultValue={item.note} /></span>	
+				        <span style={lgColStyle}></span>
+	        		</ListItem> 
+        		]}
+    		>
+	        	<span style={mdColStyle}>{item.serialNumber}</span>
 		        <span style={lgColStyle}>{item.description}</span>	
-		        <span style={smColStyle}>{item.size}</span>	
+		        <span style={smColStyle}>{item.itemSize}</span>	
 		        <span style={smColStyle}>{item.color}</span>	
-				<span style={mdColStyle}>{item.checked_out_to && item.checked_out_to.full_name}</span>
+				<span style={mdColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>
 		        <span style={smColStyle}>{item.usable}</span>	
 		        <span style={mdColStyle}>{item.condition}</span>	
 		        <span style={lgColStyle}>{item.note}</span>	
-		        <span style={lgColStyle}>{item.updated_at}</span>
+		        <span style={lgColStyle}>{item.updatedAt}</span>
+			</ListItem>
+    );
+}
+
+const disabledItemRow = ({item, onTouchTap, onExpandChange}) => {
+	return (
+		<Card style={rowStyle} onExpandChange={onExpandChange}>
+	        <CardText style={rowStyle} actAsExpander onTouchTap={(event) => onTouchTap(event)}>
+	        	<span style={mdColStyle}>{item.serialNumber}</span>
+		        <span style={lgColStyle}>{item.description}</span>	
+		        <span style={smColStyle}>{item.itemSize}</span>	
+		        <span style={smColStyle}>{item.color}</span>	
+				<span style={mdColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>
+		        <span style={smColStyle}>{item.usable}</span>	
+		        <span style={mdColStyle}>{item.condition}</span>	
+		        <span style={lgColStyle}>{item.note}</span>	
+		        <span style={lgColStyle}>{item.updatedAt}</span>
 			</CardText>
 			<CardText expandable style={formContainerStyle}>
-		    	<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${item.id}-serial-number`} defaultValue={item.serial_number} /></span>
+		    	<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${item.id}-serial_number`} defaultValue={item.serialNumber} /></span>
 		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} defaultValue={item.description} /></span>	
-		        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${item.id}-size`} defaultValue={item.size} /></span>	
+		        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${item.id}-item_size`} defaultValue={item.itemSize} /></span>	
 		        <span style={smColStyle}><TextField floatingLabelText="Color" inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} defaultValue={item.color} /></span>	
-				<span style={mdColStyle}><TextField floatingLabelText="Issued To" inputStyle={mdTextFieldStyle} name={`item-${item.id}-checked_out_to`} defaultValue={item.checked_out_to} /></span>
+				<span style={mdColStyle}><TextField floatingLabelText="Issued To" inputStyle={mdTextFieldStyle} name={`item-${item.id}-checked_out_to`} defaultValue={item.checkedOutTo} /></span>
 		        <span style={smColStyle}><TextField floatingLabelText="Usable" inputStyle={smTextFieldStyle} name={`item-${item.id}-usable`} defaultValue={item.usable} /></span>	
 		        <span style={mdColStyle}><TextField floatingLabelText="Condition" inputStyle={mdTextFieldStyle} name={`item-${item.id}-condition`} defaultValue={item.condition} /></span>	
 		        <span style={lgColStyle}><TextField floatingLabelText="Note" inputStyle={lgTextFieldStyle} name={`item-${item.id}-note`} defaultValue={item.note} /></span>	
@@ -93,37 +124,20 @@ const ItemRow = ({item, onTouchTap, onExpandChange}) => {
 	    </Card>
     );
 }
-
-const RowForm = ({item}) => {
-	return (
-        <Card style={rowStyle}>
-			<CardText style={formContainerStyle}>
-		    	<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${item.id}-serial-number`} defaultValue={item.serial_number} /></span>
-		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} defaultValue={item.description} /></span>	
-		        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${item.id}-size`} defaultValue={item.size} /></span>	
-		        <span style={smColStyle}><TextField floatingLabelText="Color" inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} defaultValue={item.color} /></span>	
-				<span style={mdColStyle}><TextField floatingLabelText="Issued To" inputStyle={mdTextFieldStyle} name={`item-${item.id}-checked_out_to`} defaultValue={item.checked_out_to} /></span>
-		        <span style={smColStyle}><TextField floatingLabelText="Usable" inputStyle={smTextFieldStyle} name={`item-${item.id}-usable`} defaultValue={item.usable} /></span>	
-		        <span style={mdColStyle}><TextField floatingLabelText="Condition" inputStyle={mdTextFieldStyle} name={`item-${item.id}-condition`} defaultValue={item.condition} /></span>	
-		        <span style={lgColStyle}><TextField floatingLabelText="Note" inputStyle={lgTextFieldStyle} name={`item-${item.id}-note`} defaultValue={item.note} /></span>	
-		        <span style={lgColStyle}></span>
-		    </CardText>
-        </Card>
-	);
-};
-
 class AccountableItemTable extends Component {
 	render() {
-		if(this.props.items.length == 0) {
+		if(this.props.items.size == 0) {
 			return null;
 		} else {
-			const items = this.props.items.toArray(); // Convert from Immutable List to js Array
+			// const items = this.props.items.toArray(); // Convert from Immutable List to js Array
 			return (
 				<div>
 			    	<HeaderRow />
-					{this.props.items && items.map((item) => (
+			    	<List>
+					{this.props.items.map((item) => (
 						<ItemRow key={item.id} item={item} onTouchTap={this.props.onRowClick} onExpandChange={this.props.onRowRequestClose} />
 					))}
+					</List>
 			    </div>
 			);
 		}
@@ -131,7 +145,7 @@ class AccountableItemTable extends Component {
 }
 
 AccountableItemTable.PropTypes = {
-	items: PropTypes.array,
+	items: PropTypes.object,
 	onRowClick: PropTypes.func,
 	onRowRequestClose: PropTypes.func,
 };
