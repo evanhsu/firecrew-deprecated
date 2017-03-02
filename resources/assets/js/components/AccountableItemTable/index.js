@@ -16,7 +16,7 @@ const cellStyle = {
 const rowStyle = {
 	minHeight: 20,
 	padding: 0,
-	transition: 'all 1450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+
 };
 
 const headerRowStyle = {

@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
 import { IncrementButton, DecrementButton } from '../QuantityButtons';
+import moment from 'moment';
 
 const cellStyle = {
 	paddingLeft: 5,
@@ -36,6 +37,11 @@ const textFieldStyle = {
 	paddingRight: 5,
 };
 
+const buttonStyle = {
+	paddingHorizontal: 5,
+	paddingVertical: 0,
+}
+
 const xsColWidth = { width: 35 };
 const smColWidth = { width: 70 };
 const mdColWidth = { width: 120 };
@@ -46,7 +52,7 @@ const smColStyle = Object.assign({}, cellStyle, smColWidth);
 const mdColStyle = Object.assign({}, cellStyle, mdColWidth);
 const lgColStyle = Object.assign({}, cellStyle, lgColWidth);
 
-const xsTextFieldStyle = Object.assign({}, textFieldStyle, smColWidth);
+const xsTextFieldStyle = Object.assign({}, textFieldStyle, xsColWidth);
 const smTextFieldStyle = Object.assign({}, textFieldStyle, smColWidth);
 const mdTextFieldStyle = Object.assign({}, textFieldStyle, mdColWidth);
 const lgTextFieldStyle = Object.assign({}, textFieldStyle, lgColWidth);
@@ -54,7 +60,7 @@ const lgTextFieldStyle = Object.assign({}, textFieldStyle, lgColWidth);
 const HeaderRow = () => {
 	return (
 		<div color="#888888" style={headerRowStyle}>
-			<span style={mdColStyle}>Qty</span>
+			<span style={lgColStyle}>Qty</span>
 			<span style={lgColStyle}>Description</span>
 			<span style={smColStyle}>Size</span>
 			<span style={smColStyle}>Color</span>
@@ -76,9 +82,17 @@ const ItemRow = ({item, onTouchTap, selectedItemRow, handleIncrement, handleDecr
 			onTouchTap={()=>onTouchTap(item.id)}
 	        nestedItems={[
         		<ListItem key={`expanded-item-${item.id}`} disabled style={rowStyle}>
-        			<span style={xsColStyle}><DecrementButton onTouchTap={handleDecrement(item.id)} /></span>
-			    	<span style={smColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={xsTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
-			    	<span style={xsColStyle}><IncrementButton onTouchTap={handleIncrement(item.id)} /></span>
+        			<span style={{ width: 150 }}>
+        				<DecrementButton onTouchTap={handleDecrement(item.id)} />
+			    		<TextField 
+			    			floatingLabelText="Qty" 
+			    			style={xsColStyle}
+			    			inputStyle={{ ...xsTextFieldStyle, textAlign: 'center' }} 
+			    			name={`item-${item.id}-quantity`}
+			    			defaultValue={item.quantity} 
+			    		/>
+			    		<IncrementButton onTouchTap={handleIncrement(item.id)} />
+		    		</span>
 			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
 			        <span style={smColStyle}><TextField floatingLabelText="Size" 		inputStyle={smTextFieldStyle} name={`item-${item.id}-item-size`} 		defaultValue={item.itemSize} /></span>	
 			        <span style={smColStyle}><TextField floatingLabelText="Color" 		inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	

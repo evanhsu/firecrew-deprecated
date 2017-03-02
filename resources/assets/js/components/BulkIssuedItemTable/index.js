@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
+import moment from 'moment';
 
 const cellStyle = {
 	paddingLeft: 5,
