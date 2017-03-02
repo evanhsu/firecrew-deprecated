@@ -10,15 +10,15 @@ export const selectItemCategory = (categoryName) => {
 }
 
 export const ITEM_ROW_SELECTED = 'ITEM_ROW_SELECTED';
-export const itemRowSelected = (row) => {
+export const itemRowSelected = (itemId) => {
 	return {
 		type: ITEM_ROW_SELECTED,
-		row,
+		itemId,
 	}
 }
 
 export const ITEM_ROW_DESELECTED = 'ITEM_ROW_DESELECTED';
-export const itemRowDeselected = (row, form) => {
+export const itemRowDeselected = (itemId) => {
 	return {
 		type: ITEM_ROW_DESELECTED,
 	}
