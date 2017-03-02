@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
 import { IncrementButton, DecrementButton } from '../QuantityButtons';
@@ -54,23 +53,21 @@ const lgTextFieldStyle = Object.assign({}, textFieldStyle, lgColWidth);
 
 const HeaderRow = () => {
 	return (
-		<Card expandable={false}>
-			<CardText color="#888888" style={headerRowStyle}>
-				<span style={mdColStyle}>Qty</span>
-				<span style={lgColStyle}>Description</span>
-				<span style={smColStyle}>Size</span>
-				<span style={smColStyle}>Color</span>
-				<span style={mdColStyle}>Min Qty</span>
-				<span style={mdColStyle}>Restock</span>
-				<span style={lgColStyle}>Note</span>
-				<span style={lgColStyle}>Source</span>
-				<span style={lgColStyle}>Updated</span>
-			</CardText>
-		</Card>
+		<div color="#888888" style={headerRowStyle}>
+			<span style={mdColStyle}>Qty</span>
+			<span style={lgColStyle}>Description</span>
+			<span style={smColStyle}>Size</span>
+			<span style={smColStyle}>Color</span>
+			<span style={mdColStyle}>Min Qty</span>
+			<span style={mdColStyle}>Restock</span>
+			<span style={lgColStyle}>Note</span>
+			<span style={lgColStyle}>Source</span>
+			<span style={lgColStyle}>Updated</span>
+		</div>
 	);
 };
 
-const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow, handleIncrement, handleDecrement}) => {
+const ItemRow = ({item, onTouchTap, selectedItemRow, handleIncrement, handleDecrement}) => {
 	return (
 		<ListItem 
 			key={`item-${item.id}`} 
@@ -78,7 +75,7 @@ const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow, handleIncre
 			open={selectedItemRow === item.id} 
 			onTouchTap={()=>onTouchTap(item.id)}
 	        nestedItems={[
-        		<ListItem key={`expanded-item-${item.id}`} style={rowStyle}>
+        		<ListItem key={`expanded-item-${item.id}`} disabled style={rowStyle}>
         			<span style={xsColStyle}><DecrementButton onTouchTap={handleDecrement(item.id)} /></span>
 			    	<span style={smColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={xsTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
 			    	<span style={xsColStyle}><IncrementButton onTouchTap={handleIncrement(item.id)} /></span>
@@ -102,7 +99,7 @@ const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow, handleIncre
 	        <span style={mdColStyle}>{item.restock_to_quantity}</span>	
 	        <span style={lgColStyle}>{item.note}</span>	
 	        <span style={lgColStyle}>{item.source}</span>	
-	        <span style={lgColStyle}>{item.updated_at}</span>
+	        <span style={lgColStyle}>{moment(item.updatedAt).format('YYYY-MM-DD')}</span>
 	    </ListItem>
     );
 }
@@ -121,7 +118,6 @@ class BulkItemTable extends PureComponent {
 							key={item.id} 
 							item={item} 
 							onTouchTap={this.props.onRowClick} 
-							onExpandChange={this.props.onRowRequestClose} 
 							handleIncrement={this.props.handleIncrement}
 							handleDecrement={this.props.handleDecrement}
 							selectedItemRow={this.props.selectedItemRow}
@@ -138,7 +134,6 @@ BulkItemTable.PropTypes = {
 	handleDecrement: PropTypes.func,
 	items: PropTypes.array,
 	onRowClick: PropTypes.func,
-	onRowRequestClose: PropTypes.func,
 	selectedItemRow: PropTypes.number,
 };
 

@@ -16,7 +16,7 @@
 
 	.expandablerow-enter.expandablerow-enter-active {
 		max-height: 100px; //$expandable-row-height;
-		transition: max-height 1000ms ease-in;
+		transition: max-height 500ms ease-in;
 	}
 
 	.expandablerow-leave {
@@ -25,6 +25,6 @@
 
 	.expandablerow-leave.expandablerow-leave-active {
 		max-height: 0;
-		transition: max-height 150ms ease-out;
+		transition: max-height 300ms ease-out;
 	}
 }

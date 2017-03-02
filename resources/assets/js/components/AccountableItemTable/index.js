@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ImmutableProptypes from 'react-immutable-proptypes';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
+import moment from 'moment';
 
 const cellStyle = {
 	paddingLeft: 5,
@@ -16,13 +16,13 @@ const cellStyle = {
 const rowStyle = {
 	minHeight: 20,
 	padding: 0,
+	transition: 'all 1450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
 };
 
 const headerRowStyle = {
 	fontSize: 16,
 	fontWeight: 600,
 	minHeight: 20,
-	padding: 0,
 };
 
 const formContainerStyle = {
@@ -51,8 +51,7 @@ const lgTextFieldStyle = Object.assign({}, textFieldStyle, lgColWidth);
 
 const HeaderRow = () => {
 	return (
-		<Card expandable={false}>
-			<CardText color="#888888" style={headerRowStyle}>
+			<div color="#888888" style={headerRowStyle}>
 				<span style={mdColStyle}>Serial #</span>
 				<span style={lgColStyle}>Description</span>
 				<span style={smColStyle}>Size</span>
@@ -62,38 +61,37 @@ const HeaderRow = () => {
 				<span style={mdColStyle}>Condition</span>
 				<span style={lgColStyle}>Note</span>
 				<span style={lgColStyle}>Updated</span>
-			</CardText>
-		</Card>
+			</div>
 	);
 };
 
-const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow}) => {
+const ItemRow = ({item, onTouchTap, selectedItemRow}) => {
 	return (
-	        <ListItem key={`item-${item.id}`} style={rowStyle} open={selectedItemRow === item.id} onTouchTap={()=>onTouchTap(item.id)}
-	        	nestedItems={[
-	        		<ListItem key={`expanded-item-${item.id}`} style={rowStyle}>
-						<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${item.id}-serial_number`} defaultValue={item.serialNumber} /></span>
-				        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} defaultValue={item.description} /></span>	
-				        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${item.id}-item_size`} defaultValue={item.itemSize} /></span>	
-				        <span style={smColStyle}><TextField floatingLabelText="Color" inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} defaultValue={item.color} /></span>	
-						<span style={mdColStyle}><TextField floatingLabelText="Issued To" inputStyle={mdTextFieldStyle} name={`item-${item.id}-checked_out_to`} defaultValue={item.checkedOutTo} /></span>
-				        <span style={smColStyle}><TextField floatingLabelText="Usable" inputStyle={smTextFieldStyle} name={`item-${item.id}-usable`} defaultValue={item.usable} /></span>	
-				        <span style={mdColStyle}><TextField floatingLabelText="Condition" inputStyle={mdTextFieldStyle} name={`item-${item.id}-condition`} defaultValue={item.condition} /></span>	
-				        <span style={lgColStyle}><TextField floatingLabelText="Note" inputStyle={lgTextFieldStyle} name={`item-${item.id}-note`} defaultValue={item.note} /></span>	
-				        <span style={lgColStyle}></span>
-	        		</ListItem> 
-        		]}
-    		>
-	        	<span style={mdColStyle}>{item.serialNumber}</span>
-		        <span style={lgColStyle}>{item.description}</span>	
-		        <span style={smColStyle}>{item.itemSize}</span>	
-		        <span style={smColStyle}>{item.color}</span>	
-				<span style={mdColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>
-		        <span style={smColStyle}>{item.usable}</span>	
-		        <span style={mdColStyle}>{item.condition}</span>	
-		        <span style={lgColStyle}>{item.note}</span>	
-		        <span style={lgColStyle}>{item.updatedAt}</span>
-			</ListItem>
+        <ListItem key={`item-${item.id}`} style={rowStyle} open={selectedItemRow === item.id} onTouchTap={()=>onTouchTap(item.id)}
+        	nestedItems={[
+        		<ListItem key={`expanded-item-${item.id}`} disabled style={rowStyle}>
+					<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${item.id}-serial_number`} defaultValue={item.serialNumber} /></span>
+			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} defaultValue={item.description} /></span>	
+			        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${item.id}-item_size`} defaultValue={item.itemSize} /></span>	
+			        <span style={smColStyle}><TextField floatingLabelText="Color" inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} defaultValue={item.color} /></span>	
+					<span style={mdColStyle}><TextField floatingLabelText="Issued To" inputStyle={mdTextFieldStyle} name={`item-${item.id}-checked_out_to`} defaultValue={item.checkedOutTo} /></span>
+			        <span style={smColStyle}><TextField floatingLabelText="Usable" inputStyle={smTextFieldStyle} name={`item-${item.id}-usable`} defaultValue={item.usable} /></span>	
+			        <span style={mdColStyle}><TextField floatingLabelText="Condition" inputStyle={mdTextFieldStyle} name={`item-${item.id}-condition`} defaultValue={item.condition} /></span>	
+			        <span style={lgColStyle}><TextField floatingLabelText="Note" inputStyle={lgTextFieldStyle} name={`item-${item.id}-note`} defaultValue={item.note} /></span>	
+			        <span style={lgColStyle}></span>
+        		</ListItem> 
+    		]}
+		>
+        	<span style={mdColStyle}>{item.serialNumber}</span>
+	        <span style={lgColStyle}>{item.description}</span>	
+	        <span style={smColStyle}>{item.itemSize}</span>	
+	        <span style={smColStyle}>{item.color}</span>	
+			<span style={mdColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>
+	        <span style={smColStyle}>{item.usable}</span>	
+	        <span style={mdColStyle}>{item.condition}</span>	
+	        <span style={lgColStyle}>{item.note}</span>	
+	        <span style={lgColStyle}>{moment(item.updatedAt).format('YYYY-MM-DD')}</span>
+		</ListItem>
     );
 }
 
@@ -107,12 +105,12 @@ class AccountableItemTable extends PureComponent {
 			    	<HeaderRow />
 			    	<List>
 					{this.props.items.map((item) => (
+						
 						<ItemRow 
 							key={item.id} 
 							item={item} 
 							onTouchTap={this.props.onRowClick} 
 							selectedItemRow={this.props.selectedItemRow}
-							onExpandChange={this.props.onRowRequestClose} 
 						/>
 					))}
 					</List>
@@ -125,7 +123,6 @@ class AccountableItemTable extends PureComponent {
 AccountableItemTable.PropTypes = {
 	items: ImmutableProptypes.list,
 	onRowClick: PropTypes.func,
-	onRowRequestClose: PropTypes.func,
 	selectedItemRow: PropTypes.number,
 };
 
