@@ -137,30 +137,31 @@ export const fetchItemCategory = (categoryName) => {
 	}
 }
 
-export const decrementItem = (category, itemId) => {
+export const decrementItem = (itemId) => {
 	return function(dispatch) {
 
-		dispatch(decrementItemRequest(category, itemId));
+		dispatch(decrementItemRequest(itemId));
 
+		const headers = new Headers({'X-CSRF-TOKEN': window.Laravel.csrfToken});
 		return fetch(`/item/${itemId}/decrement`, { 
 			method: 'post',
-			credentials: 'same-origin'
+			credentials: 'same-origin',
+			headers: headers,
 		}).then(response => {
-			if(response.status == 204) {
-				dispatch(decrementItemSucess(itemId));
+			if(response.status == 200) {
+				dispatch(decrementItemSuccess(itemId));
 			} else {
-				dispatch(decrementItemFailure(category, itemId));
+				throw `Response was ${response.status}`;
 			}
-		}).catch(error => dispatch(decrementItemFailure(category, itemId)));
+		}).catch(error => dispatch(decrementItemFailure(error, itemId)));
 	}
 }
 
 export const DECREMENT_ITEM_REQUEST = 'DECREMENT_ITEM_REQUEST';
-export const decrementItemRequest = (category, itemId) => {
+export const decrementItemRequest = (itemId) => {
 	return {
 		type: DECREMENT_ITEM_REQUEST,
 		itemId,
-		category,
 	}
 }
 
@@ -173,38 +174,39 @@ export const decrementItemSuccess = (itemId) => {
 }
 
 export const DECREMENT_ITEM_FAILURE = 'DECREMENT_ITEM_FAILURE';
-export const decrementItemFailure = (category, itemId) => {
+export const decrementItemFailure = (error, itemId) => {
 	return {
 		type: DECREMENT_ITEM_FAILURE,
+		error,
 		itemId,
-		category,
 	}
 }
 
-export const incrementItem = (category, itemId) => {
+export const incrementItem = (itemId) => {
 	return function(dispatch) {
 
-		dispatch(incrementItemRequest(category, itemId));
+		dispatch(incrementItemRequest(itemId));
 
+		const headers = new Headers({'X-CSRF-TOKEN': window.Laravel.csrfToken});
 		return fetch(`/item/${itemId}/increment`, { 
 			method: 'post',
-			credentials: 'same-origin'
+			credentials: 'same-origin',
+			headers: headers,
 		}).then(response => {
-			if(response.status == 204) {
-				dispatch(incrementItemSucess(itemId));
+			if(response.status == 200) {
+				dispatch(incrementItemSuccess(itemId));
 			} else {
-				dispatch(incrementItemFailure(category, itemId));
+				throw `Response was ${response.status}`;
 			}
-		}).catch(error => dispatch(incrementItemFailure(category, itemId)));
+		}).catch(error => dispatch(incrementItemFailure(error, itemId)));
 	}
 }
 
 export const INCREMENT_ITEM_REQUEST = 'INCREMENT_ITEM_REQUEST';
-export const incrementItemRequest = (category, itemId) => {
+export const incrementItemRequest = (itemId) => {
 	return {
 		type: INCREMENT_ITEM_REQUEST,
 		itemId,
-		category,
 	}
 }
 
@@ -217,22 +219,13 @@ export const incrementItemSuccess = (itemId) => {
 }
 
 export const INCREMENT_ITEM_FAILURE = 'INCREMENT_ITEM_FAILURE';
-export const incrementItemFailure = (category, itemId) => {
+export const incrementItemFailure = (error, itemId) => {
 	return {
 		type: INCREMENT_ITEM_FAILURE,
+		error,
 		itemId,
-		category,
 	}
 }
-
-// export const EXPAND_TABLE_ROW = 'EXPAND_TABLE_ROW';
-// export const expandTableRow = (rows) => {
-// 	return {
-// 		type: EXPAND_TABLE_ROW,
-// 		rows,
-// 	}
-// }
-
 
 // export const SET_BOTTOM_DRAWER_STATE = 'SET_BOTTOM_DRAWER_STATE';
 // export const setBottomDrawerState = (open) => {

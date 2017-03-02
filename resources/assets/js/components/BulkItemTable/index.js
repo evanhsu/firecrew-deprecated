@@ -82,8 +82,8 @@ const ItemRow = ({item, onTouchTap, selectedItemRow, handleIncrement, handleDecr
 			onTouchTap={()=>onTouchTap(item.id)}
 	        nestedItems={[
         		<ListItem key={`expanded-item-${item.id}`} disabled style={rowStyle}>
-        			<span style={{ width: 150 }}>
-        				<DecrementButton onTouchTap={handleDecrement(item.id)} />
+        			<span style={mdColStyle}>
+		        		<DecrementButton onTouchTap={handleDecrement(item.id)} />
 			    		<TextField 
 			    			floatingLabelText="Qty" 
 			    			style={xsColStyle}
@@ -105,7 +105,9 @@ const ItemRow = ({item, onTouchTap, selectedItemRow, handleIncrement, handleDecr
 			]}
 		>
 	    	
-        	<span style={mdColStyle}>{item.quantity}</span>
+        	<span style={mdColStyle}>
+        		{item.quantity}
+        	</span>
 	        <span style={lgColStyle}>{item.description}</span>	
 	        <span style={smColStyle}>{item.itemSize}</span>	
 	        <span style={smColStyle}>{item.color}</span>	
@@ -120,7 +122,7 @@ const ItemRow = ({item, onTouchTap, selectedItemRow, handleIncrement, handleDecr
 
 class BulkItemTable extends PureComponent {
 	render() {
-		if(this.props.items.size == 0) {
+		if(!this.props.items || (this.props.items.size == 0)) {
 			return null;
 		} else {
 			const items = this.props.items.toArray(); // Convert from Immutable List to js Array
@@ -144,8 +146,8 @@ class BulkItemTable extends PureComponent {
 }
 
 BulkItemTable.PropTypes = {
-	handleIncrement: PropTypes.func,
-	handleDecrement: PropTypes.func,
+	handleIncrement: PropTypes.func.isRequired,
+	handleDecrement: PropTypes.func.isRequired,
 	items: PropTypes.array,
 	onRowClick: PropTypes.func,
 	selectedItemRow: PropTypes.number,

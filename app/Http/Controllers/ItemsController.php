@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Crews\Crew;
 use App\Services\ItemsService;
+use App\Domain\Items\Item;
 
 class ItemsController extends Controller
 {
@@ -143,5 +144,21 @@ class ItemsController extends Controller
 
     public function update($id, $request) {
 
+    }
+
+    public function incrementItemQuantity($itemId) {
+        $item = Item::findOrFail($itemId);
+        $item->quantity++;
+        $item->save();
+
+        return ['quantity' => $item->quantity];
+    }
+
+    public function decrementItemQuantity($itemId) {
+        $item = Item::findOrFail($itemId);
+        $item->quantity--;
+        $item->save();
+
+        return ['quantity' => $item->quantity];
     }
 }
