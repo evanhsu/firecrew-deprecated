@@ -8,11 +8,17 @@ import { itemRowSelected, itemRowDeselected, incrementItem, decrementItem } from
 
 class CategoryItemsTable extends Component {
 	handleDecrement = (itemId) => {
-		return () => this.props.dispatch(decrementItem(this.props.category, itemId));
+		(event) => {
+			event.preventDefault();
+			return () => this.props.dispatch(decrementItem(this.props.category, itemId));
+		};
 	};
 
 	handleIncrement = (itemId) => {
-		return () => this.props.dispatch(incrementItem(this.props.category, itemId));
+		(event) => {
+			event.preventDefault();
+			return () => this.props.dispatch(incrementItem(this.props.category, itemId));
+		};
 	};
 
 	handleRowClick = (itemId) => {
@@ -22,10 +28,6 @@ class CategoryItemsTable extends Component {
 		} else {
 			return this.props.dispatch(itemRowSelected(itemId));
 		}
-	};
-
-	handleRowFormRequestClose = () => {
-		return this.props.dispatch(itemRowDeselected());
 	};
 
 	itemRowFormOpen = () => {
@@ -39,13 +41,11 @@ class CategoryItemsTable extends Component {
 				<AccountableItemTable 
 					items={this.props.accountableItems}
 					onRowClick={this.handleRowClick}
-					onRowRequestClose={this.handleRowFormRequestClose}
 					selectedItemRow={this.props.selectedItemRow}
 				/>
 				<BulkItemTable 
 					items={this.props.bulkItems} 
 					onRowClick={this.handleRowClick} 
-					onRowRequestClose={this.handleRowFormRequestClose} 
 					handleIncrement={this.handleIncrement}
 					handleDecrement={this.handleDecrement}
 					selectedItemRow={this.props.selectedItemRow}
@@ -53,7 +53,6 @@ class CategoryItemsTable extends Component {
 				<BulkIssuedItemTable 
 					items={this.props.bulkIssuedItems}
 					onRowClick={this.handleRowClick}
-					onRowRequestClose={this.handleRowFormRequestClose}
 					selectedItemRow={this.props.selectedItemRow}
 				/>
 			</div>

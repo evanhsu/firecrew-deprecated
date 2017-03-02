@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
 
@@ -50,20 +49,18 @@ const lgTextFieldStyle = Object.assign({}, textFieldStyle, lgColWidth);
 
 const HeaderRow = () => {
 	return (
-		<Card expandable={false}>
-			<CardText color="#888888" style={headerRowStyle}>
-				<span style={mdColStyle}>Qty</span>
-				<span style={lgColStyle}>Description</span>
-				<span style={lgColStyle}>Issued To</span>
-				<span style={mdColStyle}>Size</span>
-				<span style={mdColStyle}>Color</span>
-				<span style={lgColStyle}>Updated</span>
-			</CardText>
-		</Card>
+		<div color="#888888" style={headerRowStyle}>
+			<span style={mdColStyle}>Qty</span>
+			<span style={lgColStyle}>Description</span>
+			<span style={lgColStyle}>Issued To</span>
+			<span style={mdColStyle}>Size</span>
+			<span style={mdColStyle}>Color</span>
+			<span style={lgColStyle}>Updated</span>
+		</div>
 	);
 };
 
-const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow}) => {
+const ItemRow = ({item, onTouchTap, selectedItemRow}) => {
 	return (
 		<ListItem 
 			key={`item-${item.id}`} 
@@ -71,7 +68,7 @@ const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow}) => {
 			open={selectedItemRow === item.id} 
 			onTouchTap={()=>onTouchTap(item.id)}
 	        nestedItems={[
-        		<ListItem key={`expanded-item-${item.id}`} style={rowStyle}>
+        		<ListItem key={`expanded-item-${item.id}`} disabled style={rowStyle}>
 		        	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
 			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
 			        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checkedOutTo && item.checkedOutTo.get('full_name')} /></span>	
@@ -86,7 +83,7 @@ const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow}) => {
 	        <span style={lgColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>	
 	        <span style={mdColStyle}>{item.itemSize}</span>	
 	        <span style={mdColStyle}>{item.color}</span>	
-	        <span style={lgColStyle}>{item.updated_at}</span>
+	        <span style={lgColStyle}>{moment(item.updatedAt).format('YYYY-MM-DD')}</span>
 		</ListItem>
 	    	
     );
@@ -108,7 +105,6 @@ class BulkIssuedItemTable extends PureComponent {
 							item={item} 
 							onTouchTap={this.props.onRowClick} 
 							selectedItemRow={this.props.selectedItemRow}
-							onExpandChange={this.props.onRowRequestClose} 
 						/>
 					))}
 					</List>
@@ -121,7 +117,6 @@ class BulkIssuedItemTable extends PureComponent {
 BulkIssuedItemTable.PropTypes = {
 	items: PropTypes.array,
 	onRowClick: PropTypes.func,
-	onRowRequestClose: PropTypes.func,
 	selectedItemRow: PropTypes.number,
 };
 
