@@ -36,5 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/crew/{crewId}/inventory/categories', 'ItemsController@categoriesForCrew');
     Route::post('/crew/{crewId}/items', 'ItemsController@create');
     Route::patch('/item/{itemId}', 'ItemsController@update');
+    Route::post('/item/{itemId}/increment', 'ItemsController@incrementItemQuantity');
+    Route::post('/item/{itemId}/decrement', 'ItemsController@decrementItemQuantity');
 });
 

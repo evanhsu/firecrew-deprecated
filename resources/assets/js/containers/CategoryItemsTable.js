@@ -8,17 +8,17 @@ import { itemRowSelected, itemRowDeselected, incrementItem, decrementItem } from
 
 class CategoryItemsTable extends Component {
 	handleDecrement = (itemId) => {
-		(event) => {
+		return () => {
 			event.preventDefault();
-			return () => this.props.dispatch(decrementItem(this.props.category, itemId));
+			return this.props.dispatch(decrementItem(itemId));
 		};
 	};
 
 	handleIncrement = (itemId) => {
-		(event) => {
+		return () => {
 			event.preventDefault();
-			return () => this.props.dispatch(incrementItem(this.props.category, itemId));
-		};
+			return this.props.dispatch(incrementItem(itemId));
+		}
 	};
 
 	handleRowClick = (itemId) => {
