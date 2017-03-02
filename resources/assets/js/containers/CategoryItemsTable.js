@@ -4,7 +4,6 @@ import { List } from 'immutable';
 import AccountableItemTable from '../components/AccountableItemTable';
 import BulkItemTable from '../components/BulkItemTable';
 import BulkIssuedItemTable from '../components/BulkIssuedItemTable';
-import ItemRowPopover from '../components/ItemRowPopover';
 import { itemRowSelected, itemRowDeselected, incrementItem, decrementItem } from '../actions/inventoryActions';
 
 class CategoryItemsTable extends Component {
@@ -16,9 +15,13 @@ class CategoryItemsTable extends Component {
 		return () => this.props.dispatch(incrementItem(this.props.category, itemId));
 	};
 
-	handleRowClick = (event) => {
-		// event.preventDefault(); 
-		return this.props.dispatch(itemRowSelected(event.currentTarget));
+	handleRowClick = (itemId) => {
+		event.preventDefault(); 
+		if(itemId === this.props.selectedItemRow) {
+			return this.props.dispatch(itemRowDeselected(itemId))
+		} else {
+			return this.props.dispatch(itemRowSelected(itemId));
+		}
 	};
 
 	handleRowFormRequestClose = () => {
@@ -30,22 +33,6 @@ class CategoryItemsTable extends Component {
 	};
 
 	render() {
-		// return (
-		// 	<div>
-		// 		<h1>{ this.props.category }</h1>
-		// 		<AccountableItemTable items={this.props.accountableItems} onRowClick={this.handleRowClick} />
-		// 		<BulkItemTable items={this.props.bulkItems} /> 
-		// 		<BulkIssuedItemTable items={this.props.bulkIssuedItems} />
-
-		// 		<ItemRowPopover 
-		// 			anchorEl={this.props.selectedItemRow}
-		// 			open={this.itemRowFormOpen()}
-		// 			onRequestClose={this.handleRowFormRequestClose}
-		// 		>
-		// 			{this.props.itemRowFormContents}
-		// 		 </ItemRowPopover> */
-		// 	</div>
-		// );
 		return (
 			<div>
 				<h1>{ this.props.category }</h1>
@@ -53,6 +40,7 @@ class CategoryItemsTable extends Component {
 					items={this.props.accountableItems}
 					onRowClick={this.handleRowClick}
 					onRowRequestClose={this.handleRowFormRequestClose}
+					selectedItemRow={this.props.selectedItemRow}
 				/>
 				<BulkItemTable 
 					items={this.props.bulkItems} 
@@ -60,11 +48,13 @@ class CategoryItemsTable extends Component {
 					onRowRequestClose={this.handleRowFormRequestClose} 
 					handleIncrement={this.handleIncrement}
 					handleDecrement={this.handleDecrement}
+					selectedItemRow={this.props.selectedItemRow}
 				/> 
 				<BulkIssuedItemTable 
 					items={this.props.bulkIssuedItems}
 					onRowClick={this.handleRowClick}
 					onRowRequestClose={this.handleRowFormRequestClose}
+					selectedItemRow={this.props.selectedItemRow}
 				/>
 			</div>
 		);
@@ -76,7 +66,7 @@ CategoryItemsTable.propTypes = {
 	bulkItems: PropTypes.object,
 	bulkIssuedItems: PropTypes.object,
 	category: PropTypes.string,
-	selectedItemRow: PropTypes.object,
+	selectedItemRow: PropTypes.number,
 	itemRowFormContents: PropTypes.any,
 }
 
@@ -106,7 +96,7 @@ function mapStateToProps(state) {
 		accountableItems: accountableItems(state.getIn(['items', 'data'])),
 		bulkItems: bulkItems(state.getIn(['items', 'data'])),
 		bulkIssuedItems: bulkIssuedItems(state.getIn(['items', 'data'])),
-		selectedItemRow: state.selectedItemRow,
+		selectedItemRow: state.get('selectedItemRow'),
 	};
 }
 

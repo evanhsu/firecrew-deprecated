@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
@@ -30,24 +31,16 @@ class CategoryMenu extends Component {
 }
 
 CategoryMenu.propTypes = {
-	categories: PropTypes.object,
+	categories: ImmutablePropTypes.list,
 }
 
 CategoryMenu.defaultProps = {
 	categories: List(),
 }
 
-const categoryListFromItems = (items) => {
-	return items
-			.map((item) => item.category)
-			.toSet()
-			.toList()
-			.sort();
-};
-
 function mapStateToProps(state) {
 	return {
-		categories: categoryListFromItems(state.getIn(['items', 'data'])),
+		categories: state.getIn(['categories', 'data']),
 	};
 }
 

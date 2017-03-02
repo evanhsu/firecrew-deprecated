@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+import { List, ListItem } from 'material-ui/List';
 import { IncrementButton, DecrementButton } from '../QuantityButtons';
 
 const cellStyle = {
@@ -69,38 +70,44 @@ const HeaderRow = () => {
 	);
 };
 
-const ItemRow = ({item, onTouchTap, onExpandChange, handleIncrement, handleDecrement}) => {
+const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow, handleIncrement, handleDecrement}) => {
 	return (
-		<Card style={rowStyle} onExpandChange={onExpandChange}>
-	        <CardText style={rowStyle} actAsExpander onTouchTap={(event) => onTouchTap(event)}>
-	        	<span style={mdColStyle}>{item.quantity}</span>
-		        <span style={lgColStyle}>{item.description}</span>	
-		        <span style={smColStyle}>{item.itemSize}</span>	
-		        <span style={smColStyle}>{item.color}</span>	
-				<span style={mdColStyle}>{item.restock_trigger}</span>
-		        <span style={mdColStyle}>{item.restock_to_quantity}</span>	
-		        <span style={lgColStyle}>{item.note}</span>	
-		        <span style={lgColStyle}>{item.source}</span>	
-		        <span style={lgColStyle}>{item.updated_at}</span>
-			</CardText>
-			<CardText expandable style={formContainerStyle}>
-	        	<span style={xsColStyle}><DecrementButton onTouchTap={handleDecrement(item.id)} /></span>
-		    	<span style={smColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={xsTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
-	        	<span style={xsColStyle}><IncrementButton onTouchTap={handleIncrement(item.id)} /></span>
-		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
-		        <span style={smColStyle}><TextField floatingLabelText="Size" 		inputStyle={smTextFieldStyle} name={`item-${item.id}-item-size`} 		defaultValue={item.itemSize} /></span>	
-		        <span style={smColStyle}><TextField floatingLabelText="Color" 		inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
-				<span style={mdColStyle}><TextField floatingLabelText="Min Qty" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-restock-trigger`} 	defaultValue={item.restockTrigger} /></span>
-		        <span style={mdColStyle}><TextField floatingLabelText="Restock" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-restock-to-quantity`} defaultValue={item.restockToQuantity} /></span>	
-		        <span style={lgColStyle}><TextField floatingLabelText="Note" 		inputStyle={lgTextFieldStyle} name={`item-${item.id}-note`} 			defaultValue={item.note} /></span>	
-		        <span style={lgColStyle}><TextField floatingLabelText="Source" 		inputStyle={lgTextFieldStyle} name={`item-${item.id}-source`} 			defaultValue={item.source} /></span>	
-		        <span style={lgColStyle}></span>
-		    </CardText>
-	    </Card>
+		<ListItem 
+			key={`item-${item.id}`} 
+			style={rowStyle} 
+			open={selectedItemRow === item.id} 
+			onTouchTap={()=>onTouchTap(item.id)}
+	        nestedItems={[
+        		<ListItem key={`expanded-item-${item.id}`} style={rowStyle}>
+        			<span style={xsColStyle}><DecrementButton onTouchTap={handleDecrement(item.id)} /></span>
+			    	<span style={smColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={xsTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
+			    	<span style={xsColStyle}><IncrementButton onTouchTap={handleIncrement(item.id)} /></span>
+			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
+			        <span style={smColStyle}><TextField floatingLabelText="Size" 		inputStyle={smTextFieldStyle} name={`item-${item.id}-item-size`} 		defaultValue={item.itemSize} /></span>	
+			        <span style={smColStyle}><TextField floatingLabelText="Color" 		inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
+					<span style={mdColStyle}><TextField floatingLabelText="Min Qty" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-restock-trigger`} 	defaultValue={item.restockTrigger} /></span>
+			        <span style={mdColStyle}><TextField floatingLabelText="Restock" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-restock-to-quantity`} defaultValue={item.restockToQuantity} /></span>	
+			        <span style={lgColStyle}><TextField floatingLabelText="Note" 		inputStyle={lgTextFieldStyle} name={`item-${item.id}-note`} 			defaultValue={item.note} /></span>	
+			        <span style={lgColStyle}><TextField floatingLabelText="Source" 		inputStyle={lgTextFieldStyle} name={`item-${item.id}-source`} 			defaultValue={item.source} /></span>	
+			        <span style={lgColStyle}></span>
+				</ListItem>
+			]}
+		>
+	    	
+        	<span style={mdColStyle}>{item.quantity}</span>
+	        <span style={lgColStyle}>{item.description}</span>	
+	        <span style={smColStyle}>{item.itemSize}</span>	
+	        <span style={smColStyle}>{item.color}</span>	
+			<span style={mdColStyle}>{item.restock_trigger}</span>
+	        <span style={mdColStyle}>{item.restock_to_quantity}</span>	
+	        <span style={lgColStyle}>{item.note}</span>	
+	        <span style={lgColStyle}>{item.source}</span>	
+	        <span style={lgColStyle}>{item.updated_at}</span>
+	    </ListItem>
     );
 }
 
-class BulkItemTable extends Component {
+class BulkItemTable extends PureComponent {
 	render() {
 		if(this.props.items.size == 0) {
 			return null;
@@ -117,6 +124,7 @@ class BulkItemTable extends Component {
 							onExpandChange={this.props.onRowRequestClose} 
 							handleIncrement={this.props.handleIncrement}
 							handleDecrement={this.props.handleDecrement}
+							selectedItemRow={this.props.selectedItemRow}
 						/>
 					))}
 			    </div>
@@ -131,6 +139,7 @@ BulkItemTable.PropTypes = {
 	items: PropTypes.array,
 	onRowClick: PropTypes.func,
 	onRowRequestClose: PropTypes.func,
+	selectedItemRow: PropTypes.number,
 };
 
 export default BulkItemTable;

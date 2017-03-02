@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+import { List, ListItem } from 'material-ui/List';
 
 const cellStyle = {
 	paddingLeft: 5,
@@ -62,30 +63,36 @@ const HeaderRow = () => {
 	);
 };
 
-const ItemRow = ({item, onTouchTap, onExpandChange}) => {
+const ItemRow = ({item, onTouchTap, onExpandChange, selectedItemRow}) => {
 	return (
-		<Card style={rowStyle} onExpandChange={onExpandChange}>
-	        <CardText style={rowStyle} actAsExpander onTouchTap={(event) => onTouchTap(event)}>
-	        	<span style={mdColStyle}>{item.quantity}</span>
-		        <span style={lgColStyle}>{item.description}</span>	
-		        <span style={lgColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>	
-		        <span style={mdColStyle}>{item.itemSize}</span>	
-		        <span style={mdColStyle}>{item.color}</span>	
-		        <span style={lgColStyle}>{item.updated_at}</span>
-			</CardText>
-			<CardText expandable style={formContainerStyle}>
-		    	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
-		        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
-		        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checkedOutTo && item.checkedOutTo.get('full_name')} /></span>	
-		        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-item-size`} 		defaultValue={item.itemSize} /></span>	
-		        <span style={mdColStyle}><TextField floatingLabelText="Color" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
-		        <span style={lgColStyle}></span>
-		    </CardText>
-	    </Card>
+		<ListItem 
+			key={`item-${item.id}`} 
+			style={rowStyle} 
+			open={selectedItemRow === item.id} 
+			onTouchTap={()=>onTouchTap(item.id)}
+	        nestedItems={[
+        		<ListItem key={`expanded-item-${item.id}`} style={rowStyle}>
+		        	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
+			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
+			        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checkedOutTo && item.checkedOutTo.get('full_name')} /></span>	
+			        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-item-size`} 		defaultValue={item.itemSize} /></span>	
+			        <span style={mdColStyle}><TextField floatingLabelText="Color" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
+			        <span style={lgColStyle}></span>
+			    </ListItem>
+				]}
+    		>
+    		<span style={mdColStyle}>{item.quantity}</span>
+	        <span style={lgColStyle}>{item.description}</span>	
+	        <span style={lgColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>	
+	        <span style={mdColStyle}>{item.itemSize}</span>	
+	        <span style={mdColStyle}>{item.color}</span>	
+	        <span style={lgColStyle}>{item.updated_at}</span>
+		</ListItem>
+	    	
     );
 }
 
-class BulkIssuedItemTable extends Component {
+class BulkIssuedItemTable extends PureComponent {
 	render() {
 		if(this.props.items.size == 0) {
 			return null;
@@ -94,9 +101,17 @@ class BulkIssuedItemTable extends Component {
 			return (
 				<div>
 			    	<HeaderRow />
+			    	<List>
 					{this.props.items && items.map((item) => (
-						<ItemRow key={item.id} item={item} onTouchTap={this.props.onRowClick} onExpandChange={this.props.onRowRequestClose} />
+						<ItemRow 
+							key={item.id} 
+							item={item} 
+							onTouchTap={this.props.onRowClick} 
+							selectedItemRow={this.props.selectedItemRow}
+							onExpandChange={this.props.onRowRequestClose} 
+						/>
 					))}
+					</List>
 			    </div>
 			);
 		}
@@ -107,6 +122,7 @@ BulkIssuedItemTable.PropTypes = {
 	items: PropTypes.array,
 	onRowClick: PropTypes.func,
 	onRowRequestClose: PropTypes.func,
+	selectedItemRow: PropTypes.number,
 };
 
 export default BulkIssuedItemTable;
