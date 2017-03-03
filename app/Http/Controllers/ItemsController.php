@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Crews\Crew;
 use App\Services\ItemsService;
 use App\Domain\Items\Item;
+use App\Http\Transformers\ItemTransformer;
 
 class ItemsController extends Controller
 {
@@ -77,18 +78,7 @@ class ItemsController extends Controller
             ];
         }
 
-        switch($request->input('format')) {
-            case 'json':
-                return $response;
-                break;
-
-            case 'html':
-            default:
-                return view('items.index', [
-                    'items'=> []
-                ]);
-                break;
-        }
+        return $response;
     }
 
     /**
@@ -104,27 +94,20 @@ class ItemsController extends Controller
             $items = $this->items->byCrew($crew);
         }
 
-        $itemsTransformed = $items->map(function($item) {
-            return $this->itemTransformer($item);
-        });
+        // $itemsTransformed = $items->map(function($item) {
+        //     return $this->itemTransformer($item);
+        // });
 
-        $response = [
-            "items" => $itemsTransformed
-        ];
+        // $response = [
+        //     "items" => $itemsTransformed
+        // ];
 
-        switch($request->input('format')) {
-            case 'json':
-                return $response;
-                break;
-
-            case 'html':
-            default:
-                return view('items.index', [
-                    'items'=> []
-                ]);
-                break;
-        }
-        
+        // return $response;
+        return $this->response->collection(
+            $items,
+            new ItemTransformer,
+            ['key' => 'item']
+        );
     }
 
     public function categoriesForCrew($crewId) {

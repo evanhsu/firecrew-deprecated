@@ -37,7 +37,7 @@ export const fetchItems = () => {
 
 		dispatch(requestItems());
 
-		return fetch(`/crew/1/inventory?format=json`, { credentials: "same-origin" })
+		return fetch(`/api/crew/1/inventory`, { credentials: "same-origin" })
 			.then(response => {
 				if(response.status === 200) {
 					return response.json();
@@ -129,7 +129,7 @@ export const fetchItemCategory = (categoryName) => {
 
 		dispatch(requestItemCategory(categoryName));
 
-		return fetch(`/crew/1/inventory?format=json&category=${categoryName}`, { credentials: "same-origin" })
+		return fetch(`/api/crew/1/inventory?category=${categoryName}`, { credentials: "same-origin" })
 			.then(response => response.json())
 			.then(json =>
 				dispatch(receiveItemCategory(categoryName, json))
@@ -143,7 +143,7 @@ export const decrementItem = (itemId) => {
 		dispatch(decrementItemRequest(itemId));
 
 		const headers = new Headers({'X-CSRF-TOKEN': window.Laravel.csrfToken});
-		return fetch(`/item/${itemId}/decrement`, { 
+		return fetch(`/api/item/${itemId}/decrement`, { 
 			method: 'post',
 			credentials: 'same-origin',
 			headers: headers,
@@ -188,7 +188,7 @@ export const incrementItem = (itemId) => {
 		dispatch(incrementItemRequest(itemId));
 
 		const headers = new Headers({'X-CSRF-TOKEN': window.Laravel.csrfToken});
-		return fetch(`/item/${itemId}/increment`, { 
+		return fetch(`/api/item/${itemId}/increment`, { 
 			method: 'post',
 			credentials: 'same-origin',
 			headers: headers,
