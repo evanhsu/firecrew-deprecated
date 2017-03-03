@@ -46,7 +46,7 @@ export const fetchItems = () => {
 				}
 			})
 			.then(response => {
-				dispatch(receiveItemsSuccess(response.items));
+				dispatch(receiveItemsSuccess(response));
 			})	
 			.catch(error => {
 				console.log(error);
@@ -69,10 +69,10 @@ export const requestItems = () => {
  * Don't call receiveItemsSuccess() directly - it's dispatched from within `fetchItems()`
  */
 export const RECEIVE_ITEMS_SUCCESS = 'RECEIVE_ITEMS_SUCCESS';
-export const receiveItemsSuccess = (items) => {
+export const receiveItemsSuccess = (response) => {
 	return {
 		type: RECEIVE_ITEMS_SUCCESS,
-		items: fromJS(items),
+		payload: fromJS(response),
 	};
 }
 

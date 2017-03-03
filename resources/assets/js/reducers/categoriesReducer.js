@@ -17,8 +17,8 @@ export const categories = (state = initialState, action) => {
 			return state
 				.set('loading', false)
 				.set('data', 
-					action.items
-					.map((item) => item.get('category'))
+					action.payload.get('data')
+					.map((item) => item.getIn(['attributes', 'category']))
 					.toSet()
 					.toList()
 					.sort()
