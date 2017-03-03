@@ -25,10 +25,11 @@ export const items = (state = initialState, action) => {
 		case RECEIVE_ITEMS_SUCCESS:
 			return state
 				.set('loading', false)
-				.set('data', action.items.reduce(
-			        (lookup, item) => lookup.set(item.get('id'), new Item(item)),
-			        Map()
-			    ));
+				.set('data', action.payload.get('data'));
+				// .reduce(
+			        // (lookup, item) => lookup.set(item.get('id'), new Item(item)),
+			        // Map()
+			    // ));
 
 		case RECEIVE_ITEMS_FAILURE:
 			return state;
