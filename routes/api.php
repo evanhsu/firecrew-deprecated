@@ -1,22 +1,24 @@
 <?php
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+use Dingo\Api\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| These routes are loaded by the RouteServiceProvider within a group which
+| responds to requests for api v1.  All controller paths are relative to
+| `app\Http\Controllers`.
 |
+| TODO: Add this back in:
+|	$api->group(['middleware' => 'api.auth'], function (Router $api) {
 */
 
-Route::group(['middleware' => 'auth:api'], function() {
-
-	Route::get('/user', function (Request $request) {
-	    return $request->user();
-	});
-
-});
+$api->get('/crew/{crewId}/inventory', 'ItemsController@indexForCrew');
+$api->get('/crew/{crewId}/inventory/categories', 'ItemsController@categoriesForCrew');
+$api->post('/crew/{crewId}/items', 'ItemsController@create');
+$api->patch('/item/{itemId}', 'ItemsController@update');
+$api->post('/item/{itemId}/increment', 'ItemsController@incrementItemQuantity');
+$api->post('/item/{itemId}/decrement', 'ItemsController@decrementItemQuantity');
