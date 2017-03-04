@@ -65,12 +65,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        // Use Dingo API router instead of Laravel's Route facade
-        $api = app('Dingo\Api\Routing\Router');
-        $api->version('v1', function ($api) {
-            $api->group(['namespace' => $this->namespace], function ($api) {
-                require(base_path('routes/api.php'));
-            });
-        });
+        // TODO: Consider switching auth middleware to Oauth
+        Route::middleware('web')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/api.php'));
     }
 }

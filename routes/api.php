@@ -2,7 +2,10 @@
 
 // use Illuminate\Http\Request;
 use Dingo\Api\Routing\Router;
+$api = app('Dingo\Api\Routing\Router');
 
+$api->version('v1', [], function (Router $api) {
+	$api->group(['namespace' => '\\App\\Http\\Controllers'], function (Router $api) {
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,9 +19,11 @@ use Dingo\Api\Routing\Router;
 |	$api->group(['middleware' => 'api.auth'], function (Router $api) {
 */
 
-$api->get('/crew/{crewId}/inventory', 'ItemsController@indexForCrew');
-$api->get('/crew/{crewId}/inventory/categories', 'ItemsController@categoriesForCrew');
-$api->post('/crew/{crewId}/items', 'ItemsController@create');
-$api->patch('/item/{itemId}', 'ItemsController@update');
-$api->post('/item/{itemId}/increment', 'ItemsController@incrementItemQuantity');
-$api->post('/item/{itemId}/decrement', 'ItemsController@decrementItemQuantity');
+		$api->get('/crew/{crewId}/inventory', 'ItemsController@indexForCrew');
+		$api->get('/crew/{crewId}/inventory/categories', 'ItemsController@categoriesForCrew');
+		$api->post('/crew/{crewId}/items', 'ItemsController@create');
+		$api->patch('/item/{itemId}', 'ItemsController@update');
+		$api->post('/item/{itemId}/increment', 'ItemsController@incrementItemQuantity');
+		$api->post('/item/{itemId}/decrement', 'ItemsController@decrementItemQuantity');
+	});
+});

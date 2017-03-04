@@ -166,9 +166,9 @@ return [
         /*
          * Package Service Providers...
          */
+        Dingo\Api\Provider\LaravelServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
         Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
-        Dingo\Api\Provider\LaravelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -195,7 +195,7 @@ return [
 
     'aliases' => [
 
-        'API' => Dingo\Api\Facade\API::class,
+        // 'API' => Dingo\Api\Facade\API::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -223,8 +223,8 @@ return [
         'Redis' => Illuminate\Support\Facades\Redis::class,
         'Request' => Illuminate\Support\Facades\Request::class,
         'Response' => Illuminate\Support\Facades\Response::class,
-        // 'Route' => Illuminate\Support\Facades\Route::class,
-        'Route' => Dingo\Api\Facade\Route::class,
+        'Route' => Illuminate\Support\Facades\Route::class,
+        // 'Route' => Dingo\Api\Facade\Route::class,
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
