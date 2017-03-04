@@ -37,7 +37,7 @@ class CreateItemsTable extends Migration
             $table->timestamps();
 
             $table->foreign('crew_id')->references('id')->on('crews');
-            $table->foreign('parent_id')->references('id')->on('items');
+            $table->foreign('parent_id')->references('id')->on('items')->onDelete('cascade');
         });
 
         Schema::enableForeignKeyConstraints();

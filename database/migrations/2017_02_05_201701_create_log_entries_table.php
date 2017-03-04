@@ -17,6 +17,7 @@ class CreateLogEntriesTable extends Migration
 
         Schema::create('log_entries', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('person_name')->nullable();
             $table->integer('person_id')->unsigned()->nullable();
             $table->integer('loggable_id')->nullable();
             $table->string('loggable_type')->nullable();
