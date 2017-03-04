@@ -88,10 +88,20 @@ class Item extends Model
 
     private function checkOutBulkItem(CanHaveItemsInterface $owner)
     {
-        $newChild = $this->replicate();
-        $newChild->type = 'bulk_issued';
-        $newChild->checked_out_to()->associate($owner);
-        $newChild->save();
+        if($this->quantity <= 0) {
+            throw new Exception('No items remain to be checked out.')
+        }
+
+        DB::transaction(function() {
+            $newChild = $this->replicate();
+            $newChild->type = 'bulk_issued';
+            $newChild->checked_out_to()->associate($owner);
+            $newChild->quantity = 1;
+            $newChild->save();
+
+            $this->quantity -= 1;
+            $this->save();
+        });
 
         return true;
     }
@@ -102,20 +112,14 @@ class Item extends Model
             throw new Exception('No items remain to be checked out.')
         }
 
-        $thisOriginalQuantity = $this->quantity;
-        $parentOriginalQuantity = $this->parent->quantity;
-
         try {
-            $this->quantity += 1;
-            $this->save();
-            $this->parent->quantity -= 1;
-            $this->parent->save();
+            DB::transaction(function() {
+                $this->quantity += 1;
+                $this->save();
+                $this->parent->quantity -= 1;
+                $this->parent->save();
+            });
         } catch(Exception $e) {
-            $this->quantity = $thisOriginalQuantity;
-            $this->save();
-            $this->parent->quantity = $parentOriginalQuantity;
-            $this->parent->save();
-
             return false;
         }
 
@@ -134,22 +138,19 @@ class Item extends Model
         $parentOriginalQuantity = $this->parent->quantity;
 
         try {
-            $this->parent->quantity += 1;
-            $this->parent->save();
+            DB::transaction(function() {
+                $this->parent->quantity += 1;
+                $this->parent->save();
 
-            $this->quantity -= 1;
-            if($this->quantity == 0) {
-                $this->destroy();
-            } else {
-                $this->save();
-            }
+                $this->quantity -= 1;
+                if($this->quantity == 0) {
+                    $this->destroy();
+                } else {
+                    $this->save();
+                }
+            });
 
         } catch(Exception $e) {
-            $this->quantity = $thisOriginalQuantity;
-            $this->save();
-            $this->parent->quantity = $parentOriginalQuantity;
-            $this->parent->save();
-
             return false;
         }
 
