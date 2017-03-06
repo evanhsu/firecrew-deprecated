@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Domain\Items\CanHaveItemsInterface;
 use App\Domain\Crews\Crew;
 use App\Domain\LogEntries\LogEntry;
+use Illuminate\Support\Facades\DB;
 
 class Item extends Model
 {
@@ -52,7 +53,7 @@ class Item extends Model
                     $this->checkOutBulkIssuedItem($owner);
                     break;
             }
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             return false;
         }
 
@@ -71,7 +72,7 @@ class Item extends Model
                     $this->checkInBulkIssuedItem();
                     break;
             }
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             return false;
         }
 
@@ -89,10 +90,10 @@ class Item extends Model
     private function checkOutBulkItem(CanHaveItemsInterface $owner)
     {
         if($this->quantity <= 0) {
-            throw new Exception('No items remain to be checked out.')
+            throw new \Exception('No items remain to be checked out.');
         }
 
-        DB::transaction(function() {
+        DB::transaction(function() use($owner) {
             $newChild = $this->replicate();
             $newChild->type = 'bulk_issued';
             $newChild->checked_out_to()->associate($owner);
@@ -109,7 +110,7 @@ class Item extends Model
     private function checkOutBulkIssuedItem(CanHaveItemsInterface $owner)
     {
         if($this->parent->quantity <= 0) {
-            throw new Exception('No items remain to be checked out.')
+            throw new \Exception('No items remain to be checked out.');
         }
 
         try {
@@ -119,7 +120,7 @@ class Item extends Model
                 $this->parent->quantity -= 1;
                 $this->parent->save();
             });
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             return false;
         }
 
@@ -150,7 +151,7 @@ class Item extends Model
                 }
             });
 
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             return false;
         }
 

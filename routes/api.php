@@ -19,11 +19,16 @@ $api->version('v1', [], function (Router $api) {
 |	$api->group(['middleware' => 'api.auth'], function (Router $api) {
 */
 
-		$api->get('/crew/{crewId}/inventory', 'ItemsController@indexForCrew');
-		$api->get('/crew/{crewId}/inventory/categories', 'ItemsController@categoriesForCrew');
-		$api->post('/crew/{crewId}/items', 'ItemsController@create');
-		$api->patch('/item/{itemId}', 'ItemsController@update');
-		$api->post('/item/{itemId}/increment', 'ItemsController@incrementItemQuantity');
-		$api->post('/item/{itemId}/decrement', 'ItemsController@decrementItemQuantity');
+		// Items
+		$api->get('/crews/{crewId}/items', 'ItemsController@indexForCrew');
+		$api->get('/crews/{crewId}/items/categories', 'ItemsController@categoriesForCrew');
+		$api->post('/crews/{crewId}/items', 'ItemsController@create');
+		$api->patch('/items/{itemId}', 'ItemsController@update');
+		$api->post('/items/{itemId}/increment', 'ItemsController@incrementItemQuantity');
+		$api->post('/items/{itemId}/decrement', 'ItemsController@decrementItemQuantity');
+
+		// People
+		$api->get('/people', 'PeopleController@indexAll');
+		$api->get('/crews/{crewId}/people/{year}', 'PeopleController@indexForCrew');
 	});
 });

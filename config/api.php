@@ -201,7 +201,10 @@ return [
 
     // 'transformer' => env('API_TRANSFORMER', Dingo\Api\Transformer\Adapter\Fractal::class),
     'transformer' => new Dingo\Api\Transformer\Adapter\Fractal(
-        (new League\Fractal\Manager)->setSerializer(new League\Fractal\Serializer\JsonApiSerializer())
+        (new League\Fractal\Manager)->setSerializer(new League\Fractal\Serializer\JsonApiSerializer()),
+        'include',
+        ',',
+        false
     ),
 
     /*

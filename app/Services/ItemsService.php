@@ -39,16 +39,7 @@ class ItemsService
 			$itemsQuery->where('items.category', 'like', $category);
 		}
 
-		$itemsQuery
-			->orderBy('category', 'asc')
-			->orderBy('serial_number', 'asc')
-			->orderBy('description', 'asc')
-			->orderBy('size', 'asc')
-			->orderBy('color', 'asc');
-
-		$items = $itemsQuery->get();
-
-		return $items;
+		return $itemsQuery->get();
 	}
 
 	public function categories(Crew $crew)

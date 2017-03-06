@@ -10,6 +10,7 @@ use App\Domain\Vips\Vip;
 use App\Console\ETL\Models\ImportedItem;
 use App\Console\ETL\Models\ImportedPerson;
 use App\Console\ETL\Models\ImportedVip;
+use App\Console\ETL\Models\ImportedRosterEntry;
 
 
 class Etl extends Command
@@ -103,13 +104,13 @@ class Etl extends Command
         ImportedPerson::all()->each(function($importedPerson) {
             $person = new Person();
             $person->iqcs_number = $importedPerson->iqcs_number;
-            $person->firstname = $importedPerson->firstname;
-            $person->lastname = $importedPerson->lastname;
-            $person->male = null;
+            $person->first_name = $importedPerson->firstname;
+            $person->last_name = $importedPerson->lastname;
+            $person->gender = null;
             $person->birthdate = null;
             $person->avatar_filename = $importedPerson->headshot_filename;
             $person->bio = $importedPerson->bio;
-            $person->has_purchase_card = $importedPerson->has_purchase_card;
+            $person->has_purchase_card = $importedPerson->has_purchase_card == 1;
             $person->save();
 
             // Build a lookup table that maps the old ID to the new ID
@@ -176,6 +177,25 @@ class Etl extends Command
             $item->parent_id = $this->newIdForImportedItem[$oldParentId];
             $item->save();
         };
+
+
+        // Rosters
+        DB::table('crew_person')->delete();
+        ImportedRosterEntry::all()->each(function($importedRosterEntry) {
+            try {
+                $importedPersonId = $importedRosterEntry->id;   // The ID of the person in the OLD database (note: the person_id column was never used in the old DB. The person_id was stored in the id column!)
+                $personId = $this->userIdMap[$importedPersonId];// The ID of the person in the NEW database
+                $person = Person::find($personId);
+
+                $crewId = 1;    // Siskiyou Rappel Crew - manually inserted
+                $person->crews()->attach($crewId, [
+                    'year'  => $importedRosterEntry->year,
+                    'bio'   => $importedRosterEntry->bio
+                ]);
+            } catch (\Exception $e) {
+                $this->info($e->getMessage());
+            }
+        });
 
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');

@@ -2,6 +2,7 @@
 
 namespace App\Domain\People;
 
+use App\Domain\Crews\Crew;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Items\Item;
 use App\Domain\Items\CanHaveItemsInterface;
@@ -9,6 +10,11 @@ use App\Domain\Items\CanHaveItemsInterface;
 class Person extends Model implements CanHaveItemsInterface
 {
     protected $appends = ['full_name'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'birthdate',
+    ];
 
     
     public function crews() {
@@ -21,16 +27,16 @@ class Person extends Model implements CanHaveItemsInterface
 
     public function getFullNameAttribute()
     {
-        return $this->firstname . " " . $this->lastname;
-    }
-
-    public function items()
-    {
-    	return $this->morphMany(Item::class, 'checked_out_to');
+        return $this->first_name . " " . $this->last_name;
     }
 
     public function issueItem($item)
     {
         return $this->items()->save($item);
+    }
+
+    public function items()
+    {
+    	return $this->morphMany(Item::class, 'person');
     }
 }

@@ -16,9 +16,9 @@ class CreatePeopleTable extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->increments('id');
             $table->string('iqcs_number')->nullable();
-            $table->string('firstname')->nullable();
-            $table->string('lastname')->nullable();
-            $table->boolean('male')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('gender')->nullable();
             $table->datetime('birthdate')->nullable();
             $table->string('avatar_filename')->nullable();
             $table->text('bio')->nullable();

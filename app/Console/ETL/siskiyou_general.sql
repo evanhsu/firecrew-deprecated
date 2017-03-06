@@ -19,7 +19,7 @@
 -- Current Database: `siskiyou_general`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `siskiyou_general` /*!40100 DEFAULT CHARACTER SET latin1 */;
+-- CREATE DATABASE /*!32312 IF NOT EXISTS*/ `siskiyou_general` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
 USE `siskiyou_general`;
 
