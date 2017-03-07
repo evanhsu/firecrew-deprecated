@@ -37,7 +37,7 @@ export const fetchItems = () => {
 
 		dispatch(requestItems());
 
-		return fetch(`/api/crew/1/inventory`, { credentials: "same-origin" })
+		return fetch(`/api/crews/1/items`, { credentials: "same-origin" })
 			.then(response => {
 				if(response.status === 200) {
 					return response.json();
@@ -129,7 +129,7 @@ export const fetchItemCategory = (categoryName) => {
 
 		dispatch(requestItemCategory(categoryName));
 
-		return fetch(`/api/crew/1/inventory?category=${categoryName}`, { credentials: "same-origin" })
+		return fetch(`/api/crews/1/items?category=${categoryName}`, { credentials: "same-origin" })
 			.then(response => response.json())
 			.then(json =>
 				dispatch(receiveItemCategory(categoryName, json))

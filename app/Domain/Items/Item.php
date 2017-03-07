@@ -29,7 +29,17 @@ class Item extends Model
      */
     public function parent()
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsTo(Item::class, 'parent_id');
+    }
+
+    /**
+     *  For Bulk items only.
+     *  Returns the collection of bulk_issued items for whom this Item is the parent.
+     *
+     */
+    public function issued_items()
+    {
+        return $this->hasMany(Item::class, 'parent_id', 'id');
     }
 
     public function checked_out_to()
@@ -52,6 +62,9 @@ class Item extends Model
                 case 'bulk_issued':
                     $this->checkOutBulkIssuedItem($owner);
                     break;
+
+                default:
+                    return false;
             }
         } catch(\Exception $e) {
             return false;
@@ -60,24 +73,7 @@ class Item extends Model
         return true;
     }
 
-    public function checkIn()
-    {
-        try {
-            switch($this->type) {
-                case 'accountable':
-                    $this->checkInAccountableItem();
-                    break;
 
-                case 'bulk_issued':
-                    $this->checkInBulkIssuedItem();
-                    break;
-            }
-        } catch(\Exception $e) {
-            return false;
-        }
-
-        return true;
-    }
 
     private function checkOutAccountableItem(CanHaveItemsInterface $owner)
     {
@@ -96,6 +92,7 @@ class Item extends Model
         DB::transaction(function() use($owner) {
             $newChild = $this->replicate();
             $newChild->type = 'bulk_issued';
+            $newChild->parent_id = $this->id;
             $newChild->checked_out_to()->associate($owner);
             $newChild->quantity = 1;
             $newChild->save();
@@ -127,34 +124,5 @@ class Item extends Model
         return true;
     }
 
-    private function checkInAccountableItem()
-    {
-        $this->checked_out_to()->dissociate();
-        $this->save();
-    }
 
-    private function checkInBulkIssuedItem()
-    {
-        $thisOriginalQuantity = $this->quantity;
-        $parentOriginalQuantity = $this->parent->quantity;
-
-        try {
-            DB::transaction(function() {
-                $this->parent->quantity += 1;
-                $this->parent->save();
-
-                $this->quantity -= 1;
-                if($this->quantity == 0) {
-                    $this->destroy();
-                } else {
-                    $this->save();
-                }
-            });
-
-        } catch(\Exception $e) {
-            return false;
-        }
-
-        return true;
-    }
 }

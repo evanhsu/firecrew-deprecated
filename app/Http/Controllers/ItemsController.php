@@ -58,17 +58,15 @@ class ItemsController extends Controller
 
     public function incrementItemQuantity($itemId) {
         $item = Item::findOrFail($itemId);
-        $item->quantity++;
-        $item->save();
+        $this->items->incrementQuantity($item);
 
-        return ['quantity' => $item->quantity];
+        return $this->response->accepted();
     }
 
     public function decrementItemQuantity($itemId) {
         $item = Item::findOrFail($itemId);
-        $item->quantity--;
-        $item->save();
+        $this->items->decrementQuantity($item);
 
-        return ['quantity' => $item->quantity];
+        return $this->response->accepted();
     }
 }

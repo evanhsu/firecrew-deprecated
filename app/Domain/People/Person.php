@@ -37,6 +37,6 @@ class Person extends Model implements CanHaveItemsInterface
 
     public function items()
     {
-    	return $this->morphMany(Item::class, 'person');
+    	return $this->morphMany(Item::class, 'checked_out_to');
     }
 }

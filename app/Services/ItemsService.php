@@ -3,6 +3,8 @@ namespace App\Services;
 
 use App\Domain\Crews\Crew;
 use App\Domain\Items\Item;
+use App\Exceptions\ItemTypeException;
+use Illuminate\Support\Facades\DB;
 
 class ItemsService
 {
@@ -51,4 +53,77 @@ class ItemsService
 			->pluck('category');
 		return $categories;
 	}
+
+	public function incrementQuantity(Item $item)
+	{
+		if(($item->type != 'bulk') && ($item->type != 'bulk_issued')) {
+			throw new ItemTypeException('Only bulk items can have their quantity incremented');
+		}
+
+		$item->quantity++;
+		$item->save();
+
+		return $item->quantity;
+	}
+
+	public function decrementQuantity(Item $item)
+	{
+		if(($item->type != 'bulk') && ($item->type != 'bulk_issued')) {
+			throw new ItemTypeException('Only bulk items can have their quantity decremented');
+		} 
+
+		if($item->quantity == 0) {
+			return 0;
+		}
+
+		$item->quantity--;
+		$item->save();
+
+		return $item->quantity;
+	}
+	
+	public function checkIn(Item $item)
+    {
+        try {
+            switch($item->type) {
+                case 'accountable':
+                    $this->checkInAccountableItem($item);
+                    break;
+
+                case 'bulk_issued':
+                    $this->checkInBulkIssuedItem($item);
+                    break;
+            }
+        } catch(\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function checkInAccountableItem(Item $item)
+    {
+        $item->checked_out_to()->dissociate();
+        $item->save();
+    }
+
+    private function checkInBulkIssuedItem(Item $item)
+    {
+        try {
+            $item->parent->quantity += 1;
+            $item->parent->save();
+
+            $item->quantity -= 1;
+            if($item->quantity == 0) {
+                $item->delete();
+            } else {
+                $item->save();
+            }
+
+        } catch(\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }	
 }

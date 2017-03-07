@@ -11,10 +11,54 @@ use App\Domain\Items\Item;
 use App\Domain\People\Person;
 use App\Domain\Vips\Vip;
 
+use Illuminate\Support\Facades\Log;
+
 class ItemTest extends TestCase
 {
 	use DatabaseTransactions;
 
+    protected $accountableItem;
+    protected $bulkItem;
+    protected $person;
+    protected $vip;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->items = new \App\Services\ItemsService();
+
+        $this->accountableItem = new Item();
+        $this->accountableItem->type = 'accountable';
+        $this->accountableItem->category = 'Sleeping bag';
+        $this->accountableItem->serial_number = 'abc123';
+        $this->accountableItem->crew_id = 1;
+        $this->accountableItem->color = 'Green';
+        $this->accountableItem->size = 'Regular';
+        $this->accountableItem->save();
+
+        $this->bulkItem = new Item();
+        $this->bulkItem->type = 'bulk';
+        $this->bulkItem->category = 'Nomex Pants';
+        $this->bulkItem->crew_id = 1;
+        $this->bulkItem->color = 'Green';
+        $this->bulkItem->size = 'Regular';
+        $this->bulkItem->quantity = 5;
+        $this->bulkItem->restock_trigger = 5;
+        $this->bulkItem->restock_to_quantity = 10;
+        $this->bulkItem->save();
+
+        $this->person = new Person();
+        $this->person->first_name = "John";
+        $this->person->last_name = "Doe";
+        $this->person->save();
+
+        $this->vip = new Vip();
+        $this->vip->name = "John Doe";
+        $this->vip->contact = "849-223-0982";
+        $this->vip->save();
+
+    }
     /**
      * A basic test example.
      *
@@ -22,81 +66,102 @@ class ItemTest extends TestCase
      */
     public function testItemCanBeCheckedOutToPerson()
     {
-    	$item = new Item();
-    	$item->category = 'Sleeping bag';
-    	$item->serial_number = 'abc123';
-    	$item->crew_id = 1;
-    	$item->color = 'Green';
-    	$item->size = 'Regular';
-    	$item->save();
-
-    	$person = new Person();
-    	$person->firstname = "John";
-    	$person->lastname = "Doe";
-    	$person->save();
-
-    	$item->checkOutTo($person);
-        $this->assertTrue($item->checked_out_to->id == $person->id);
-        $this->assertTrue($person->items()->count() == 1);
+    	$this->accountableItem->checkOutTo($this->person);
+        $this->assertNotNull($this->accountableItem->checked_out_to);
+        $this->assertTrue($this->accountableItem->checked_out_to->id == $this->person->id);
+        $this->assertTrue($this->person->items()->count() == 1);
     }
 
     public function testPersonCanBeIssuedAnItem()
     {
-    	$item = new Item();
-    	$item->category = 'Sleeping bag';
-    	$item->serial_number = 'abc123';
-    	$item->crew_id = 1;
-    	$item->color = 'Green';
-    	$item->size = 'Regular';
-    	$item->save();
-
-    	$person = new Person();
-    	$person->firstname = "John";
-    	$person->lastname = "Doe";
-    	$person->save();
-
-    	$person->issueItem($item);
-        $this->assertTrue($item->checked_out_to->id == $person->id);
-        $this->assertTrue($person->items()->count() == 1);
+    	$this->person->issueItem($this->accountableItem);
+        $this->person->issueItem($this->accountableItem); // Issue it twice to check idempotency
+        $this->assertNotNull($this->accountableItem->checked_out_to);
+        $this->assertTrue($this->accountableItem->checked_out_to->id == $this->person->id);
+        $this->assertTrue($this->person->items()->count() == 1);
     }
 
     public function testItemCanBeCheckedOutToVip()
     {
-    	$item = new Item();
-    	$item->category = 'Sleeping bag';
-    	$item->serial_number = 'abc123';
-    	$item->crew_id = 1;
-    	$item->color = 'Green';
-    	$item->size = 'Regular';
-    	$item->save();
-
-    	$vip = new Vip();
-    	$vip->name = "John Doe";
-    	$vip->contact = "849-223-0982";
-    	$vip->save();
-
-    	$item->checkOutTo($vip);
-        $this->assertTrue($item->checked_out_to->id == $vip->id);
-        $this->assertTrue($vip->items()->count() == 1);
+    	$this->accountableItem->checkOutTo($this->vip);
+        $this->assertNotNull($this->accountableItem->checked_out_to);
+        $this->assertTrue($this->accountableItem->checked_out_to->id == $this->vip->id);
+        $this->assertTrue($this->vip->items()->count() == 1);
     }
 
     public function testVipCanBeIssuedAnItem()
     {
-    	$item = new Item();
-    	$item->category = 'Sleeping bag';
-    	$item->serial_number = 'abc123';
-    	$item->crew_id = 1;
-    	$item->color = 'Green';
-    	$item->size = 'Regular';
-    	$item->save();
+    	$this->vip->issueItem($this->accountableItem);
+        $this->assertNotNull($this->accountableItem->checked_out_to);
+        $this->assertTrue($this->accountableItem->checked_out_to->id == $this->vip->id);
+        $this->assertTrue($this->vip->items()->count() == 1);
+    }
 
-    	$vip = new Vip();
-    	$vip->name = "John Doe";
-    	$vip->contact = "849-223-0982";
-    	$vip->save();
+    public function testBulkItemQuantityCanBeIncremented()
+    {
+        $oldQuantity = $this->bulkItem->quantity;
+        $this->items->incrementQuantity($this->bulkItem);
+        $this->assertTrue($this->bulkItem->quantity == ($oldQuantity + 1));
+    }
 
-    	$vip->issueItem($item);
-        $this->assertTrue($item->checked_out_to->id == $vip->id);
-        $this->assertTrue($vip->items()->count() == 1);
+    public function testBulkItemQuantityCanBeDecremented()
+    {
+        $oldQuantity = $this->bulkItem->quantity;
+        $this->items->decrementQuantity($this->bulkItem);
+        $this->assertTrue($this->bulkItem->quantity == ($oldQuantity - 1));
+    }
+
+    public function testBulkItemQuantityWontDecrementBelowZero()
+    {
+        $this->bulkItem->quantity = 0;
+        $this->bulkItem->save();
+        $this->assertTrue($this->bulkItem->quantity == 0);
+        $this->items->decrementQuantity($this->bulkItem);
+        $this->assertTrue($this->bulkItem->quantity == 0);
+    }
+
+    public function testBulkIssuedItemIsDestroyedWhenDecrementedToZero()
+    {
+
+    }
+
+    public function testBulkIssuedItemQuantityIncrement()
+    {
+
+    }
+
+    public function testBulkIssuedItemQuantityDecrement()
+    {
+
+    }
+    public function testBulkItemQuantityDecreasesWhenIssuedToAPerson()
+    {
+        $oldQuantity = $this->bulkItem->quantity;
+        $this->bulkItem->checkOutTo($this->person);
+        $this->assertTrue($this->bulkItem->quantity == ($oldQuantity - 1));
+        $this->bulkItem->checkOutTo($this->person);
+        $this->assertTrue($this->bulkItem->quantity == ($oldQuantity - 2));
+    }
+
+    public function testBulkIssuedItemCreatedWhenBulkItemIsIssuedToAPerson()
+    {
+        $this->bulkItem->checkOutTo($this->person);
+        $bulkIssuedItem = $this->bulkItem->issued_items->first();
+        $this->assertTrue(!empty($bulkIssuedItem));
+        $this->assertTrue($bulkIssuedItem->parent->id == $this->bulkItem->id);
+    }
+
+    public function testBulkItemQuantityIncreasesWhenCheckedInFromAPerson()
+    {
+        $oldQuantity = $this->bulkItem->quantity;
+        $this->bulkItem->checkOutTo($this->person);
+        $this->assertTrue($this->bulkItem->quantity == ($oldQuantity - 1));
+
+        $bulkIssuedItem = $this->bulkItem->issued_items->first();
+        $this->assertTrue(!empty($bulkIssuedItem));
+        $this->items->checkIn($bulkIssuedItem);
+
+        $this->bulkItem = $this->bulkItem->fresh(); // Refresh model from the db!
+        $this->assertTrue($this->bulkItem->quantity == $oldQuantity);
     }
 }
