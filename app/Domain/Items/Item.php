@@ -47,7 +47,82 @@ class Item extends Model
         return $this->morphTo();
     }
 
-    public function checkOutTo(CanHaveItemsInterface $owner)
+
+    public function incrementQuantity()
+    {
+        if($this->type != 'bulk') {
+            throw new ItemTypeException('Only bulk items can have their quantity incremented');
+        } 
+
+        $this->quantity++;
+        $this->save();
+
+        return $this->quantity;
+    }
+
+    public function decrementQuantity()
+    {
+        if($this->type != 'bulk') {
+            throw new ItemTypeException('Only bulk items can have their quantity decremented');
+        } 
+
+        if($this->quantity == 0) {
+            return 0;
+        }
+
+        $this->quantity--;
+        $this->save();
+
+        return $this->quantity;
+    }
+    
+    public function checkIn()
+    {
+        try {
+            switch($this->type) {
+                case 'accountable':
+                    $this->checkInAccountableItem();
+                    break;
+
+                case 'bulk_issued':
+                    $this->checkInBulkIssuedItem();
+                    break;
+            }
+        } catch(\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function checkInAccountableItem()
+    {
+        $this->checked_out_to()->dissociate();
+        $this->save();
+    }
+
+    private function checkInBulkIssuedItem()
+    {
+        try {
+            $this->parent->quantity += 1;
+            $this->parent->save();
+
+            $this->quantity -= 1;
+            if($this->quantity == 0) {
+                $this->delete();
+            } else {
+                $this->save();
+            }
+
+        } catch(\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }   
+
+
+        public function checkOutTo(CanHaveItemsInterface $owner)
     {
         try {
             switch($this->type) {
@@ -59,9 +134,11 @@ class Item extends Model
                     $this->checkOutBulkItem($owner);
                     break;
 
-                case 'bulk_issued':
-                    $this->checkOutBulkIssuedItem($owner);
-                    break;
+                // bulk_issued items cannot be transferred directly to another person.
+                //  They must be checked in first, then checked out to the new person.
+                // case 'bulk_issued':
+                //     $this->checkOutBulkIssuedItem($item, $owner);
+                //     break;
 
                 default:
                     return false;
@@ -123,6 +200,4 @@ class Item extends Model
 
         return true;
     }
-
-
 }

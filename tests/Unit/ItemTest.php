@@ -100,14 +100,14 @@ class ItemTest extends TestCase
     public function testBulkItemQuantityCanBeIncremented()
     {
         $oldQuantity = $this->bulkItem->quantity;
-        $this->items->incrementQuantity($this->bulkItem);
+        $this->bulkItem->incrementQuantity();
         $this->assertTrue($this->bulkItem->quantity == ($oldQuantity + 1));
     }
 
     public function testBulkItemQuantityCanBeDecremented()
     {
         $oldQuantity = $this->bulkItem->quantity;
-        $this->items->decrementQuantity($this->bulkItem);
+        $this->bulkItem->decrementQuantity();
         $this->assertTrue($this->bulkItem->quantity == ($oldQuantity - 1));
     }
 
@@ -116,24 +116,25 @@ class ItemTest extends TestCase
         $this->bulkItem->quantity = 0;
         $this->bulkItem->save();
         $this->assertTrue($this->bulkItem->quantity == 0);
-        $this->items->decrementQuantity($this->bulkItem);
+        $this->bulkItem->decrementQuantity();
         $this->assertTrue($this->bulkItem->quantity == 0);
     }
 
     public function testBulkIssuedItemIsDestroyedWhenDecrementedToZero()
     {
+        // Check out the item
+        $this->bulkItem->checkOutTo($this->person);
+        $bulkIssuedItem = $this->bulkItem->issued_items->first();
+        $this->assertTrue(!empty($bulkIssuedItem));
 
+        // Check the item back in
+        $bulkIssuedItem->checkIn();
+
+        // Confirm that the checked-out item is destroyed
+        $bulkIssuedItem = $bulkIssuedItem->fresh();
+        $this->assertNull($bulkIssuedItem);
     }
 
-    public function testBulkIssuedItemQuantityIncrement()
-    {
-
-    }
-
-    public function testBulkIssuedItemQuantityDecrement()
-    {
-
-    }
     public function testBulkItemQuantityDecreasesWhenIssuedToAPerson()
     {
         $oldQuantity = $this->bulkItem->quantity;
@@ -159,7 +160,7 @@ class ItemTest extends TestCase
 
         $bulkIssuedItem = $this->bulkItem->issued_items->first();
         $this->assertTrue(!empty($bulkIssuedItem));
-        $this->items->checkIn($bulkIssuedItem);
+        $bulkIssuedItem->checkIn();
 
         $this->bulkItem = $this->bulkItem->fresh(); // Refresh model from the db!
         $this->assertTrue($this->bulkItem->quantity == $oldQuantity);
