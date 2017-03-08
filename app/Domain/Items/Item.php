@@ -10,6 +10,26 @@ use Illuminate\Support\Facades\DB;
 
 class Item extends Model
 {
+    protected $fillable = [
+        'type',
+        'category',
+        'crew_id',
+        'parent_id',
+        'serial_number',
+        'quantity',
+        'color',
+        'size',
+        'description',
+        'condition',
+        'checked_out_to_id',
+        'checked_out_to_type',
+        'note',
+        'usable',
+        'restock_trigger',
+        'restock_to_quantity',
+        'source',
+    ];
+
     //
     public function logEntries()
     {
