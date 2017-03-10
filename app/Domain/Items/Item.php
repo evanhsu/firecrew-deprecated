@@ -7,6 +7,7 @@ use App\Domain\Items\CanHaveItemsInterface;
 use App\Domain\Crews\Crew;
 use App\Domain\LogEntries\LogEntry;
 use Illuminate\Support\Facades\DB;
+use App\Exception\UnknownItemTypeException;
 
 class Item extends Model
 {
@@ -59,7 +60,7 @@ class Item extends Model
      */
     public function issued_items()
     {
-        return $this->hasMany(Item::class, 'parent_id', 'id');
+        return $this->hasMany(Item::class, 'parent_id');
     }
 
     public function checked_out_to()
@@ -142,35 +143,27 @@ class Item extends Model
     }   
 
 
-        public function checkOutTo(CanHaveItemsInterface $owner)
+    public function checkOutTo(CanHaveItemsInterface $owner)
     {
-        try {
-            switch($this->type) {
-                case 'accountable':
-                    $this->checkOutAccountableItem($owner);
-                    break;
+        switch($this->type) {
+            case 'accountable':
+                return $this->checkOutAccountableItem($owner);
+                break;
 
-                case 'bulk':
-                    $this->checkOutBulkItem($owner);
-                    break;
+            case 'bulk':
+                return $this->checkOutBulkItem($owner);
+                break;
 
-                // bulk_issued items cannot be transferred directly to another person.
-                //  They must be checked in first, then checked out to the new person.
-                // case 'bulk_issued':
-                //     $this->checkOutBulkIssuedItem($item, $owner);
-                //     break;
+            // bulk_issued items cannot be transferred directly to another person.
+            //  They must be checked in first, then checked out to the new person.
+            // case 'bulk_issued':
+            //     $this->checkOutBulkIssuedItem($item, $owner);
+            //     break;
 
-                default:
-                    return false;
-            }
-        } catch(\Exception $e) {
-            return false;
+            default:
+                throw new UnknownItemTypeException('Attempted to check out an item of unknown type');
         }
-
-        return true;
     }
-
-
 
     private function checkOutAccountableItem(CanHaveItemsInterface $owner)
     {
@@ -186,7 +179,12 @@ class Item extends Model
             throw new \Exception('No items remain to be checked out.');
         }
 
-        DB::transaction(function() use($owner) {
+        if($this->issued_items()->pluck('checked_out_to_id')->contains($owner->id)) {
+            // Checking out another item to the same user
+            return $this->issued_items->where('checked_out_to_id', $owner->id)->first()->checkOutBulkIssuedItem($owner);
+        }
+
+        // DB::transaction(function() use($owner) {
             $newChild = $this->replicate();
             $newChild->type = 'bulk_issued';
             $newChild->parent_id = $this->id;
@@ -196,9 +194,9 @@ class Item extends Model
 
             $this->quantity -= 1;
             $this->save();
-        });
+        // });
 
-        return true;
+        return $newChild;
     }
 
     private function checkOutBulkIssuedItem(CanHaveItemsInterface $owner)
@@ -207,17 +205,13 @@ class Item extends Model
             throw new \Exception('No items remain to be checked out.');
         }
 
-        try {
-            DB::transaction(function() {
-                $this->quantity += 1;
-                $this->save();
-                $this->parent->quantity -= 1;
-                $this->parent->save();
-            });
-        } catch(\Exception $e) {
-            return false;
-        }
+        DB::transaction(function() {
+            $this->quantity += 1;
+            $this->save();
+            $this->parent->quantity -= 1;
+            $this->parent->save();
+        });
 
-        return true;
+        return $this;
     }
 }

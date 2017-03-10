@@ -124,7 +124,7 @@ class ItemTest extends TestCase
     {
         // Check out the item
         $this->bulkItem->checkOutTo($this->person);
-        $bulkIssuedItem = $this->bulkItem->issued_items->first();
+        $bulkIssuedItem = $this->bulkItem->fresh()->issued_items->first();
         $this->assertTrue(!empty($bulkIssuedItem));
 
         // Check the item back in
@@ -141,13 +141,13 @@ class ItemTest extends TestCase
         $this->bulkItem->checkOutTo($this->person);
         $this->assertTrue($this->bulkItem->quantity == ($oldQuantity - 1));
         $this->bulkItem->checkOutTo($this->person);
-        $this->assertTrue($this->bulkItem->quantity == ($oldQuantity - 2));
+        $this->assertTrue($this->bulkItem->fresh()->quantity == ($oldQuantity - 2));
     }
 
     public function testBulkIssuedItemCreatedWhenBulkItemIsIssuedToAPerson()
     {
         $this->bulkItem->checkOutTo($this->person);
-        $bulkIssuedItem = $this->bulkItem->issued_items->first();
+        $bulkIssuedItem = $this->bulkItem->fresh()->issued_items->first();
         $this->assertTrue(!empty($bulkIssuedItem));
         $this->assertTrue($bulkIssuedItem->parent->id == $this->bulkItem->id);
     }
@@ -158,11 +158,28 @@ class ItemTest extends TestCase
         $this->bulkItem->checkOutTo($this->person);
         $this->assertTrue($this->bulkItem->quantity == ($oldQuantity - 1));
 
+        $this->bulkItem = $this->bulkItem->fresh(); // Refresh model from the db!
         $bulkIssuedItem = $this->bulkItem->issued_items->first();
         $this->assertTrue(!empty($bulkIssuedItem));
         $bulkIssuedItem->checkIn();
 
         $this->bulkItem = $this->bulkItem->fresh(); // Refresh model from the db!
         $this->assertTrue($this->bulkItem->quantity == $oldQuantity);
+    }
+
+    public function testCheckingOutBulkItemMoreThanOnceToSameUserIncrementsUserQuantity()
+    {
+        // Check out a bulk item to a user and confirm that the user has 1 of that item.
+        $bulkIssuedItem = $this->bulkItem->checkOutTo($this->person);
+        $this->assertTrue($bulkIssuedItem->quantity == 1);
+
+        // Check the same item out to that user again and confirm that the user has 2 of that item
+        // Also confirm that only a single BulkIssuedItem was created (with quantity 2).
+        $this->bulkItem->checkOutTo($this->person);
+        $this->bulkItem = $this->bulkItem->fresh();
+        $bulkIssuedItem = $this->bulkItem->issued_items->first();
+
+        $this->assertTrue($bulkIssuedItem->quantity == 2);
+        $this->assertTrue($this->bulkItem->issued_items->count() == 1);
     }
 }
