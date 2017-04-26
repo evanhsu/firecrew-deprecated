@@ -51,8 +51,14 @@ class ItemsService
 			->distinct()
 			->orderBy('category', 'asc')
 			->pluck('category');
+
 		return $categories;
 	}
 
-
+	public function create($attributes)
+	{
+		return Item::create(
+			$attributes
+		);
+	}
 }

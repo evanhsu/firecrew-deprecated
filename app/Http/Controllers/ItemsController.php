@@ -17,6 +17,33 @@ class ItemsController extends Controller
         $this->items = $items;
     }
 
+    public function create(Request $request) 
+    {
+        $this->items->create(
+            $request->intersect([
+                'type',
+                'category',
+                'crew_id',
+                'parent_id',
+                'serial_number',
+                'quantity',
+                'color',
+                'size',
+                'description',
+                'condition',
+                'checked_out_to_id',
+                'checked_out_to_type',
+                'note',
+                'usable',
+                'restock_trigger',
+                'restock_to_quantity',
+                'source',
+            ])
+        );
+
+        return $this->response->created();
+    }
+
     /**
      *  Returns a flat collection of ALL items belonging to the specified Crew
      *
@@ -58,14 +85,14 @@ class ItemsController extends Controller
 
     public function incrementItemQuantity($itemId) {
         $item = Item::findOrFail($itemId);
-        $this->items->incrementQuantity($item);
+        $item->incrementQuantity();
 
         return $this->response->accepted();
     }
 
     public function decrementItemQuantity($itemId) {
         $item = Item::findOrFail($itemId);
-        $this->items->decrementQuantity($item);
+        $item->decrementQuantity();
 
         return $this->response->accepted();
     }
