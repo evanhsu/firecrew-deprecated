@@ -5,15 +5,11 @@ import { connect } from 'react-redux';
 import { List } from 'immutable';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import { selectItemCategory } from '../actions/inventoryActions';
+import { selectItemCategory } from '../../actions/inventoryActions';
 
 class CategoryMenu extends Component {
 
-	handleClick = (category) => {
-		return () => {
-			this.props.dispatch(selectItemCategory(category));
-		}
-	}
+	handleClick = (category) => () => this.props.selectItemCategory(category);
 		
 	renderRows = () => {
 		return this.props.categories.map((category) => {
@@ -44,4 +40,10 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps)(CategoryMenu);
+function mapDispatchToProps(dispatch) {
+	return {
+		selectItemCategory: (category) => dispatch(selectItemCategory(category)),
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryMenu);

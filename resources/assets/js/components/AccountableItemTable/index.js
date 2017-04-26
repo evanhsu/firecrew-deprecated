@@ -65,32 +65,32 @@ const HeaderRow = () => {
 	);
 };
 
-const ItemRow = ({item, onTouchTap, selectedItemRow}) => {
+const ItemRow = ({itemId, item, onTouchTap, selectedItemRow}) => {
 	return (
-        <ListItem key={`item-${item.id}`} style={rowStyle} open={selectedItemRow === item.id} onTouchTap={()=>onTouchTap(item.id)}
+        <ListItem key={`item-${itemId}`} style={rowStyle} open={selectedItemRow === itemId} onTouchTap={()=>onTouchTap(itemId)}
         	nestedItems={[
-        		<ListItem key={`expanded-item-${item.id}`} disabled style={rowStyle}>
-					<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${item.id}-serial_number`} defaultValue={item.serialNumber} /></span>
-			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} defaultValue={item.description} /></span>	
-			        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${item.id}-item_size`} defaultValue={item.itemSize} /></span>	
-			        <span style={smColStyle}><TextField floatingLabelText="Color" inputStyle={smTextFieldStyle} name={`item-${item.id}-color`} defaultValue={item.color} /></span>	
-					<span style={mdColStyle}><TextField floatingLabelText="Issued To" inputStyle={mdTextFieldStyle} name={`item-${item.id}-checked_out_to`} defaultValue={item.checkedOutTo} /></span>
-			        <span style={smColStyle}><TextField floatingLabelText="Usable" inputStyle={smTextFieldStyle} name={`item-${item.id}-usable`} defaultValue={item.usable} /></span>	
-			        <span style={mdColStyle}><TextField floatingLabelText="Condition" inputStyle={mdTextFieldStyle} name={`item-${item.id}-condition`} defaultValue={item.condition} /></span>	
-			        <span style={lgColStyle}><TextField floatingLabelText="Note" inputStyle={lgTextFieldStyle} name={`item-${item.id}-note`} defaultValue={item.note} /></span>	
+        		<ListItem key={`expanded-item-${itemId}`} disabled style={rowStyle}>
+					<span style={mdColStyle}><TextField floatingLabelText="Serial #" inputStyle={mdTextFieldStyle} name={`item-${itemId}-serial_number`} defaultValue={item.get('serial_number')} /></span>
+			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${itemId}-description`} defaultValue={item.get('description')} /></span>	
+			        <span style={smColStyle}><TextField floatingLabelText="Size" inputStyle={smTextFieldStyle} name={`item-${itemId}-item_size`} defaultValue={item.get('item_size')} /></span>	
+			        <span style={smColStyle}><TextField floatingLabelText="Color" inputStyle={smTextFieldStyle} name={`item-${itemId}-color`} defaultValue={item.get('color')} /></span>	
+					<span style={mdColStyle}><TextField floatingLabelText="Issued To" inputStyle={mdTextFieldStyle} name={`item-${itemId}-checked_out_to`} defaultValue={item.get('checked_out_to')} /></span>
+			        <span style={smColStyle}><TextField floatingLabelText="Usable" inputStyle={smTextFieldStyle} name={`item-${itemId}-usable`} defaultValue={item.get('usable')} /></span>	
+			        <span style={mdColStyle}><TextField floatingLabelText="Condition" inputStyle={mdTextFieldStyle} name={`item-${itemId}-condition`} defaultValue={item.get('condition')} /></span>	
+			        <span style={lgColStyle}><TextField floatingLabelText="Note" inputStyle={lgTextFieldStyle} name={`item-${itemId}-note`} defaultValue={item.get('note')} /></span>	
 			        <span style={lgColStyle}></span>
         		</ListItem> 
     		]}
 		>
-        	<span style={mdColStyle}>{item.serialNumber}</span>
-	        <span style={lgColStyle}>{item.description}</span>	
-	        <span style={smColStyle}>{item.itemSize}</span>	
-	        <span style={smColStyle}>{item.color}</span>	
-			<span style={mdColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>
-	        <span style={smColStyle}>{item.usable}</span>	
-	        <span style={mdColStyle}>{item.condition}</span>	
-	        <span style={lgColStyle}>{item.note}</span>	
-	        <span style={lgColStyle}>{moment(item.updatedAt).format('YYYY-MM-DD')}</span>
+        	<span style={mdColStyle}>{item.get('serial_number')}</span>
+	        <span style={lgColStyle}>{item.get('description')}</span>	
+	        <span style={smColStyle}>{item.get('item_size')}</span>	
+	        <span style={smColStyle}>{item.get('color')}</span>	
+			<span style={mdColStyle}>{item.get('checked_out_to') && item.getIn(['checked_outTo', 'full_name'])}</span>
+	        <span style={smColStyle}>{item.get('usable')}</span>	
+	        <span style={mdColStyle}>{item.get('condition')}</span>	
+	        <span style={lgColStyle}>{item.get('note')}</span>	
+	        <span style={lgColStyle}>{moment(item.get('updated_at')).format('YYYY-MM-DD')}</span>
 		</ListItem>
     );
 }
@@ -107,8 +107,9 @@ class AccountableItemTable extends PureComponent {
 					{this.props.items.map((item) => (
 						
 						<ItemRow 
-							key={item.id} 
-							item={item} 
+							key={item.get('id')} 
+							itemId={item.get('id')}
+							item={item.get('attributes')} 
 							onTouchTap={this.props.onRowClick} 
 							selectedItemRow={this.props.selectedItemRow}
 						/>

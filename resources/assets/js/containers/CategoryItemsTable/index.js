@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
-import AccountableItemTable from '../components/AccountableItemTable';
-import BulkItemTable from '../components/BulkItemTable';
-import BulkIssuedItemTable from '../components/BulkIssuedItemTable';
-import { itemRowSelected, itemRowDeselected, incrementItem, decrementItem } from '../actions/inventoryActions';
+import AccountableItemTable from '../../components/AccountableItemTable';
+import BulkItemTable from '../../components/BulkItemTable';
+import BulkIssuedItemTable from '../../components/BulkIssuedItemTable';
+import { itemRowSelected, itemRowDeselected, incrementItem, decrementItem } from '../../actions/inventoryActions';
 
 class CategoryItemsTable extends Component {
 	handleDecrement = (itemId) => {
@@ -77,24 +77,31 @@ CategoryItemsTable.defaultProps = {
 	selectedItemRow: null,
 }
 
+const accountableItems = (categoryName) => (item) => (
+	(item.getIn(['attributes', 'type']) === 'accountable') 
+	&& (item.getIn(['attributes', 'category']) === categoryName)
+);
+
+const bulkItems = (categoryName) => (item) => (
+	(item.getIn(['attributes', 'type']) === 'bulk') 
+	&& (item.getIn(['attributes', 'parentId']) === null) 
+	&& (item.getIn(['attributes', 'category']) === categoryName)
+);
+
+const bulkIssuedItems = (categoryName) => (item) => (
+	(item.getIn(['attributes', 'type']) === 'bulk') 
+	&& (item.getIn(['attributes', 'parentId']) !== null) 
+	&& (item.getIn(['attributes', 'category']) === categoryName)
+);
+
 function mapStateToProps(state) {
-	const categoryName = state.get('selectedItemCategory');
-	const accountableItems = (items) => {
-		return items.filter((item) => {
-			return ((item.type == 'accountable') && (item.category == categoryName));
-		});
-	}
-	const bulkItems = (items) => {
-		return items.filter((item) => (item.type == 'bulk' && item.parentId === null && item.category == categoryName));
-	}
-	const bulkIssuedItems = (items) => {
-		return items.filter((item) => (item.type == 'bulk' && item.parentd !== null && item.category == categoryName));
-	}
+	const categoryName = state.getIn(['selectedItemCategory']);
+	const items = state.getIn(['items', 'data']);
 	return {
 		category: categoryName,
-		accountableItems: accountableItems(state.getIn(['items', 'data'])),
-		bulkItems: bulkItems(state.getIn(['items', 'data'])),
-		bulkIssuedItems: bulkIssuedItems(state.getIn(['items', 'data'])),
+		accountableItems: items.filter(accountableItems(categoryName)),
+		bulkItems: items.filter(bulkItems(categoryName)),
+		bulkIssuedItems: items.filter(bulkIssuedItems(categoryName)),
 		selectedItemRow: state.get('selectedItemRow'),
 	};
 }

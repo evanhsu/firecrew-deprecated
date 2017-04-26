@@ -1,18 +1,17 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import ReactDrawer from 'react-drawer';
-import CategoryMenu from './CategoryMenu';
-import CategoryItemsTable from './CategoryItemsTable';
-import LoadingIndicator from './LoadingIndicator';
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
-import { toggleCategoryMenuDrawer } from '../actions/inventoryActions';
+import { connect } from 'react-redux';
+import ReactDrawer from 'react-drawer';
+
+import CategoryMenu from '../CategoryMenu';
+import CategoryItemsTable from '../CategoryItemsTable';
+import LoadingIndicator from '../LoadingIndicator';
+
+import { toggleCategoryMenuDrawer } from '../../actions/inventoryActions';
  
 class Inventory extends Component {
-
-	toggleDrawerState = () => (
-		this.props.dispatch(toggleCategoryMenuDrawer())
-	); 
+	toggleDrawerState = this.props.toggleCategoryMenuDrawer;
 
 	render() {
 		return (
@@ -52,4 +51,10 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps)(Inventory);
+function mapDispatchToProps(dispatch) {
+	return {
+		toggleCategoryMenuDrawer: () => dispatch(toggleCategoryMenuDrawer()),
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Inventory);
