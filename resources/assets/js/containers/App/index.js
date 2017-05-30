@@ -1,16 +1,18 @@
 import React, { Component, PropTypes } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
+import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ReactDrawer from 'react-drawer';
 
 import CategoryMenu from '../CategoryMenu';
 import CategoryItemsTable from '../CategoryItemsTable';
 import LoadingIndicator from '../LoadingIndicator';
 
-import { toggleCategoryMenuDrawer } from '../../actions/inventoryActions';
+import { selectCategories } from '../CategoryItemsTable/selectors';
+import { toggleCategoryMenuDrawer } from './actions';
  
-class Inventory extends Component {
+class App extends Component {
 	toggleDrawerState = this.props.toggleCategoryMenuDrawer;
 
 	render() {
@@ -31,9 +33,9 @@ class Inventory extends Component {
 				          open={this.props.categoryMenuDrawerOpen}
 				          onRequestChange={this.toggleDrawerState}
 				        >
-				        	<CategoryMenu />
+                            <CategoryMenu categories={this.props.categories} />
 				        </Drawer>
-				        <CategoryItemsTable />
+                        <Route path={`${this.props.match.url}/:category`} component={CategoryItemsTable} />
 					</div>
 				</div>
 			</div>
@@ -41,12 +43,14 @@ class Inventory extends Component {
 	};
 }
 
-Inventory.propTypes = {
+App.propTypes = {
+    categories: ImmutablePropTypes.list,
 	categoryMenuDrawerOpen: PropTypes.bool,
-}
+};
 
 function mapStateToProps(state) {
 	return {
+	    categories: selectCategories()(state),
 		categoryMenuDrawerOpen: state.get('categoryMenuDrawerOpen'),
 	};
 }
@@ -57,4 +61,4 @@ function mapDispatchToProps(dispatch) {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Inventory);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

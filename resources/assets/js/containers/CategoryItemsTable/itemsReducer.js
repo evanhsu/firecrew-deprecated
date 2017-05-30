@@ -1,5 +1,5 @@
 import { fromJS, Map, List } from 'immutable';
-import { Item } from '../objectDefinitions/Item';
+import { Item } from '../../objectDefinitions/Item';
 
 import { 
 	REQUEST_ITEMS,
@@ -11,7 +11,7 @@ import {
 	INCREMENT_ITEM_REQUEST,
 	INCREMENT_ITEM_SUCCESS,
 	INCREMENT_ITEM_FAILURE,
-} from '../actions/inventoryActions';
+} from './actions';
 
 const initialState = new Map({
 	data: Map(),
@@ -32,7 +32,7 @@ export const items = (state = initialState, action) => {
 			    // ));
 
 		case RECEIVE_ITEMS_FAILURE:
-			return state;
+			return state.set('loading', false);
 
 		case REQUEST_ITEMS:
 			return state.set('loading', true);

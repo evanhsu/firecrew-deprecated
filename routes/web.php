@@ -32,6 +32,6 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 // Route::group(['middleware' => 'auth'], function () {
-    Route::get('/crew/{crewId}/inventory', 'PagesController@inventory');
+    Route::get('/crew/{crewId}/inventory/{anything?}', 'PagesController@inventory');
 // });
 

@@ -1,49 +1,35 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { List } from 'immutable';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import { selectItemCategory } from '../../actions/inventoryActions';
 
-class CategoryMenu extends Component {
+function CategoryMenu(props) {
+    const handleClick = (category) => () => props.history.push(`/crew/${props.match.params.crewId}/inventory/${category}`);
 
-	handleClick = (category) => () => this.props.selectItemCategory(category);
-		
-	renderRows = () => {
-		return this.props.categories.map((category) => {
-			return (<MenuItem key={category} primaryText={category} onTouchTap={this.handleClick(category)} />);
-		});
-	};
+    const renderRows = () => {
+        return props.categories.map((category) => {
+            return (<MenuItem key={category} primaryText={category} onTouchTap={handleClick(category)}/>);
+        });
+    };
 
-	render() {
-		return (
-			<Menu>
-				{ this.renderRows() }
-			</Menu>
-		);
-	}
+    return (
+            <Menu>
+                { renderRows() }
+            </Menu>
+    );
 }
 
 CategoryMenu.propTypes = {
-	categories: ImmutablePropTypes.list,
-}
+    categories: ImmutablePropTypes.list,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+};
 
 CategoryMenu.defaultProps = {
-	categories: List(),
-}
+    categories: new List(),
+};
 
-function mapStateToProps(state) {
-	return {
-		categories: state.getIn(['categories', 'data']),
-	};
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		selectItemCategory: (category) => dispatch(selectItemCategory(category)),
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryMenu);
+export default withRouter(CategoryMenu);

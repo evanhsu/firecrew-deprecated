@@ -1,8 +1,7 @@
-import { List } from 'immutable';
-import { 
+import {
 	SELECT_ITEM_CATEGORY,
 	TOGGLE_CATEGORY_MENU_DRAWER,
-} from '../actions/inventoryActions';
+} from './actions';
 
 const initialState = null;
 export function selectedItemCategory(state = initialState, action) {

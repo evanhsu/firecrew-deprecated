@@ -61,30 +61,30 @@ const HeaderRow = () => {
 	);
 };
 
-const ItemRow = ({item, onTouchTap, selectedItemRow}) => {
+const ItemRow = ({itemId, item, onTouchTap, selectedItemRow}) => {
 	return (
 		<ListItem 
-			key={`item-${item.id}`} 
+			key={`item-${itemId}`}
 			style={rowStyle} 
-			open={selectedItemRow === item.id} 
-			onTouchTap={()=>onTouchTap(item.id)}
+			open={selectedItemRow === parseInt(itemId, 10)}
+			onTouchTap={()=>onTouchTap(itemId)}
 	        nestedItems={[
-        		<ListItem key={`expanded-item-${item.id}`} disabled style={rowStyle}>
-		        	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${item.id}-quantity`} 		defaultValue={item.quantity} /></span>
-			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${item.id}-description`} 		defaultValue={item.description} /></span>	
-			        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${item.id}-checked_out_to`} 	defaultValue={item.checkedOutTo && item.checkedOutTo.get('full_name')} /></span>	
-			        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-item-size`} 		defaultValue={item.itemSize} /></span>	
-			        <span style={mdColStyle}><TextField floatingLabelText="Color" 		inputStyle={mdTextFieldStyle} name={`item-${item.id}-color`} 			defaultValue={item.color} /></span>	
+        		<ListItem key={`expanded-item-${item.get('id')}`} disabled style={rowStyle}>
+		        	<span style={mdColStyle}><TextField floatingLabelText="Quantity" 	inputStyle={mdTextFieldStyle} name={`item-${itemId}-quantity`} 		    defaultValue={item.get('quantity')} /></span>
+			        <span style={lgColStyle}><TextField floatingLabelText="Description" inputStyle={lgTextFieldStyle} name={`item-${itemId}-description`} 		defaultValue={item.get('description')} /></span>
+			        <span style={lgColStyle}><TextField floatingLabelText="Issued To" 	inputStyle={lgTextFieldStyle} name={`item-${itemId}-checked_out_to`} 	defaultValue={item.get('checked_out_to') && item.getIn(['checked_out_to', 'full_name'])} /></span>
+			        <span style={mdColStyle}><TextField floatingLabelText="Size" 		inputStyle={mdTextFieldStyle} name={`item-${itemId}-item-size`} 		defaultValue={item.get('item_size')} /></span>
+			        <span style={mdColStyle}><TextField floatingLabelText="Color" 		inputStyle={mdTextFieldStyle} name={`item-${itemId}-color`} 			defaultValue={item.get('color')} /></span>
 			        <span style={lgColStyle}></span>
 			    </ListItem>
 				]}
     		>
-    		<span style={mdColStyle}>{item.quantity}</span>
-	        <span style={lgColStyle}>{item.description}</span>	
-	        <span style={lgColStyle}>{item.checkedOutTo && item.checkedOutTo.get('full_name')}</span>	
-	        <span style={mdColStyle}>{item.itemSize}</span>	
-	        <span style={mdColStyle}>{item.color}</span>	
-	        <span style={lgColStyle}>{moment(item.updatedAt).format('YYYY-MM-DD')}</span>
+    		<span style={mdColStyle}>{item.get('quantity')}</span>
+	        <span style={lgColStyle}>{item.get('description')}</span>
+	        <span style={lgColStyle}>{item.get('checked_out_to') && item.getIn(['checked_out_to', 'full_name'])}</span>
+	        <span style={mdColStyle}>{item.get('item_size')}</span>
+	        <span style={mdColStyle}>{item.get('color')}</span>
+	        <span style={lgColStyle}>{moment(item.get('updated_at')).format('YYYY-MM-DD')}</span>
 		</ListItem>
 	    	
     );
@@ -92,18 +92,19 @@ const ItemRow = ({item, onTouchTap, selectedItemRow}) => {
 
 class BulkIssuedItemTable extends PureComponent {
 	render() {
-		if(this.props.items.size == 0) {
+		if(this.props.items.size === 0) {
 			return null;
 		} else {
-			const items = this.props.items.toArray(); // Convert from Immutable List to js Array
+			// const items = this.props.items.toArray(); // Convert from Immutable List to js Array
 			return (
 				<div>
 			    	<HeaderRow />
 			    	<List>
-					{this.props.items && items.map((item) => (
+					{this.props.items && this.props.items.map((item) => (
 						<ItemRow 
-							key={item.id} 
-							item={item} 
+							key={`item-row-${item.get('id')}`}
+                            itemId={item.get('id')}
+							item={item.get('attributes')}
 							onTouchTap={this.props.onRowClick} 
 							selectedItemRow={this.props.selectedItemRow}
 						/>

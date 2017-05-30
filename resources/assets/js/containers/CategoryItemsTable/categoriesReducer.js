@@ -4,14 +4,14 @@ import {
 	REQUEST_ITEMS,
 	RECEIVE_ITEMS_SUCCESS,
 	RECEIVE_ITEMS_FAILURE,
-} from '../actions/inventoryActions';
+} from './actions';
 
 const initialState = new Map({
 	data: List(),
 	loading: false,
 });
 
-export const categories = (state = initialState, action) => {
+export const categoriesReducer = (state = initialState, action) => {
 	switch(action.type) {
 		case RECEIVE_ITEMS_SUCCESS:
 			return state

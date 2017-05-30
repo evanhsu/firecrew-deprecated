@@ -51,7 +51,7 @@ const HeaderRow = () => {
 
 const ItemRow = ({itemId, item, onTouchTap, selectedItemRow}) => {
 	return (
-        <ListItem key={`item-${itemId}`} style={rowStyle} open={selectedItemRow === itemId} onTouchTap={()=>onTouchTap(itemId)}
+        <ListItem key={`item-${itemId}`} style={rowStyle} open={selectedItemRow === parseInt(itemId, 10)} onTouchTap={()=>onTouchTap(itemId)}
         	nestedItems={[
         		<ListItem key={`expanded-item-${itemId}`} disabled style={rowStyle}>
 					<AccountableItemForm
@@ -86,8 +86,7 @@ class AccountableItemTable extends PureComponent {
 			    	<HeaderRow />
 			    	<List>
 					{this.props.items.map((item) => (
-						
-						<ItemRow 
+						<ItemRow
 							key={item.get('id')} 
 							itemId={item.get('id')}
 							item={item.get('attributes')} 
