@@ -109,8 +109,6 @@ export const fetchItemCategory = (categoryName) => {
 
 export const updateItem = (itemId, data) => {
     return function(dispatch) {
-        console.log(JSON.stringify(data));
-
         dispatch(updateItemRequest(itemId, data));
 
         const headers = new Headers({
@@ -118,7 +116,7 @@ export const updateItem = (itemId, data) => {
             'Content-Type': 'application/json',
         });
         return fetch(`/api/items/${itemId}`, {
-            method: 'PUT',
+            method: 'PATCH',
             credentials: 'same-origin',
             headers: headers,
             body: JSON.stringify(data),
