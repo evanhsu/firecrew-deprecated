@@ -5,6 +5,9 @@ import {
 	REQUEST_ITEMS,
 	RECEIVE_ITEMS_SUCCESS,
 	RECEIVE_ITEMS_FAILURE,
+    UPDATE_ITEM_REQUEST,
+    UPDATE_ITEM_SUCCESS,
+    UPDATE_ITEM_FAILURE,
 	DECREMENT_ITEM_REQUEST,
 	DECREMENT_ITEM_SUCCESS,
 	DECREMENT_ITEM_FAILURE,	
@@ -14,7 +17,7 @@ import {
 } from './actions';
 
 const initialState = new Map({
-	data: Map(),
+	data: List(),
 	loading: false,
 });
 
@@ -37,7 +40,20 @@ export const items = (state = initialState, action) => {
 		case REQUEST_ITEMS:
 			return state.set('loading', true);
 
-		case INCREMENT_ITEM_REQUEST:
+        case UPDATE_ITEM_REQUEST:
+            return state
+                .set('loading', true);
+
+        case UPDATE_ITEM_SUCCESS:
+            return state
+                .set('loading', false)
+                .setIn(['data', action.payload.itemId], action.payload.data);
+
+        case UPDATE_ITEM_FAILURE:
+            return state
+                .set('loading', false);
+
+        case INCREMENT_ITEM_REQUEST:
 			return state
 				.set('loading', true)
 				.setIn(['data', action.itemId, 'quantity'], currentQty + 1);

@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from "prop-types";
 import ImmutableProptypes from 'react-immutable-proptypes';
 import { List, ListItem } from 'material-ui/List';
 import AccountableItemForm from '../AccountableItemForm';
@@ -49,7 +50,7 @@ const HeaderRow = () => {
 	);
 };
 
-const ItemRow = ({itemId, item, onTouchTap, selectedItemRow}) => {
+const ItemRow = ({itemId, item, onTouchTap, selectedItemRow, onSubmit}) => {
 	return (
         <ListItem key={`item-${itemId}`} style={rowStyle} open={selectedItemRow === parseInt(itemId, 10)} onTouchTap={()=>onTouchTap(itemId)}
         	nestedItems={[
@@ -58,7 +59,7 @@ const ItemRow = ({itemId, item, onTouchTap, selectedItemRow}) => {
                         key={`item-${itemId}-form`}
                         form={`item-${itemId}-form`}
                         initialValues={item}
-                        handleSubmit={() => {console.log('submit')}}
+                        onSubmit={onSubmit(itemId)}
                     />
         		</ListItem> 
     		]}
@@ -92,6 +93,7 @@ class AccountableItemTable extends PureComponent {
 							item={item.get('attributes')} 
 							onTouchTap={this.props.onRowClick} 
 							selectedItemRow={this.props.selectedItemRow}
+                            onSubmit={this.props.onUpdateItem}
 						/>
 					))}
 					</List>
@@ -105,6 +107,7 @@ AccountableItemTable.PropTypes = {
 	items: ImmutableProptypes.list,
 	onRowClick: PropTypes.func,
 	selectedItemRow: PropTypes.number,
+    onUpdateItem: PropTypes.func,
 };
 
 export default AccountableItemTable;

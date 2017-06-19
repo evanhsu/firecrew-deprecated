@@ -9,8 +9,9 @@ import validate from "./validate";
 
 function AccountableItemForm(props) {
     const styles = getStyles(props);
+    const { handleSubmit, pristine, reset, submitting } = props; // Redux-form injects these props
     return (
-            <Form form={props.form} method="post" onSubmit={props.handleSubmit} style={[styles.root, props.style]}>
+            <Form form={props.form} onSubmit={handleSubmit(props.onSubmit)} style={[styles.root, props.style]}>
                 <Field
                         name="serial_number"
                         component={TextField}
@@ -26,7 +27,7 @@ function AccountableItemForm(props) {
                         inputStyle={styles.lgTextField}
                 />
                 <Field
-                        name="size"
+                        name="item_size"
                         component={TextField}
                         floatingLabelText="Size"
                         style={styles.smCol}
@@ -70,6 +71,7 @@ function AccountableItemForm(props) {
                 <RaisedButton
                         type="submit"
                         label="Save"
+                        disabled={submitting}
                         fullWidth
                 />
             </Form>
@@ -79,6 +81,7 @@ function AccountableItemForm(props) {
 AccountableItemForm.propTypes = {
     ...reduxFormPropTypes,
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+    onSubmit: PropTypes.func,
 };
 
 AccountableItemForm.defaultProps = {

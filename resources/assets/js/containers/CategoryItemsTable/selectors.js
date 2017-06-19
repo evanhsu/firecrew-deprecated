@@ -1,9 +1,8 @@
 import { createSelector } from 'reselect';
-import { Map } from 'immutable';
+import { List } from 'immutable';
 import { getRouteParam } from '../../helpers/routing';
-import { Item } from '../../objectDefinitions/Item';
 
-const selectItems = () => (state) => state.getIn(['items', 'data'], new Map());
+const selectItems = () => (state) => state.getIn(['items', 'data'], new List());
 const selectLoading = () => (state) => state.getIn(['items', 'loading'], false);
 const selectSelectedItemRow = () => (state) => parseInt(state.get('selectedItemRow'), 10);
 const selectCategories = () => (state) => state.getIn(['categories', 'data'], new Map());

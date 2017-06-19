@@ -107,13 +107,66 @@ export const fetchItemCategory = (categoryName) => {
     }
 };
 
+export const updateItem = (itemId, data) => {
+    return function(dispatch) {
+        console.log(JSON.stringify(data));
+
+        dispatch(updateItemRequest(itemId, data));
+
+        const headers = new Headers({
+            'X-CSRF-TOKEN': window.Laravel.csrfToken,
+            'Content-Type': 'application/json',
+        });
+        return fetch(`/api/items/${itemId}`, {
+            method: 'PUT',
+            credentials: 'same-origin',
+            headers: headers,
+            body: JSON.stringify(data),
+        }).then(response => {
+            if(response.status === 201) {
+                dispatch(updateItemSuccess(itemId));
+            } else {
+                throw `Response was ${response.status}`;
+            }
+        }).catch(error => dispatch(updateItemFailure(error, itemId)));
+    }
+};
+
+export const UPDATE_ITEM_REQUEST = 'UPDATE_ITEM_REQUEST';
+export const updateItemRequest = (itemId, data) => {
+    return {
+        type: UPDATE_ITEM_REQUEST,
+        payload: {
+            itemId,
+            data,
+        },
+    }
+};
+
+export const UPDATE_ITEM_SUCCESS = 'UPDATE_ITEM_SUCCESS';
+export const updateItemSuccess = (itemId) => {
+    return {
+        type: UPDATE_ITEM_SUCCESS,
+        itemId,
+    }
+};
+
+export const UPDATE_ITEM_FAILURE = 'UPDATE_ITEM_FAILURE';
+export const updateItemFailure = (error, itemId) => {
+    return {
+        type: UPDATE_ITEM_FAILURE,
+        error,
+        itemId,
+    }
+};
+
 export const decrementItem = (itemId) => {
     return function(dispatch) {
 
         dispatch(decrementItemRequest(itemId));
 
         const headers = new Headers({'X-CSRF-TOKEN': window.Laravel.csrfToken});
-        return fetch(`/api/item/${itemId}/decrement`, {
+        return fetch(`/api/items/${itemId}/decrement`, {
             method: 'post',
             credentials: 'same-origin',
             headers: headers,
@@ -158,7 +211,7 @@ export const incrementItem = (itemId) => {
         dispatch(incrementItemRequest(itemId));
 
         const headers = new Headers({'X-CSRF-TOKEN': window.Laravel.csrfToken});
-        return fetch(`/api/item/${itemId}/increment`, {
+        return fetch(`/api/items/${itemId}/increment`, {
             method: 'post',
             credentials: 'same-origin',
             headers: headers,
