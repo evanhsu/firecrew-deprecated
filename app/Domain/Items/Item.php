@@ -2,12 +2,12 @@
 
 namespace App\Domain\Items;
 
+use App\Exceptions\ItemTypeException;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Items\CanHaveItemsInterface;
 use App\Domain\Crews\Crew;
 use App\Domain\LogEntries\LogEntry;
 use Illuminate\Support\Facades\DB;
-use App\Exception\UnknownItemTypeException;
 
 class Item extends Model
 {

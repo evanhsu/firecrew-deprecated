@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Domain\Crews\Crew;
 use App\Services\ItemsService;
 use App\Domain\Items\Item;
 use App\Http\Transformers\ItemTransformer;
+use Dingo\Api\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class ItemsController extends Controller
 {
@@ -76,11 +78,46 @@ class ItemsController extends Controller
     }
 
     public function show($id) {
+        $item = $this->items->findOrFail($id);
 
+        return $this->response->item(
+            $item,
+            new ItemTransformer,
+            ['key' => 'item']
+        );
     }
 
-    public function update($id, $request) {
+    public function update(Request $request, $itemId) {
+        $attributes = $request->intersect([
+                'type',
+                'category',
+                'crew_id',
+                'parent_id',
+                'serial_number',
+                'quantity',
+                'color',
+                'item_size',
+                'description',
+                'condition',
+                'checked_out_to_id',
+                'checked_out_to_type',
+                'note',
+                'usable',
+                'restock_trigger',
+                'restock_to_quantity',
+                'source',
+        ]);
+        // Front-end form must use 'item_size' because 'size' is a reserved javascript object property
+        $attributes['size'] = $attributes['item_size'];
 
+        $item = $this->items->findOrFail($itemId);
+        $this->items->update($itemId, $attributes);
+
+        return $this->response->item(
+            $item,
+            new ItemTransformer,
+            ['key' => 'item']
+        );
     }
 
     public function incrementItemQuantity($itemId) {

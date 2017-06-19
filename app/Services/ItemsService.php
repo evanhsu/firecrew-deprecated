@@ -61,4 +61,14 @@ class ItemsService
 			$attributes
 		);
 	}
+
+	public function update($id, $attributes)
+    {
+        return Item::find($id)->update($attributes);
+    }
+
+	public function findOrFail($id)
+    {
+        return Item::find($id);
+    }
 }

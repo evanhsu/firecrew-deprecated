@@ -23,7 +23,8 @@ $api->version('v1', [], function (Router $api) {
 		$api->get('/crews/{crewId}/items', 'ItemsController@indexForCrew');
 		$api->get('/crews/{crewId}/items/categories', 'ItemsController@categoriesForCrew');
 		$api->post('/crews/{crewId}/items', 'ItemsController@create');
-		$api->patch('/items/{itemId}', 'ItemsController@update');
+		$api->get('/items/{itemId}', 'ItemsController@show');
+		$api->put('/items/{itemId}', 'ItemsController@update');
 		$api->post('/items/{itemId}/increment', 'ItemsController@incrementItemQuantity');
 		$api->post('/items/{itemId}/decrement', 'ItemsController@decrementItemQuantity');
 
