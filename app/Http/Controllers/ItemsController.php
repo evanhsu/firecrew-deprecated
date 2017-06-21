@@ -111,7 +111,9 @@ class ItemsController extends Controller
         $attributes['size'] = $attributes['item_size'];
 
         $item = $this->items->findOrFail($itemId);
-        $this->items->update($itemId, $attributes);
+
+//        $this->items->update($itemId, $attributes);
+        $item->update($attributes);
 
         return $this->response->item(
             $item,
