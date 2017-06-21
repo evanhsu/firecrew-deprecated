@@ -149,7 +149,7 @@ class BulkItemTable extends PureComponent {
 BulkItemTable.PropTypes = {
 	handleIncrement: PropTypes.func.isRequired,
 	handleDecrement: PropTypes.func.isRequired,
-	items: ImmutablePropTypes.Map,
+	items: ImmutablePropTypes.map,
 	onRowClick: PropTypes.func,
 	selectedItemRow: PropTypes.number,
 };

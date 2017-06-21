@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from "prop-types";
 import ImmutableProptypes from 'react-immutable-proptypes';
 import { List, ListItem } from 'material-ui/List';
+import { Paper } from 'material-ui';
 import AccountableItemForm from '../AccountableItemForm';
 import moment from 'moment';
 
@@ -17,7 +18,12 @@ const cellStyle = {
 const rowStyle = {
 	minHeight: 20,
 	padding: 0,
+};
 
+const selectedRowStyle = {
+    height: 0,
+    overflow: 'hidden',
+    padding: 0,
 };
 
 const headerRowStyle = {
@@ -52,26 +58,32 @@ const HeaderRow = () => {
 
 const ItemRow = ({itemId, item, onTouchTap, selectedItemRow, onSubmit}) => {
 	return (
-        <ListItem key={`item-${itemId}`} style={rowStyle} open={selectedItemRow === parseInt(itemId, 10)} onTouchTap={()=>onTouchTap(itemId)}
+        <ListItem
+            key={`item-${itemId}`}
+            style={selectedItemRow === parseInt(itemId, 10) ? selectedRowStyle : rowStyle}
+            open={selectedItemRow === parseInt(itemId, 10)}
+            onTouchTap={()=>onTouchTap(itemId)}
         	nestedItems={[
         		<ListItem key={`expanded-item-${itemId}`} disabled style={rowStyle}>
-					<AccountableItemForm
-                        key={`item-${itemId}-form`}
-                        form={`item-${itemId}-form`}
-                        initialValues={item}
-                        onSubmit={onSubmit(itemId)}
-                    />
-        		</ListItem> 
+                    <Paper zDepth={2} style={{ backgroundColor: '#fafafa' }}>
+                        <AccountableItemForm
+                            key={`item-${itemId}-form`}
+                            form={`item-${itemId}-form`}
+                            initialValues={item}
+                            onSubmit={onSubmit(itemId)}
+                        />
+                    </Paper>
+        		</ListItem>
     		]}
 		>
         	<span style={mdColStyle}>{item.get('serial_number')}</span>
-	        <span style={lgColStyle}>{item.get('description')}</span>	
-	        <span style={smColStyle}>{item.get('item_size')}</span>	
-	        <span style={smColStyle}>{item.get('color')}</span>	
+	        <span style={lgColStyle}>{item.get('description')}</span>
+	        <span style={smColStyle}>{item.get('item_size')}</span>
+	        <span style={smColStyle}>{item.get('color')}</span>
 			<span style={mdColStyle}>{item.get('checked_out_to') && item.getIn(['checked_outTo', 'full_name'])}</span>
-	        <span style={smColStyle}>{item.get('usable')}</span>	
-	        <span style={mdColStyle}>{item.get('condition')}</span>	
-	        <span style={lgColStyle}>{item.get('note')}</span>	
+	        <span style={smColStyle}>{item.get('usable')}</span>
+	        <span style={mdColStyle}>{item.get('condition')}</span>
+	        <span style={lgColStyle}>{item.get('note')}</span>
 	        <span style={lgColStyle}>{moment(item.get('updated_at')).format('YYYY-MM-DD')}</span>
 		</ListItem>
     );
@@ -88,10 +100,10 @@ class AccountableItemTable extends PureComponent {
 			    	<List>
 					{this.props.items.map((item) => (
 						<ItemRow
-							key={item.get('id')} 
+							key={item.get('id')}
 							itemId={item.get('id')}
-							item={item.get('attributes')} 
-							onTouchTap={this.props.onRowClick} 
+							item={item.get('attributes')}
+							onTouchTap={this.props.onRowClick}
 							selectedItemRow={this.props.selectedItemRow}
                             onSubmit={this.props.onUpdateItem}
 						/>
@@ -104,7 +116,7 @@ class AccountableItemTable extends PureComponent {
 }
 
 AccountableItemTable.PropTypes = {
-	items: ImmutableProptypes.list,
+	items: ImmutableProptypes.map,
 	onRowClick: PropTypes.func,
 	selectedItemRow: PropTypes.number,
     onUpdateItem: PropTypes.func,

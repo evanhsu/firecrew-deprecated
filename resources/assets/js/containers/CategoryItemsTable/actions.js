@@ -115,18 +115,24 @@ export const updateItem = (itemId, data) => {
             'X-CSRF-TOKEN': window.Laravel.csrfToken,
             'Content-Type': 'application/json',
         });
+
         return fetch(`/api/items/${itemId}`, {
             method: 'PATCH',
             credentials: 'same-origin',
             headers: headers,
             body: JSON.stringify(data),
         }).then(response => {
-            if(response.status === 201) {
-                dispatch(updateItemSuccess(itemId));
+            if(response.status === 200) {
+                return response.json();
             } else {
-                throw `Response was ${response.status}`;
+                throw `Response was ${response.json}`;
             }
-        }).catch(error => dispatch(updateItemFailure(error, itemId)));
+        }).then(response => {
+            dispatch(updateItemSuccess(itemId, response));
+        }, error => {
+            console.log(error);
+            dispatch(updateItemFailure(error, itemId))
+        });
     }
 };
 
@@ -134,18 +140,18 @@ export const UPDATE_ITEM_REQUEST = 'UPDATE_ITEM_REQUEST';
 export const updateItemRequest = (itemId, data) => {
     return {
         type: UPDATE_ITEM_REQUEST,
-        payload: {
+        payload: fromJS({
             itemId,
             data,
-        },
+        }),
     }
 };
 
 export const UPDATE_ITEM_SUCCESS = 'UPDATE_ITEM_SUCCESS';
-export const updateItemSuccess = (itemId) => {
+export const updateItemSuccess = (itemId, response) => {
     return {
         type: UPDATE_ITEM_SUCCESS,
-        itemId,
+        payload: fromJS(response),
     }
 };
 

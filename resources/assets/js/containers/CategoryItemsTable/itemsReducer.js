@@ -1,5 +1,5 @@
-import { fromJS, Map, List } from 'immutable';
-import { Item } from '../../objectDefinitions/Item';
+import { Map } from 'immutable';
+// import { Item } from '../../objectDefinitions/Item';
 
 import { 
 	REQUEST_ITEMS,
@@ -17,18 +17,23 @@ import {
 } from './actions';
 
 const initialState = new Map({
-	data: List(),
+	data: new Map(),
 	loading: false,
 });
 
 export const items = (state = initialState, action) => {
-	const currentQty = state.getIn(['data', action.itemId, 'quantity']);
+	const currentQty = Map.isMap(action.payload) ? state.getIn(['data', action.payload.get('id'), 'quantity']) : null;
 
 	switch(action.type) {
 		case RECEIVE_ITEMS_SUCCESS:
 			return state
 				.set('loading', false)
-				.set('data', action.payload.get('data'));
+				.set('data', action.payload.get('data').reduce(
+				        (lookup, item) => (
+                            lookup.set(item.get('id'), item)
+                        ), new Map()
+                    )
+                );
 				// .reduce(
 			        // (lookup, item) => lookup.set(item.get('id'), new Item(item)),
 			        // Map()
@@ -47,7 +52,7 @@ export const items = (state = initialState, action) => {
         case UPDATE_ITEM_SUCCESS:
             return state
                 .set('loading', false)
-                .setIn(['data', action.payload.itemId], action.payload.data);
+                .setIn(['data', action.payload.getIn(['data', 'id']), 'attributes'], action.payload.getIn(['data', 'attributes']));
 
         case UPDATE_ITEM_FAILURE:
             return state
@@ -82,4 +87,4 @@ export const items = (state = initialState, action) => {
 		default:
 			return state;
 	}
-}
+};

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import ImmutableProptypes from 'react-immutable-proptypes';
 import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
 import moment from 'moment';
@@ -118,7 +119,7 @@ class BulkIssuedItemTable extends PureComponent {
 }
 
 BulkIssuedItemTable.PropTypes = {
-	items: PropTypes.array,
+	items: ImmutableProptypes.map,
 	onRowClick: PropTypes.func,
 	selectedItemRow: PropTypes.number,
 };

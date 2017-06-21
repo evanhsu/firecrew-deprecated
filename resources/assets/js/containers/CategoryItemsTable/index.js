@@ -11,9 +11,9 @@ import selectCategoryItemsTable from './selectors';
 class CategoryItemsTable extends Component {
     static propTypes = {
         category: PropTypes.string,
-        accountableItems: ImmutablePropTypes.list,
-        bulkItems: ImmutablePropTypes.list,
-        bulkIssuedItems: ImmutablePropTypes.list,
+        accountableItems: ImmutablePropTypes.map,
+        bulkItems: ImmutablePropTypes.map,
+        bulkIssuedItems: ImmutablePropTypes.map,
         selectedItemRow: PropTypes.number,
         loading: PropTypes.bool,
         itemRowFormContents: PropTypes.any,
@@ -61,6 +61,7 @@ class CategoryItemsTable extends Component {
 
     handleUpdateItem = (itemId) => (data) => {
         this.props.updateItem(itemId, data);
+        this.props.itemRowDeselected(itemId);
     };
 
     render() {
