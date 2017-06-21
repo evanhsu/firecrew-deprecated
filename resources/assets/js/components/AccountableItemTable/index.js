@@ -16,6 +16,7 @@ const cellStyle = {
 };
 
 const rowStyle = {
+    fontSize: 12,
 	minHeight: 20,
 	padding: 0,
 };
