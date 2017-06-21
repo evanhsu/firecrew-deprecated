@@ -9,16 +9,17 @@ import moment from 'moment';
 const cellStyle = {
 	paddingLeft: 5,
 	paddingRight: 5,
-	minHeight: 20,
+    paddingVertical: 0,
+	minHeight: 10,
 	display: 'inline-block',
 	overflowWrap: 'break-word',
 	textOverflow: 'ellipsis',
 };
 
 const rowStyle = {
-    fontSize: 12,
-	minHeight: 20,
-	padding: 0,
+    fontSize: 14,
+	minHeight: 10,
+	padding: 3,
 };
 
 const selectedRowStyle = {
@@ -62,6 +63,7 @@ const ItemRow = ({itemId, item, onTouchTap, selectedItemRow, onSubmit}) => {
         <ListItem
             key={`item-${itemId}`}
             style={selectedItemRow === parseInt(itemId, 10) ? selectedRowStyle : rowStyle}
+            innerDivStyle={rowStyle}
             open={selectedItemRow === parseInt(itemId, 10)}
             onTouchTap={()=>onTouchTap(itemId)}
         	nestedItems={[
