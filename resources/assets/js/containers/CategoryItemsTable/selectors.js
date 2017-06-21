@@ -20,7 +20,7 @@ const selectActiveCategory = () => createSelector(
 const selectActiveCategoryItems = () => createSelector(
         [selectItems(), selectActiveCategory()],
         (items, activeCategory) => items.filter(
-                (item) => item.getIn(['attributes', 'category']) === activeCategory
+                (item) => item.getIn(['attributes', 'category']).toLowerCase() === activeCategory.toLowerCase()
         )
 );
 
