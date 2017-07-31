@@ -1,6 +1,8 @@
 # FireCrew.us
 ## A collection of data-management & record-keeping tools for Wildland Firefighters.
 
+[![Build Status](https://travis-ci.org/evanhsu/firecrew.svg?branch=develop)](https://travis-ci.org/evanhsu/firecrew)
+
 ### Prerequisites
 Your dev machine must have the following installed in order to 'vagrant up' and build the project:
 
