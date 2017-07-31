@@ -11,8 +11,7 @@ install:
   - composer install --no-suggest
   - cp .env.example .env
   - php artisan key:generate
-  - yarn
-  - yarn run production
+  - "yarn && yarn run production"
 
 before_deploy:
   - openssl aes-256-cbc -K $encrypted_e0f69cba91c5_key -iv $encrypted_e0f69cba91c5_iv -in travis/deploy_rsa.enc -out /tmp/deploy_rsa -d
