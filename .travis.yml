@@ -1,6 +1,7 @@
 dist: trusty
 language: php
 php: '7.0'
+cache: yarn
 git:
   depth: 3
 
