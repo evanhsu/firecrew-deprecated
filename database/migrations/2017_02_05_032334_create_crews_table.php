@@ -18,8 +18,8 @@ class CreateCrewsTable extends Migration
             $table->string('name');
             $table->string('abbreviation')->nullable();
             $table->string('type');
-            $table->integer('region');
-            $table->string('logo_filename');
+            $table->integer('region')->nullable();
+            $table->string('logo_filename')->nullable();
             $table->timestamps();
         });
     }

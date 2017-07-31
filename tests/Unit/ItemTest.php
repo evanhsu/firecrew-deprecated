@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Domain\Crews\Crew;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -15,10 +16,11 @@ use Illuminate\Support\Facades\Log;
 
 class ItemTest extends TestCase
 {
-	use DatabaseTransactions;
+	use DatabaseMigrations;
 
     protected $accountableItem;
     protected $bulkItem;
+    protected $crew;
     protected $person;
     protected $vip;
 
@@ -28,11 +30,28 @@ class ItemTest extends TestCase
 
         $this->items = new \App\Services\ItemsService();
 
+        $this->crew = new Crew();
+        $this->crew->name = "Test Crew";
+        $this->crew->type = Crew::$types['rappel'];
+        $this->crew->region = 6;
+        $this->crew->save();
+
+        $this->person = new Person();
+        $this->person->first_name = "John";
+        $this->person->last_name = "Doe";
+        $this->person->save();
+        $this->crew->people()->attach($this->person->id, ['year' => '2017']);
+
+        $this->vip = new Vip();
+        $this->vip->name = "John Doe";
+        $this->vip->contact = "849-223-0982";
+        $this->vip->save();
+
         $this->accountableItem = new Item();
         $this->accountableItem->type = 'accountable';
         $this->accountableItem->category = 'Sleeping bag';
         $this->accountableItem->serial_number = 'abc123';
-        $this->accountableItem->crew_id = 1;
+        $this->accountableItem->crew_id = $this->crew->id;
         $this->accountableItem->color = 'Green';
         $this->accountableItem->size = 'Regular';
         $this->accountableItem->save();
@@ -40,24 +59,13 @@ class ItemTest extends TestCase
         $this->bulkItem = new Item();
         $this->bulkItem->type = 'bulk';
         $this->bulkItem->category = 'Nomex Pants';
-        $this->bulkItem->crew_id = 1;
+        $this->bulkItem->crew_id = $this->crew->id;
         $this->bulkItem->color = 'Green';
         $this->bulkItem->size = 'Regular';
         $this->bulkItem->quantity = 5;
         $this->bulkItem->restock_trigger = 5;
         $this->bulkItem->restock_to_quantity = 10;
         $this->bulkItem->save();
-
-        $this->person = new Person();
-        $this->person->first_name = "John";
-        $this->person->last_name = "Doe";
-        $this->person->save();
-
-        $this->vip = new Vip();
-        $this->vip->name = "John Doe";
-        $this->vip->contact = "849-223-0982";
-        $this->vip->save();
-
     }
     /**
      * A basic test example.
