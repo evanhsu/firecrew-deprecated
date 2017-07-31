@@ -2,10 +2,11 @@ language: php
 php: '7.0'
 
 addons:
-  ssh_known_hosts: $deploy-host
+  ssh_known_hosts: $deploy_host
 
 install:
   - composer install --no-suggest
+  - php artisan key:generate
   - yarn run production
 
 before_deploy:
@@ -17,12 +18,12 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/ $ssh-user@$deploy-host:$deploy-path
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/ $ssh_user@$deploy_host:$deploy_path
   on:
     branch: develop
 
   provider: script
   skip_cleanup: true
-  script: ssh $ssh-user@$deploy-host 'php $deploy-path/artisan migrate'
+  script: ssh $ssh_user@$deploy_host 'php $deploy_path/artisan migrate'
   on:
     branch: develop
