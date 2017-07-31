@@ -1,4 +1,5 @@
 language: php
+php: '7.0'
 
 addons:
   ssh_known_hosts: $deploy-host
