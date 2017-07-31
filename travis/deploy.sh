@@ -1,5 +1,9 @@
-ssh evan@smirksoftware.com 'mkdir -p ~/deploy'
+#!/bin/bash
+#
+# Deployment Script
 
-rsync -av --progress --delete-after $TRAVIS_BUILD_DIR $ssh_user@$deploy_host:~/deploy
+ssh $ssh_user@$deploy_host 'mkdir -p ~/deploy'
 
-ssh evan@smirksoftware.com 'sudo cp -a ~/deploy/. /home/firecrew/sites/firecrew.smirksoftware.com/ && sudo chown -R firecrew:firecrew /home/firecrew/sites/firecrew.smirksoftware.com/'
+rsync -a --quiet --delete-after --exclude .git $TRAVIS_BUILD_DIR $ssh_user@$deploy_host:~/deploy
+
+ssh $ssh_user@$deploy_host 'sudo cp -a ~/deploy/. $deploy_path/ && sudo chown -R $site_owner:$site_owner $deploy_path/'
