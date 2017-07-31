@@ -2,7 +2,7 @@ dist: trusty
 language: php
 php: '7.0'
 git:
-  - depth: 3
+  depth: 3
 
 addons:
   ssh_known_hosts: 'smirksoftware.com'
