@@ -6,6 +6,9 @@ git:
 
 addons:
   ssh_known_hosts: 'smirksoftware.com'
+  apt:
+    sources:
+    - yarn
 
 install:
   - composer install --no-suggest
