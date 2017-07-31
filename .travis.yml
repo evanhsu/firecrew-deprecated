@@ -21,7 +21,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -av --chown=firecrew --progress --delete-after $TRAVIS_BUILD_DIR $ssh_user@$deploy_host:$deploy_path
+  script: rsync -avog --chown=firecrew:firecrew --progress --delete-after $TRAVIS_BUILD_DIR $ssh_user@$deploy_host:$deploy_path
   on:
     branch: develop
 
