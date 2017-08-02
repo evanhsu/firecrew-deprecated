@@ -7,30 +7,26 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
 function CategoryMenu(props) {
-    const handleClick = (category) => () => props.history.push(`/crew/${props.match.params.crewId}/inventory/${category}`);
+  const handleClick = (category) => () => props.history.push(`/crew/${props.match.params.crewId}/inventory/${category}`);
 
-    const renderRows = () => {
-        return props.categories.map((category) => {
-            return (<MenuItem key={category} primaryText={category} onTouchTap={handleClick(category)}/>);
-        });
-    };
+  const renderRows = () => props.categories.map((category) => (<MenuItem key={category} primaryText={category} onTouchTap={handleClick(category)} />));
 
-    return (
-            <Menu>
-                { renderRows() }
-            </Menu>
-    );
+  return (
+    <Menu>
+      { renderRows() }
+    </Menu>
+  );
 }
 
 CategoryMenu.propTypes = {
-    categories: ImmutablePropTypes.list,
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
+  categories: ImmutablePropTypes.list,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 CategoryMenu.defaultProps = {
-    categories: new List(),
+  categories: new List(),
 };
 
 export default withRouter(CategoryMenu);

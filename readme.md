@@ -21,16 +21,18 @@ This project is packaged with a Vagrantfile and an Ansible playbook to construct
 
 1) Build the Vagrant machine - this will take about 5 minutes to complete because of the Ansible provisioning
 
-	$ vagrant up
-	$ vagrant ssh
-	$ sudo -iu firecrew
-	$ cd /home/firecrew/sites/firecrew.us.dev
-	$ composer install
-	$ php artisan key:generate && php artisan migrate
+    	$ vagrant up
+    	$ vagrant ssh
+    	$ sudo -iu firecrew
+    	$ cd /home/firecrew/sites/firecrew.us.dev
+    	$ composer install
+    	$ php artisan key:generate && php artisan migrate
 
-You may then run seeders if you want.
+2) You may then run seeders if you want.  Running ALL seeders will include an ETL from an inventory v1.0 database.
 
-2) On your HOST machine, navigate to the project folder and run:
+        $ php artisan db:seed
+
+3) On your HOST machine, navigate to the project folder and run:
 
 	$ yarn
 	$ yarn run watch
