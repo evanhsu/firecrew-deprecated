@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Field, Form, propTypes as reduxFormPropTypes, reduxForm} from 'redux-form/immutable';
-import {TextField} from 'redux-form-material-ui';
+import { Field, Form, propTypes as reduxFormPropTypes, reduxForm } from 'redux-form/immutable';
+import { TextField } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import getStyles from './styles';

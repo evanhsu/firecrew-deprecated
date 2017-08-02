@@ -17,7 +17,7 @@ export const fetchItems = () =>
         dispatch(receiveItemsSuccess(response));
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error); // eslint-disable-line no-console
         dispatch(receiveItemsFailure(error));
       });
   }
@@ -111,7 +111,7 @@ export const updateItem = (itemId, data) => function (dispatch) {
   }).then((response) => {
     dispatch(updateItemSuccess(itemId, response));
   }, (error) => {
-    console.log(error);
+    console.log(error); // eslint-disable-line no-console
     dispatch(updateItemFailure(error, itemId));
   });
 };
@@ -217,6 +217,6 @@ export const itemRowSelected = (itemId) => ({
 });
 
 export const ITEM_ROW_DESELECTED = 'ITEM_ROW_DESELECTED';
-export const itemRowDeselected = (itemId) => ({
+export const itemRowDeselected = () => ({
   type: ITEM_ROW_DESELECTED,
 });

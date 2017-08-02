@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   ITEM_ROW_SELECTED,
   ITEM_ROW_DESELECTED,

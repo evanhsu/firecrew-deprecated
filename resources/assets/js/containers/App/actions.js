@@ -11,8 +11,8 @@ export const toggleCategoryMenuDrawer = () => ({
 
 // export const SET_BOTTOM_DRAWER_STATE = 'SET_BOTTOM_DRAWER_STATE';
 // export const setBottomDrawerState = (open) => {
-// 	return {
-// 		type: SET_BOTTOM_DRAWER_STATE,
-// 		open,
-// 	}
+//  return {
+//    type: SET_BOTTOM_DRAWER_STATE,
+//    open,
+//  }
 // }
