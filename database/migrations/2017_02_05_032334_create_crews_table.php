@@ -17,7 +17,8 @@ class CreateCrewsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('abbreviation')->nullable();
-            $table->string('type');
+            $table->string('type')->nullable();
+            $table->string("statusable_type")->nullable();
             $table->integer('region')->nullable();
             $table->string('phone', 15)->nullable();
             $table->string('fax', 15)->nullable();
