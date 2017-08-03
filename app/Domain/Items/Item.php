@@ -41,7 +41,7 @@ class Item extends Model
      */
     public function logEntries()
     {
-    	return $this->morphMany(LogEntry::class, 'loggable');
+        return $this->morphMany(LogEntry::class, 'loggable');
     }
 
     /**
@@ -49,7 +49,7 @@ class Item extends Model
      */
     public function crew()
     {
-    	return $this->belongsTo(Crew::class);
+        return $this->belongsTo(Crew::class);
     }
 
     /**
@@ -86,9 +86,9 @@ class Item extends Model
      */
     public function incrementQuantity()
     {
-        if($this->type != 'bulk') {
+        if ($this->type != 'bulk') {
             throw new ItemTypeException('Only bulk items can have their quantity incremented');
-        } 
+        }
 
         $this->quantity++;
         $this->save();
@@ -102,11 +102,11 @@ class Item extends Model
      */
     public function decrementQuantity()
     {
-        if($this->type != 'bulk') {
+        if ($this->type != 'bulk') {
             throw new ItemTypeException('Only bulk items can have their quantity decremented');
-        } 
+        }
 
-        if($this->quantity == 0) {
+        if ($this->quantity == 0) {
             return 0;
         }
 
@@ -122,7 +122,7 @@ class Item extends Model
     public function checkIn()
     {
         try {
-            switch($this->type) {
+            switch ($this->type) {
                 case 'accountable':
                     $this->checkInAccountableItem();
                     break;
@@ -131,7 +131,7 @@ class Item extends Model
                     $this->checkInBulkIssuedItem();
                     break;
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -151,13 +151,13 @@ class Item extends Model
             $this->parent->save();
 
             $this->quantity -= 1;
-            if($this->quantity == 0) {
+            if ($this->quantity == 0) {
                 $this->delete();
             } else {
                 $this->save();
             }
 
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -172,7 +172,7 @@ class Item extends Model
      */
     public function checkOutTo(CanHaveItemsAbstract $owner)
     {
-        switch($this->type) {
+        switch ($this->type) {
             case 'accountable':
                 return $this->checkOutAccountableItem($owner);
                 break;
@@ -211,25 +211,25 @@ class Item extends Model
      */
     private function checkOutBulkItem(CanHaveItemsAbstract $owner)
     {
-        if($this->quantity <= 0) {
+        if ($this->quantity <= 0) {
             throw new \Exception('Can\'t checkout item (' . $this->category . ') because quantity is zero.');
         }
 
-        if($this->issued_items()->pluck('checked_out_to_id')->contains($owner->id)) {
+        if ($this->issued_items()->pluck('checked_out_to_id')->contains($owner->id)) {
             // Checking out another item to the same user
             return $this->issued_items->where('checked_out_to_id', $owner->id)->first()->checkOutBulkIssuedItem($owner);
         }
 
         // DB::transaction(function() use($owner) {
-            $newChild = $this->replicate();
-            $newChild->type = 'bulk_issued';
-            $newChild->parent_id = $this->id;
-            $newChild->checked_out_to()->associate($owner);
-            $newChild->quantity = 1;
-            $newChild->save();
+        $newChild = $this->replicate();
+        $newChild->type = 'bulk_issued';
+        $newChild->parent_id = $this->id;
+        $newChild->checked_out_to()->associate($owner);
+        $newChild->quantity = 1;
+        $newChild->save();
 
-            $this->quantity -= 1;
-            $this->save();
+        $this->quantity -= 1;
+        $this->save();
         // });
 
         return $newChild;
@@ -242,11 +242,11 @@ class Item extends Model
      */
     private function checkOutBulkIssuedItem(CanHaveItemsAbstract $owner)
     {
-        if($this->parent->quantity <= 0) {
-            throw new \Exception('Can\'t checkout another ' . $this->category. ' because there are none in stock.');
+        if ($this->parent->quantity <= 0) {
+            throw new \Exception('Can\'t checkout another ' . $this->category . ' because there are none in stock.');
         }
 
-        DB::transaction(function() {
+        DB::transaction(function () {
             $this->quantity += 1;
             $this->save();
             $this->parent->quantity -= 1;

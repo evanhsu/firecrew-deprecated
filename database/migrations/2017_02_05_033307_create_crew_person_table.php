@@ -26,8 +26,8 @@ class CreateCrewPersonTable extends Migration
             $table->timestamps();
 
             $table->unique(['year','crew_id','person_id']);
-            $table->foreign('person_id')->references('id')->on('people');
-            $table->foreign('crew_id')->references('id')->on('crews');
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('crew_id')->references('id')->on('crews')->onDelete('cascade');
         });
 
         Schema::enableForeignKeyConstraints();
