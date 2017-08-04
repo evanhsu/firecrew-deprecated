@@ -1,0 +1,82 @@
+<?php
+
+use App\Domain\Aircrafts\RappelHelicopter;
+use App\Domain\Aircrafts\ShortHaulHelicopter;
+use App\Domain\Aircrafts\SmokeJumperAirplane;
+use App\Domain\Crews\Crew;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use App\User;
+
+class CrewsWithAdminUsersSeeder extends Seeder
+{
+    public function run()
+    {
+        DB::table('crews')->delete();
+        DB::table('users')->delete();
+
+        // Create GLOBAL ADMIN users
+        User::create(array(
+            'name' => 'Evan',
+            'email' => 'evanhsu@gmail.com',
+            'password' => Hash::make('password'),
+            'global_admin' => true,
+        ));
+        User::create(array(
+            'name' => 'Ed Ministrator',
+            'email' => 'test@admin.com',
+            'password' => Hash::make('password'),
+            'global_admin' => true,
+        ));
+
+
+        $crew = Crew::create(array(
+            'name' => 'Grand Canyon Short Haul Crew',
+            'phone' => '330-404-5050',
+            'statusable_type' => ShortHaulHelicopter::class,
+        ));
+        User::create(array(
+            'name' => 'Grant Kenyon',
+            'email' => 'test@shorthaul.com',
+            'password' => Hash::make('password'),
+            'crew_id' => $crew->id,
+        ));
+
+        $crew = Crew::create(array(
+            'name' => 'Price Valley',
+            'phone' => '280-324-2909',
+            'statusable_type' => RappelHelicopter::class,
+        ));
+        User::create(array(
+            'name' => 'Pete Valles',
+            'email' => 'test@rappel.com',
+            'password' => Hash::make('password'),
+            'crew_id' => $crew->id,
+        ));
+
+        $crew = Crew::create(array(
+            'name' => 'Prineville Hotshots',
+            'phone' => '541-887-5477',
+            'statusable_type' => Crew::class,
+        ));
+        User::create(array(
+            'name' => 'Prine Vill',
+            'email' => 'test@hotshot.com',
+            'password' => Hash::make('password'),
+            'crew_id' => $crew->id,
+        ));
+        $crew = Crew::create(array(
+            'name' => 'Redding Smokejumpers',
+            'phone' => '541-555-6677',
+            'statusable_type' => SmokeJumperAirplane::class,
+        ));
+        User::create(array(
+            'name' => 'Red Ding',
+            'email' => 'test@smokejumper.com',
+            'password' => Hash::make('password'),
+            'crew_id' => $crew->id,
+        ));
+    }
+
+}

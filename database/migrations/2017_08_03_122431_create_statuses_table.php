@@ -26,7 +26,7 @@ class CreateStatusesTable extends Migration
             $table->integer('distance')->nullable();    // The radius of the 'buffer' to draw around this map icon
             $table->string('label_text',25)->nullable();
 
-            $table->string('popup_content')->nullable();
+            $table->text('popup_content')->nullable();
 
             $table->string('staffing_category1',30)->nullable();
             $table->string('staffing_value1',30)->nullable();
