@@ -1,0 +1,82 @@
+#login-form {
+    margin:0 auto 0 auto;
+    width:75%;
+    text-align:left;
+}
+
+#login-window {
+    width:350px;
+    height:350px;
+    border:4px dashed #99dd99;
+    margin:50px auto 0 auto;
+    padding-top:100px;
+    padding-left:0px;
+    background:url('/assets/images/crew-login-heli.png') no-repeat white;
+    background-position:right bottom;
+    border-radius:175px;
+    text-align:center;
+}
+
+#forgot-password {
+    width:100%;
+    text-align:right;
+}
+
+#forgot-password a,
+#forgot-password a:active,
+#forgot-password a:visited,
+#forgot-password a:hover
+ {
+    font-size: 0.8em;
+    color:#aaddaa;
+    font-weight:bold;
+}
+#forgot-password a:hover {
+    color:#777777;
+    text-decoration: none;
+}
+
+.form-box {
+    background-color: #ffffff;
+    border: 1px solid #555555;
+    opacity:0.8;
+    filter:alpha(opacity=80); /* For IE8 and ealier */
+    margin:20px auto 0 auto;
+    padding: 15px;
+    text-align: left;
+}
+
+.background-container {
+    background: url('/assets/images/map-lg-dim.jpg') ;
+    background-size:cover;
+    overflow-y: scroll;
+    text-align:center;
+}
+
+.crew-aircraft-form {
+    background-color: #fafafa;
+    border: 1px solid #777777;
+    padding:10px;
+    margin:10px;
+}
+
+.dynamic-form-template {
+    display:none;
+}
+
+.page-header, h1 {
+    font-size: 2.2em;
+}
+
+h2 {
+    font-size: 1.9em;
+}
+
+h3 {
+    font-size: 1.7em;
+}
+
+.freshness_notification {
+    margin-top:5px;
+    margin-bottom:0px;
+}

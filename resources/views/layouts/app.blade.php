@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'FireCrew') }}</title>
+    <title>@yield('title')</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
@@ -20,6 +20,9 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+    @section('scripts-preload')
+
+    @show
 </head>
 <body>
     <div id="app">
@@ -82,11 +85,12 @@
         @yield('content')
     </div>
 
+    @section('scripts-postload')
     <!-- Scripts -->
-    <script src="{{ mix('/js/app.js') }}"></script>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    @show
 
 </body>
 </html>

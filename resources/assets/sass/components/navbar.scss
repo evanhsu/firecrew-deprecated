@@ -1,0 +1,41 @@
+body {
+  /*min-height: 2000px;*/
+  height:100%;
+}
+
+html {
+  height:100%;
+}
+
+.container-fluid {
+  padding: 0px;
+  height: calc(100% - 51px);
+  overflow:hidden;
+}
+
+.navbar-static-top {
+  margin-bottom: 0px;
+}
+
+#mapDiv {
+  height: 100%;
+}
+
+#legendContainer {
+  height:200px;
+  position: fixed;
+  bottom:50px;
+  right:0;
+  border: 1px solid #000000;
+  background-color: white;
+  opacity: .9;
+  padding:5px;
+}
+
+
+#legendToggler {
+  height:30px;
+  position:fixed;
+  right:0;
+  bottom:250px;
+}
