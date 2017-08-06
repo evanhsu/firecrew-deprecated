@@ -2,9 +2,11 @@
 
 namespace App\Domain\Crews;
 
+use App\Domain\Aircrafts\Aircraft;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Items\Item;
 use App\Domain\People\Person;
+use App\Domain\Users\User;
 
 class Crew extends Model
 {
@@ -19,16 +21,23 @@ class Crew extends Model
 		'district'	=> 'A Ranger District or fire compound',
 	];
 
-	function people() {
+	public function aircrafts() {
+	    return $this->hasMany(Aircraft::class);
+    }
+
+	public function people() {
 		return $this->belongsToMany(Person::class, 'crew_person');
 	}
 
-	function roster($year) {
+	public function roster($year) {
 		return $this->people()->wherePivot('year',$year);
 	}
 
-	function items() {
+	public function items() {
 		return $this->hasMany(Item::class);
 	}
 
+	public function users() {
+	    return $this->hasMany(User::class);
+    }
 }

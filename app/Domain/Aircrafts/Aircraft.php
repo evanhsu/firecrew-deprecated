@@ -5,7 +5,7 @@ namespace App\Domain\Aircrafts;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Domain\Crews\Crew;
-use App\User;
+use App\Domain\Users\User;
 use App\Domain\Statuses\Status;
 
 class Aircraft extends Model
