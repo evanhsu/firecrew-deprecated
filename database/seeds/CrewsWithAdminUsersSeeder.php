@@ -7,7 +7,7 @@ use App\Domain\Crews\Crew;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\User;
+use App\Domain\Users\User;
 
 class CrewsWithAdminUsersSeeder extends Seeder
 {
@@ -20,13 +20,14 @@ class CrewsWithAdminUsersSeeder extends Seeder
         User::create(array(
             'name' => 'Evan',
             'email' => 'evanhsu@gmail.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
+            'password'	=> bcrypt('password'),
             'global_admin' => true,
         ));
         User::create(array(
             'name' => 'Ed Ministrator',
             'email' => 'test@admin.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'global_admin' => true,
         ));
 
@@ -39,7 +40,7 @@ class CrewsWithAdminUsersSeeder extends Seeder
         User::create(array(
             'name' => 'Grant Kenyon',
             'email' => 'test@shorthaul.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'crew_id' => $crew->id,
         ));
 
@@ -51,7 +52,7 @@ class CrewsWithAdminUsersSeeder extends Seeder
         User::create(array(
             'name' => 'Pete Valles',
             'email' => 'test@rappel.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'crew_id' => $crew->id,
         ));
 
@@ -63,7 +64,7 @@ class CrewsWithAdminUsersSeeder extends Seeder
         User::create(array(
             'name' => 'Prine Vill',
             'email' => 'test@hotshot.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'crew_id' => $crew->id,
         ));
         $crew = Crew::create(array(
@@ -74,7 +75,7 @@ class CrewsWithAdminUsersSeeder extends Seeder
         User::create(array(
             'name' => 'Red Ding',
             'email' => 'test@smokejumper.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'crew_id' => $crew->id,
         ));
     }

@@ -12,6 +12,6 @@ class EtlDbSeeder extends Seeder
     public function run()
     {
         //
-        DB::unprepared(file_get_contents('app/Console/ETL/siskiyou_general.sql'));
+        DB::connection('etl_source')->unprepared(file_get_contents('app/Console/ETL/siskiyou_general.sql'));
     }
 }

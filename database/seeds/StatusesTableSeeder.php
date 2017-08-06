@@ -6,7 +6,7 @@ use App\Domain\Aircrafts\ShortHaulHelicopter;
 use App\Domain\Aircrafts\SmokeJumperAirplane;
 use App\Domain\Crews\Crew;
 use App\Domain\Statuses\Status;
-use App\User;
+use App\Domain\Users\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
