@@ -17,8 +17,8 @@ class CapitalizeTailnumber
      */
     public function handle($request, Closure $next)
     {
-        if(Route::current()->hasParameter('tailnumber')) {
-            Route::current()->setParameter('tailnumber', strtoupper(Route::current()->getParameter('tailnumber')));
+        if(in_array('tailnumber', $request->route()->parameters())) {
+            Route::current()->setParameter('tailnumber', strtoupper($request->route('tailnumber')));
         }
 
         return $next($request);
