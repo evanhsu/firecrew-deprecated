@@ -1,4 +1,4 @@
-@extends('../layouts.application_layout')
+@extends('../layouts.app')
 
 @section('title','Crews - RescueCircle')
 

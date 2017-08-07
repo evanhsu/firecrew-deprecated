@@ -1,4 +1,4 @@
-@extends('../layouts.application_layout')
+@extends('../layouts.app')
 
 <?php
 function drawOneAircraftForm($index, $aircraft, $template = false) {

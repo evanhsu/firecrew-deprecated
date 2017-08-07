@@ -1,6 +1,6 @@
-@extends('../layouts.application_layout')
+@extends('../layouts.app')
 
-@section('title','Update - RescueCircle')
+@section('title','Update Status')
 
 
 @section('content')

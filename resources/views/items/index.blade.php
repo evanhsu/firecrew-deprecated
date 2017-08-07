@@ -9,3 +9,7 @@
     <div class="row" id="inventory"></div>
 </div>
 @endsection
+
+@section('scripts-postload')
+<script src="{{ mix('/js/app.js') }}"></script>
+@endsection

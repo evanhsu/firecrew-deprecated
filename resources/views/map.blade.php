@@ -25,7 +25,7 @@
 
 
 @section('content')
-    <div id="container-fluid" class="container-fluid">
+    <div id="content" class="container-fluid">
         <div id="mapDiv">
         <!-- ArcMap gets placed here -->
         </div> <!-- /mapDiv -->

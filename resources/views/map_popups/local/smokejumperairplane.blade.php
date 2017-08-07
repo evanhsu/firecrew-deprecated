@@ -9,7 +9,9 @@
 <table class="popup-table">
     <tr>
         <td class="logo-cell" aria-label="Logo" title="Crew Logo">
-            <img src="{{ $crew->logo_filename }}"/>
+            @if (file_exists(public_path('images/'.$crew->logo_filename)))
+                <img src="{{ asset('images/'.$crew->logo_filename) }}"/>
+            @endif
         </td>
 
         <td aria-label="Aircraft Info" title="Current manager & aircraft info">

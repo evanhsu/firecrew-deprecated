@@ -72,7 +72,7 @@
                 <td>{{ $item['size'] }}</td>
                 <td>{{ $item['color'] }}</td>
                 <td>{{ $item['description'] }}</td>
-                <td>{{ $item->checked_out_to->full_name }}</td>
+                <td>{{ $item->checked_out_to->name }}</td>
                 <td>{{ $item['condition'] }}</td>
                 <td>{{ $item['note'] }}</td>
                 <td>{{ $item['usable'] }}</td>
