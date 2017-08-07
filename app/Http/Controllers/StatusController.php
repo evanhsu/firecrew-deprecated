@@ -40,11 +40,11 @@ class StatusController extends Controller
         $resources = DB::table('statuses as newest')
                         ->leftjoin('statuses as newer', function($join) {
                             $join->on('newer.statusable_id','=','newest.statusable_id');
-                            $join->on('newer.created_at','>','newest.created_at');
+                            $join->on('newer.updated_at','>','newest.updated_at');
                             })
                         ->select('newest.*')
-                        ->whereNull('newer.created_at')
-                        ->where('newest.created_at','>=',$earliest_date)
+                        ->whereNull('newer.updated_at')
+                        ->where('newest.updated_at','>=',$earliest_date)
                         ->get();
 
 /*      Here's the raw SQL query for testing and debugging:
@@ -72,7 +72,7 @@ class StatusController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created Status in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -95,7 +95,7 @@ class StatusController extends Controller
         $crew = Crew::find($crew_id);
 
         // Make sure current user is authorized
-        if(Auth::user()->cannot('actAsAdminForCrew', $crew_id)) {
+        if(Auth::user()->cannot('act-as-admin-for-crew', $crew_id)) {
             // The current user does not have permission to perform admin functions for this crew
             return redirect()->back()->withErrors("You're not authorized to update that crew!");
         }
@@ -115,10 +115,10 @@ class StatusController extends Controller
         $status = new Status(Input::all());
 
         // Add a period to the LabelText field - this is a a workaround for the ArcGIS server to be able to render a buffer around the shorthaulhelicopter features
-        $status->LabelText = ".";
+        $status->label_text = ".";
 
         // Insert the identity of the User who created this Status update (the CURRENT user):
-        $status->created_by_name = Auth::user()->fullname();
+        $status->created_by_name = Auth::user()->name;
         $status->created_by_id = Auth::user()->id;
 
         // Insert the name of the Crew that owns this Status update (if this Status refers to a Crew, then 'crew_name' will be the same as 'statusable_name')
