@@ -64,7 +64,8 @@ class Status extends Model
         //           $this->statusable_type_plain() == "aircraft"
 
         if ($pos = strrpos($this->statusable_type, '\\')) {
-            return strtolower(substr($this->statusable_type, $pos + 1));
+            $chunks = explode('\\', $this->statusable_type);
+            return strtolower($chunks[count($chunks)-1]);
         } else {
             return strtolower($this->statusable_type);
         }

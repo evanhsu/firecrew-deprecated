@@ -40,4 +40,17 @@ class Crew extends Model
 	public function users() {
 	    return $this->hasMany(User::class);
     }
+
+    public function crew() {
+	    return $this;
+    }
+
+    public function statusable_type_plain() {
+        if ($pos = strrpos($this->statusable_type, '\\')) {
+            $chunks = explode('\\', $this->statusable_type);
+            return strtolower($chunks[count($chunks)-1]);
+        } else {
+            return strtolower($this->statusable_type);
+        }
+    }
 }
