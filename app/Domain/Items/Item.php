@@ -3,14 +3,19 @@
 namespace App\Domain\Items;
 
 use App\Exceptions\ItemTypeException;
+use App\Exceptions\UnknownItemTypeException;
 use Illuminate\Database\Eloquent\Model;
-use App\Domain\Items\CanHaveItemsInterface;
 use App\Domain\Crews\Crew;
 use App\Domain\LogEntries\LogEntry;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class Item extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = [
         'type',
         'category',
@@ -31,12 +36,17 @@ class Item extends Model
         'source',
     ];
 
-    //
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function logEntries()
     {
     	return $this->morphMany(LogEntry::class, 'loggable');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function crew()
     {
     	return $this->belongsTo(Crew::class);
@@ -46,6 +56,7 @@ class Item extends Model
      *  For Bulk-Issued items only.
      *  The parent item is the 'bulk' item collection that this 'bulk_issued'
      *  item was issued from.
+     * @return BelongsTo
      *
      */
     public function parent()
@@ -56,7 +67,7 @@ class Item extends Model
     /**
      *  For Bulk items only.
      *  Returns the collection of bulk_issued items for whom this Item is the parent.
-     *
+     * @return HasMany
      */
     public function issued_items()
     {
@@ -69,6 +80,10 @@ class Item extends Model
     }
 
 
+    /**
+     * @return mixed
+     * @throws ItemTypeException
+     */
     public function incrementQuantity()
     {
         if($this->type != 'bulk') {
@@ -81,6 +96,10 @@ class Item extends Model
         return $this->quantity;
     }
 
+    /**
+     * @return int
+     * @throws ItemTypeException
+     */
     public function decrementQuantity()
     {
         if($this->type != 'bulk') {
@@ -96,7 +115,10 @@ class Item extends Model
 
         return $this->quantity;
     }
-    
+
+    /**
+     * @return bool
+     */
     public function checkIn()
     {
         try {
@@ -140,10 +162,15 @@ class Item extends Model
         }
 
         return true;
-    }   
+    }
 
 
-    public function checkOutTo(CanHaveItemsInterface $owner)
+    /**
+     * @param CanHaveItemsAbstract $owner
+     * @return bool|Model
+     * @throws UnknownItemTypeException
+     */
+    public function checkOutTo(CanHaveItemsAbstract $owner)
     {
         switch($this->type) {
             case 'accountable':
@@ -165,7 +192,11 @@ class Item extends Model
         }
     }
 
-    private function checkOutAccountableItem(CanHaveItemsInterface $owner)
+    /**
+     * @param CanHaveItemsAbstract $owner
+     * @return bool
+     */
+    private function checkOutAccountableItem(CanHaveItemsAbstract $owner)
     {
         $this->checked_out_to()->associate($owner);
         $this->save();
@@ -173,10 +204,15 @@ class Item extends Model
         return true;
     }
 
-    private function checkOutBulkItem(CanHaveItemsInterface $owner)
+    /**
+     * @param CanHaveItemsAbstract $owner
+     * @return Model
+     * @throws \Exception
+     */
+    private function checkOutBulkItem(CanHaveItemsAbstract $owner)
     {
         if($this->quantity <= 0) {
-            throw new \Exception('No items remain to be checked out.');
+            throw new \Exception('Can\'t checkout item (' . $this->category . ') because quantity is zero.');
         }
 
         if($this->issued_items()->pluck('checked_out_to_id')->contains($owner->id)) {
@@ -199,10 +235,15 @@ class Item extends Model
         return $newChild;
     }
 
-    private function checkOutBulkIssuedItem(CanHaveItemsInterface $owner)
+    /**
+     * @param CanHaveItemsAbstract $owner
+     * @return $this
+     * @throws \Exception
+     */
+    private function checkOutBulkIssuedItem(CanHaveItemsAbstract $owner)
     {
         if($this->parent->quantity <= 0) {
-            throw new \Exception('No items remain to be checked out.');
+            throw new \Exception('Can\'t checkout another ' . $this->category. ' because there are none in stock.');
         }
 
         DB::transaction(function() {

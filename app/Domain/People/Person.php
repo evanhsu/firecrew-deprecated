@@ -3,11 +3,10 @@
 namespace App\Domain\People;
 
 use App\Domain\Crews\Crew;
-use Illuminate\Database\Eloquent\Model;
+use App\Domain\Items\CanHaveItemsAbstract;
 use App\Domain\Items\Item;
-use App\Domain\Items\CanHaveItemsInterface;
 
-class Person extends Model implements CanHaveItemsInterface
+class Person extends CanHaveItemsAbstract
 {
     protected $appends = ['full_name'];
     protected $dates = [
