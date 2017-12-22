@@ -77,13 +77,13 @@ users:
       
     vhosts:
       - listen: "80"
-        server_name: "firecrew.us.dev"
+        server_name: "firecrew.us.local"
         server_aliases:
-          - "www.firecrew.us.dev"
-          - "inventory.firecrew.us.dev"
-          - "budget.firecrew.us.dev"
+          - "www.firecrew.us.local"
+          - "inventory.firecrew.us.local"
+          - "budget.firecrew.us.local"
         php: true
-        root: "/home/firecrew/sites/firecrew.us.dev/public"
+        root: "/home/firecrew/sites/firecrew.us.local/public"
 
     cron:
-      - "* * * * * php /home/firecrew/sites/firecrew.us.dev/artisan schedule:run >> /dev/null 2>&1"
+      - "* * * * * php /home/firecrew/sites/firecrew.us.local/artisan schedule:run >> /dev/null 2>&1"

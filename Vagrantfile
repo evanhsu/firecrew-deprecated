@@ -11,8 +11,8 @@ Vagrant.configure("2") do |config|
   config.hostmanager.ignore_private_ip = false
   config.hostmanager.include_offline = true
 
-  config.vm.define 'firecrew.us.dev' do |node|
-    node.vm.hostname = 'firecrew.us.dev'
+  config.vm.define 'firecrew.us.local' do |node|
+    node.vm.hostname = 'firecrew.us.local'
     node.vm.network :private_network, ip: '192.168.33.10'
     # node.hostmanager.aliases = %w(example-box.localdomain example-box-alias)
 
@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
     # Open up the permissions on the shared folder so ANYONE can write
     # because permissions can't be changed after provisioning (no chown/chmod)
     node.vm.synced_folder ".", 
-    "/home/firecrew/sites/firecrew.us.dev", 
+    "/home/firecrew/sites/firecrew.us.local",
     mount_options: ["dmode=777", "fmode=666"]
   end
 
