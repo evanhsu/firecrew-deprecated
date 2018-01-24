@@ -17,14 +17,21 @@ class Crew extends Model
 		'hotshot'	=> 'Interagency Hotshot Crew',
 		'engine'	=> 'Engine Crew',
 		'helitack'	=> 'Helitack Crew (not Short Haul or Rappel)',
-		'shorthaul'	=> 'Short Haul',
-		'rappel'	=> 'Rappel Crew',
-		'smokejumper'=>'Smokejumper Base',
+		'shorthaulhelicopter'	=> 'Short Haul',
+		'rappelhelicopter'	=> 'Rappel Crew',
+		'smokejumperairplane'=>'Smokejumper Base',
 		'district'	=> 'A Ranger District or fire compound',
 	];
 
-	public function aircrafts() {
-	    return $this->hasMany(Aircraft::class);
+    public function aircrafts() {
+        // return $this->hasMany(Aircraft::class);
+        if($this->is_an_aircraft_crew()) {
+            $classname = $this->statusable_type;
+            return $this->hasMany($classname);
+        }
+        else {
+            return false;
+        }
     }
 
 	public function people() {
@@ -95,7 +102,7 @@ class Crew extends Model
     public function resource_type()
     {
         // Returns a human-friendly text string that describes this crew's fire resource type (i.e. Short Haul Crew or Hotshot Crew)
-        return (self::$types[$this->statusable_type_plain()] || "Unknown");
+        return self::$types[$this->statusable_type_plain()];
     }
 
     public function freshness() {

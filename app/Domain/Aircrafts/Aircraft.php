@@ -58,8 +58,7 @@ class Aircraft extends Model
     public function statuses()
     {
         // Create a relationship with the polymorphic Status model
-        return $this->morphMany(Status::class, 'statusable');
-        // return $this->morphMany(Status::class, 'statusable');
+        return $this->morphMany('App\Domain\Statuses\Status', 'statusable');
     }
 
     public function status()
