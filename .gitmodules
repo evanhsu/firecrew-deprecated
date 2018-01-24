@@ -1,0 +1,3 @@
+[submodule "ansible"]
+	path = ansible
+	url = https://github.com/evanhsu/ansible-shared-host.git
