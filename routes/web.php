@@ -44,18 +44,27 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 // CREWS
-    Route::get('/crew',                	array('as' => 'crews_index',    				'uses' => 'CrewController@index'));
-    Route::get('/crew/new',            	array('as' => 'new_crew',       				'uses' => 'CrewController@create'));
-    Route::post('/crew',               	array('as' => 'store_crew',     				'uses' => 'CrewController@store'));
-    Route::get('/crew/{id}',       		array('as' => 'crew',       					'uses' => 'CrewController@show'));
-    Route::post('/crew/{id}',			array('as' => 'update_crew',					'uses' => 'CrewController@update'));
-    Route::get('/crew/{id}/update',     array('as' => 'new_status_for_crew',    		'uses' => 'CrewController@newStatus'));
-    Route::get('/crew/{id}/post',       array('as' => 'status_form_selector_for_crew',  'uses' => 'CrewController@redirectToStatusUpdate'));
-    Route::get('/crew/{id}/status',     array('as' => 'current_status_for_crew',		'uses' => 'CrewController@showCurrentStatus'));
-    Route::get('/crew/{id}/identity',  	array('as' => 'edit_crew',  					'uses' => 'CrewController@edit'));
-    Route::get('/crew/{id}/accounts',  	array('as' => 'users_for_crew',					'uses' => 'CrewController@accounts'));
-    Route::get( '/crew/{id}/accounts/new', array('as' => 'new_user_for_crew',  			'uses' => 'AccountController@new'));
-    Route::post('/crew/{id}/destroy',  	array('as' => 'destroy_crew',   				'uses' => 'CrewController@destroy'));
+    Route::prefix('crew')->namespace('Crew')->group(function () {
+        Route::get('/',                 array('as' => 'crews_index',    'uses' => 'CrewController@index'));
+        Route::post('/',                array('as' => 'store_crew',     'uses' => 'CrewController@store'));
+        Route::get('/new',              array('as' => 'new_crew',       'uses' => 'CrewController@create'));
+        Route::get('/{crewId}',         array('as' => 'crew',           'uses' => 'CrewController@show'));
+        Route::get('/{crewId}/identity',array('as' => 'edit_crew',      'uses' => 'CrewController@edit'));
+        Route::post('/{crewId}',        array('as' => 'update_crew',    'uses' => 'CrewController@update')); // TODO: Update method to PATCH
+
+        Route::prefix('{crewId}/status')->group(function () {
+            Route::get('/',         array('as' => 'current_status_for_crew',        'uses' => 'CrewStatusController@showCurrentStatus'));
+            Route::get('/update',   array('as' => 'new_status_for_crew',            'uses' => 'CrewStatusController@newStatus'));
+            Route::get('/router',   array('as' => 'status_form_selector_for_crew',  'uses' => 'CrewStatusController@redirectToStatusUpdate'));
+        });
+
+        Route::prefix('{crewId}/accounts')->group(function () {
+            Route::get('/',     array('as' => 'users_for_crew',    'uses' => 'CrewAccountController@accounts'));
+            Route::get('/new',  array('as' => 'new_user_for_crew', 'uses' => 'AccountController@new'));
+        });
+
+        Route::post('/crew/{crewId}/destroy', array('as' => 'destroy_crew', 'uses' => 'CrewController@destroy'));
+    });
 
 
 // ACCOUNTS
