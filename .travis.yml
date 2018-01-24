@@ -3,6 +3,7 @@ language: php
 php: '7.0'
 git:
   depth: 3
+  submodules: false
 
 addons:
   ssh_known_hosts: 'smirksoftware.com'
