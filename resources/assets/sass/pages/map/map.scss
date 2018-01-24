@@ -1,12 +1,14 @@
 #mapDiv {
-  height: 100%;
+  height: calc(100vh - 51px); // Subtract navbar height
 }
 
+/* mapDiv_root is generated dynamically by the esri library */
 #mapDiv_root {
   width: 100%;
   max-width: 100%;
 }
 
+/* mapDiv_container is generated dynamically by the esri library */
 #mapDiv_container {
   width: 100%;
   max-width: 100%;
