@@ -12,3 +12,4 @@ Homestead.yaml
 .vagrant
 app/Console/ETL/*.sql
 yarn-error.log
+ansible_vault_password
