@@ -1,12 +1,16 @@
 @extends('../layouts.app')
 
 <?php
+use App\Domain\Aircrafts\Aircraft;
+
+/**
+ * @param int       $index      The array index to use when submitting this form
+ * @param Aircraft|array          $aircraft   An Aircraft model to populate this form with - ['tailnumber'=>'N12345', 'model'=>'Bell 205']
+ * @param bool      $template   If TRUE, this function will draw the blank template for an Aircraft Form rather than a populated form.
+ */
 function drawOneAircraftForm($index, $aircraft, $template = false) {
-    // $index       integer     The array index to use when submitting this form
-    // $aircraft    Aircraft    An Aircraft model to populate this form with - ['tailnumber'=>'N12345', 'model'=>'Bell 205']
-    // $template    boolean     If TRUE, this function will draw the blank template for an Aircraft Form rather than a populated form.
     if($template) {
-        $aircraft = new App\Aircraft(array("tailnumber"=>"","model"=>""));
+        $aircraft = new Aircraft(array("tailnumber"=>"","model"=>""));
         $index = "";
     }
     $output = "<div class=\"crew-aircraft-form";
@@ -43,6 +47,7 @@ function drawOneAircraftForm($index, $aircraft, $template = false) {
                             <a href=\"".route('new_status_for_aircraft',$aircraft->tailnumber)."\" class=\"btn btn-default\" role=\"button\">Go to the Status Page</a>
                         </div>
                     </div>\n";
+
         $output .= freshnessNotify($aircraft->freshness());
     }
     else {
