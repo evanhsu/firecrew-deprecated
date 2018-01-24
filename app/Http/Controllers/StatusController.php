@@ -7,23 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Form;
 use Carbon\Carbon;
 use App\Domain\Crews\Crew;
 use App\Domain\Statuses\Status;
 
 class StatusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * This function responds to AJAX requests from the map to update all resources
      *
@@ -58,17 +47,6 @@ class StatusController extends Controller
 */
         // sleep(4); // Test asynchronous loading on the map view
         return json_encode($resources);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-
     }
 
     /**
@@ -142,7 +120,7 @@ class StatusController extends Controller
             return redirect()->back()->with('alert', array('message' => 'Status update saved!', 'type' => 'success'));
 
         /*
-            // Changes have been saved to the local database, now initiate an update on the ArcGIS Server...
+            // Changes have been saved to the local database, now initiate an update on the remote ArcGIS Server...
             // Render a different popup view to be sent to the EGP, but don't save it locally
             $status->popup_content = $this->generatePopup($status, $crew, "egp");
 
@@ -190,51 +168,6 @@ class StatusController extends Controller
         $v_no_whitespace = preg_replace('/\s+/', ' ', $v); // Remove line-breaks, new-line and repeated spaces
 
         return $v_no_whitespace;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
     protected function decMinToDecDeg($deg, $min) {
