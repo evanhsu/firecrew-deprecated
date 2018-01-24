@@ -21,7 +21,7 @@ This project is packaged with a Vagrantfile and an Ansible playbook to construct
 
 1) Make sure you clone the submodule, which contains the Ansible playbook for provisioning the vagrant box:
 
-        $ git submodule update --remote
+        $ git submodule update --init --recursive
         
 2) Create the Ansible Vault password file.  There are some encrypted files in the Ansible Playbook which need to be
    decrypted before the playbook will run.
