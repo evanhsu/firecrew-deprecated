@@ -53,26 +53,28 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/{crewId}',        array('as' => 'update_crew',    'uses' => 'CrewController@update')); // TODO: Update method to PATCH
 
         Route::prefix('{crewId}/status')->group(function () {
-            Route::get('/',         array('as' => 'current_status_for_crew',        'uses' => 'CrewStatusController@showCurrentStatus'));
-            Route::get('/update',   array('as' => 'new_status_for_crew',            'uses' => 'CrewStatusController@newStatus'));
-            Route::get('/router',   array('as' => 'status_form_selector_for_crew',  'uses' => 'CrewStatusController@redirectToStatusUpdate'));
+            Route::get('/',             array('as' => 'current_status_for_crew',        'uses' => 'CrewStatusController@showCurrentStatus'));
+            Route::get('/update',       array('as' => 'new_status_for_crew',            'uses' => 'CrewStatusController@newStatus'));
+            Route::get('/router',       array('as' => 'status_form_selector_for_crew',  'uses' => 'CrewStatusController@redirectToStatusUpdate'));
         });
 
         Route::prefix('{crewId}/accounts')->group(function () {
-            Route::get('/',     array('as' => 'users_for_crew',    'uses' => 'CrewAccountController@accounts'));
-            Route::get('/new',  array('as' => 'new_user_for_crew', 'uses' => 'AccountController@new'));
+            Route::get('/',             array('as' => 'users_for_crew',    'uses' => 'CrewAccountController@accounts'));
+            Route::get('/new',          array('as' => 'new_user_for_crew', 'uses' => 'AccountController@new'));
         });
 
-        Route::post('/crew/{crewId}/destroy', array('as' => 'destroy_crew', 'uses' => 'CrewController@destroy'));
+        Route::post('/{crewId}/destroy',array('as' => 'destroy_crew', 'uses' => 'CrewController@destroy'));
     });
 
+// STATUS
+    Route::post('/status',              array('as' => 'store_status',   'uses' => 'StatusController@store'));
 
 // ACCOUNTS
-    Route::get('/account',					array('as' => 'users_index',	'uses' => 'AccountController@index'));
-    Route::post('/account', 			    array('as' => 'register_user',	'uses' => 'RegisterController@postRegister'));
-    Route::get('/account/{id}',			    array('as' => 'edit_user',		'uses' => 'AccountController@edit'));
-    Route::post('/account/{id}',			array('as' => 'update_user',	'uses' => 'AccountController@update'));
-    Route::post('/account/{id}/destroy',	array('as' => 'destroy_user',	'uses' => 'AccountController@destroy'));
+    Route::get('/account',				array('as' => 'users_index',	'uses' => 'AccountController@index'));
+    Route::post('/account', 			array('as' => 'register_user',	'uses' => 'RegisterController@postRegister'));
+    Route::get('/account/{id}',			array('as' => 'edit_user',		'uses' => 'AccountController@edit'));
+    Route::post('/account/{id}',		array('as' => 'update_user',	'uses' => 'AccountController@update'));
+    Route::post('/account/{id}/destroy',array('as' => 'destroy_user',	'uses' => 'AccountController@destroy'));
 
 });
 

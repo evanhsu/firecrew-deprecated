@@ -118,35 +118,6 @@ class StatusController extends Controller
         // Attempt to save
         if($status->save()) {
             return redirect()->back()->with('alert', array('message' => 'Status update saved!', 'type' => 'success'));
-
-        /*
-            // Changes have been saved to the local database, now initiate an update on the remote ArcGIS Server...
-            // Render a different popup view to be sent to the EGP, but don't save it locally
-            $status->popup_content = $this->generatePopup($status, $crew, "egp");
-
-            $objectids = ArcServer::findFeature($status);
-            if($objectids === false) {
-                // An error occurred in findFeature() - check 'laravel.log' for details
-                return redirect()->back()->with('alert', array('message' => 'Status update was saved locally, but could not be sent to the EGP (findFeature error).', 'type' => 'danger'));
-            }
-            elseif(!isset($objectids[0]) || ($objectids[0] == '')) {
-                // The server responded, but the request feature was not found - add it.
-                $result = ArcServer::addFeature($status);
-            }
-            else {
-                // The Feature being updated was found on the ArcGIS server - now update it.
-                $objectid = $objectids[0];
-                $result = ArcServer::updateFeature($objectid,$status);
-            }
-            
-            // Check the ArcGIS server response to determine if the operation was successful or not.
-            if(empty($result->error)) {
-                return redirect()->back()->with('alert', array('message' => 'Status update saved!', 'type' => 'success'));
-            }
-            else {
-                return redirect()->back()->with('alert', array('message' => 'Status update was saved locally, but could not be sent to the EGP: '.$result->error, 'type' => 'danger'));
-            }
-        */
         }
         return redirect()->back()->with('alert', array('message' => 'Status update failed!', 'type' => 'danger'));
     }
