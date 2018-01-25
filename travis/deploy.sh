@@ -10,4 +10,4 @@ ssh ${ssh_user}@${deploy_host} "sudo cp -a ~/deploy/. ${deploy_path}/"
 ssh ${ssh_user}@${deploy_host} "sudo chown -RP --quiet --preserve-root ${site_owner}:${site_owner} ${deploy_path}"
 
 # Migrate the database
-ssh ${ssh_user}@${deploy_host} "sudo -u ${site_owner} php ${site_path}/artisan migrate --force"
+ssh ${ssh_user}@${deploy_host} "sudo -u ${site_owner} php ${deploy_path}/artisan migrate --force"
