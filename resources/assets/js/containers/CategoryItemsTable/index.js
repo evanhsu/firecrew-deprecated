@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import AccountableItemTable from '../../components/AccountableItemTable';
@@ -58,6 +59,11 @@ class CategoryItemsTable extends Component {
         return this.props.activeItemRow !== null;
     };
 
+    handleUpdateItem = (itemId) => (data) => {
+        this.props.updateItem(itemId, data);
+        this.props.itemRowDeselected(itemId);
+    };
+
     render() {
         return (
                 <div>
@@ -66,6 +72,7 @@ class CategoryItemsTable extends Component {
                             items={this.props.accountableItems}
                             onRowClick={this.handleRowClick}
                             selectedItemRow={this.props.selectedItemRow}
+                            onUpdateItem={this.handleUpdateItem}
                     />
                     <BulkItemTable
                             items={this.props.bulkItems}
@@ -73,11 +80,13 @@ class CategoryItemsTable extends Component {
                             handleIncrement={this.handleIncrement}
                             handleDecrement={this.handleDecrement}
                             selectedItemRow={this.props.selectedItemRow}
+                            onUpdateItem={this.handleUpdateItem}
                     />
                     <BulkIssuedItemTable
                             items={this.props.bulkIssuedItems}
                             onRowClick={this.handleRowClick}
                             selectedItemRow={this.props.selectedItemRow}
+                            onUpdateItem={this.handleUpdateItem}
                     />
                 </div>
         );
@@ -92,6 +101,7 @@ function mapDispatchToProps(dispatch) {
         itemRowDeselected: (itemId) => dispatch(Actions.itemRowDeselected(itemId)),
         incrementItem: (itemId) => dispatch(Actions.incrementItem(itemId)),
         decrementItem: (itemId) => dispatch(Actions.decrementItem(itemId)),
+        updateItem: (itemId, data) => dispatch(Actions.updateItem(itemId, data)),
     }
 }
 

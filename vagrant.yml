@@ -1,0 +1,88 @@
+---
+# group_vars/vagrant.yml
+# These variables apply to the VAGRANT environment.
+#
+#
+# This is a list of all the user accounts, vhosts, databases, etc that should exist on the server.
+# The user name will also be used to create a home-folder, a vhost, and a database.
+#
+# NOTE: usernames are limited to 32 characters
+
+# Syntax and options for vhost entries are documented in the Readme.md file.
+
+GROUPS_LIST:
+
+  - &developers
+    name: "developers"
+    id: 2001
+  - &clients
+    name: "clients"
+    id: 2002
+
+
+
+DEVELOPERS_LIST:
+
+  - &evan
+    name: "evan"
+    id: 2101
+    groups:
+      - "developers"
+      - "sudo"
+    ssh_keys:
+      - "evan.pub"
+      - "evan_at_eva.pub"
+      - "evan_at_home.pub"
+
+
+postfix_settings:
+  postfix_domain: 'localhost'
+  postfix_notify_email: 'support@localhost.com'
+#  postfix_use_smtp: true
+#  postfix_relayhost: '[smtp.mailtrap.io]:2525'
+#  postfix_relayhost_user: ''
+#  postfix_relayhost_pass: ''
+
+
+CLIENTS_LIST:
+
+  - &firecrew
+    name: "firecrew"
+    id: 2201
+    groups:
+      - "clients"
+
+user_groups:
+  - <<: *developers
+  - <<: *clients
+
+users:
+  - <<: *evan
+
+  - <<: *firecrew
+
+    databases:
+      - name: "firecrew"
+        collation: "utf8mb4_unicode_ci"
+        encoding: "utf8mb4"
+
+      - name: "siskiyou_general"
+        collation: "utf8mb4_unicode_ci"
+        encoding: "utf8mb4"
+
+    nodejs:
+      version: 6.9.5
+      packages:
+        - name: yarn
+      
+    vhosts:
+      - listen: "80"
+        server_name: "firecrew.us.local"
+        server_aliases:
+          - "www.firecrew.us.local"
+          - "inventory.firecrew.us.local"
+        php: true
+        root: "/home/firecrew/sites/firecrew.us.local/public"
+
+    cron:
+      - "* * * * * php /home/firecrew/sites/firecrew.us.local/artisan schedule:run >> /dev/null 2>&1"

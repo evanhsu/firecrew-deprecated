@@ -2,16 +2,15 @@
 
 namespace App\Domain\Vips;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Domain\Items\CanHaveItemsAbstract;
 use App\Domain\Crews\Crew;
 use App\Domain\Items\Item;
-use App\Domain\Items\CanHaveItemsInterface;
 
 /**
  *  A Vip is a temporary person who is created solely to check out an item.
  *
 **/
-class Vip extends Model implements CanHaveItemsInterface
+class Vip extends CanHaveItemsAbstract
 {
     protected $appends = ['full_name'];
 

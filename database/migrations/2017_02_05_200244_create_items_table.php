@@ -36,7 +36,7 @@ class CreateItemsTable extends Migration
             $table->string('source')->nullable();
             $table->timestamps();
 
-            $table->foreign('crew_id')->references('id')->on('crews');
+            $table->foreign('crew_id')->references('id')->on('crews')->onDelete('cascade');
             $table->foreign('parent_id')->references('id')->on('items')->onDelete('cascade');
         });
 

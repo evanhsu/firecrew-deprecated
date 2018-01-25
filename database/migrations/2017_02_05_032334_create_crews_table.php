@@ -17,9 +17,17 @@ class CreateCrewsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('abbreviation')->nullable();
-            $table->string('type');
-            $table->integer('region');
-            $table->string('logo_filename');
+            $table->string('type')->nullable();
+            $table->string("statusable_type")->nullable();
+            $table->integer('region')->nullable();
+            $table->string('phone', 15)->nullable();
+            $table->string('fax', 15)->nullable();
+            $table->string('logo_filename')->nullable();
+            $table->string('address_street1')->nullable();
+            $table->string('address_street2')->nullable();
+            $table->string('address_city')->nullable();
+            $table->string('address_state')->nullable();
+            $table->string('address_zip')->nullable();
             $table->timestamps();
         });
     }

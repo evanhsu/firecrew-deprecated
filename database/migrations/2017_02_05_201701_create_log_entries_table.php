@@ -28,7 +28,7 @@ class CreateLogEntriesTable extends Migration
             $table->string('comments')->nullable();
             $table->timestamps();
 
-            $table->foreign('person_id')->references('id')->on('people');
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('set null');
         });
 
         Schema::enableForeignKeyConstraints();

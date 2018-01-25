@@ -1,4 +1,3 @@
-require('./bootstrap');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -14,6 +13,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import rootReducer from './reducers';
 import App from './containers/App';
 import { fetchItems } from './containers/CategoryItemsTable/actions';
+require('./bootstrap');
 
 
 // Needed for onTouchTap (Material-UI)
@@ -30,27 +30,27 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const initialState = fromJS({});
 
 const store = createStore(
-        rootReducer,
-        initialState,
-        composeEnhancers(
-                applyMiddleware(
-                        thunkMiddleware, // lets us dispatch() functions
-                        routerMiddleware(history),
-                )
-        )
+  rootReducer,
+  initialState,
+  composeEnhancers(
+    applyMiddleware(
+      thunkMiddleware, // lets us dispatch() functions
+      routerMiddleware(history)
+    )
+  )
 );
 
 store.dispatch(fetchItems()); // TODO: Move this to CategoryItemsTable.componentWillUpdate?
 
 if (document.getElementById('inventory')) {
-    ReactDOM.render(
-            <Provider store={store}>
-                <ConnectedRouter history={history}>
-                    <MuiThemeProvider>
-                        <Route path="/crew/:crewId/inventory" component={App}/>
-                    </MuiThemeProvider>
-                </ConnectedRouter>
-            </Provider>,
-            document.getElementById('inventory')
-    )
+  ReactDOM.render(
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <MuiThemeProvider>
+          <Route path="/crew/:crewId/inventory" component={App} />
+        </MuiThemeProvider>
+      </ConnectedRouter>
+    </Provider>,
+    document.getElementById('inventory')
+  );
 }

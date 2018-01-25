@@ -66,6 +66,22 @@ return [
 
     'timezone' => 'UTC',
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Data Freshness Time Limits
+    |--------------------------------------------------------------------------
+    |
+    | These values will determine when status updates will be considered
+    | 'fresh', 'stale', and 'expired'.  Crews are alerted about the freshness
+    | of their data when they log in and will be prompted to post a status
+    | update if their data is 'stale' or 'expired'.
+    |
+    */
+
+    'hours_until_updates_go_stale'  => 18,
+    'days_until_updates_expire'     => 21,
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -180,6 +196,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
 
     ],
 
