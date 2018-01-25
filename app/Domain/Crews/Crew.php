@@ -30,14 +30,14 @@ class Crew extends Model
 
 
 	public static $types = [
-		'handcrew'	=> 'Type 2 Handcrew',
-		'hotshot'	=> 'Interagency Hotshot Crew',
-		'engine'	=> 'Engine Crew',
-		'helitack'	=> 'Helitack Crew (not Short Haul or Rappel)',
-		'shorthaulhelicopter'	=> 'Short Haul',
-		'rappelhelicopter'	=> 'Rappel Crew',
-		'smokejumperairplane'=>'Smokejumper Base',
-		'district'	=> 'A Ranger District or fire compound',
+		'handcrew'	    => 'Type 2 Handcrew',
+		'hotshot'	    => 'Interagency Hotshot Crew',
+		'engine'	    => 'Engine Crew',
+		'helitack'	    => 'Helitack Crew (not Short Haul or Rappel)',
+		'shorthaul'	    => 'Short Haul',
+		'rappel'	    => 'Rappel Crew',
+		'smokejumper'   => 'Smokejumper Base',
+		'district'	    => 'A Ranger District or fire compound',
 	];
 
     public function aircrafts() {
