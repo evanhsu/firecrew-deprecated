@@ -16,6 +16,7 @@ Your dev machine must have the following installed in order to 'vagrant up' and 
 > 
 > You will need ansible >= v2.4.0 to provision the vagrant machine.
 
+
 ### Building the project
 This project is packaged with a Vagrantfile and an Ansible playbook to construct a replica of the production server environment.
 
@@ -41,12 +42,15 @@ This project is packaged with a Vagrantfile and an Ansible playbook to construct
 
 4) You may then run seeders if you want.  Running ALL seeders will include an ETL from an inventory v1.0 database.
 
+
         $ php artisan db:seed
 
 5) On your HOST machine, navigate to the project folder and run:
 
+
         $ yarn
         $ yarn run watch
+
 
 	
 ### Viewing in the browser
