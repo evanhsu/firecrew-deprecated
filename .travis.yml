@@ -4,6 +4,10 @@ php: '7.0'
 git:
   depth: 3
   submodules: false
+branches:
+  only:
+    - master
+    - develop
 
 addons:
   ssh_known_hosts: 'smirksoftware.com'
@@ -30,5 +34,5 @@ deploy:
   skip_cleanup: true
   script: travis/deploy.sh
   on:
-    branch: develop
+    branch: master
 
