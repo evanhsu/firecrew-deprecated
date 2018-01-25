@@ -3,6 +3,7 @@
 namespace App\Domain\Crews;
 
 use App\Domain\Aircrafts\Aircraft;
+use App\Domain\Statuses\CrewStatus;
 use App\Domain\Statuses\Status;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -72,14 +73,14 @@ class Crew extends Model
     }
 
     public function statuses() {
-        // Create a relationship with the polymorphic Status model
-        return $this->morphMany(Status::class, 'statusable');
+        return $this->hasMany(CrewStatus::class);
     }
+
     public function status() {
-        // Get the MOST RECENT status for this Crew
+        // Get the MOST RECENT CrewStatus for this Crew
         $status = $this->statuses()->orderBy('created_at','desc')->first();
         if(is_null($status)) {
-            return new Status;
+            return new CrewStatus;
         }
         else return $status;
     }
