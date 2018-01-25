@@ -23,6 +23,11 @@ class CreateCrewsTable extends Migration
             $table->string('phone', 15)->nullable();
             $table->string('fax', 15)->nullable();
             $table->string('logo_filename')->nullable();
+            $table->string('address_street1')->nullable();
+            $table->string('address_street2')->nullable();
+            $table->string('address_city')->nullable();
+            $table->string('address_state')->nullable();
+            $table->string('address_zip')->nullable();
             $table->timestamps();
         });
     }

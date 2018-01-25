@@ -35,6 +35,9 @@ class CrewsWithAdminUsersSeeder extends Seeder
         $crew = Crew::create(array(
             'name' => 'Grand Canyon Short Haul Crew',
             'phone' => '330-404-5050',
+            'address_street1' => "45220 Canyon St.",
+            'address_city' => "Canyon City",
+            'address_state' => "AZ",
             'statusable_type' => ShortHaulHelicopter::class,
         ));
         User::create(array(
@@ -47,6 +50,9 @@ class CrewsWithAdminUsersSeeder extends Seeder
         $crew = Crew::create(array(
             'name' => 'Price Valley',
             'phone' => '280-324-2909',
+            'address_street1' => "9999 Reservoir Way",
+            'address_city' => "Sun Valley",
+            'address_state' => "ID",
             'statusable_type' => RappelHelicopter::class,
         ));
         User::create(array(

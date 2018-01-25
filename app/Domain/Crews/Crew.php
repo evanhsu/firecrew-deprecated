@@ -12,6 +12,23 @@ use App\Domain\Users\User;
 
 class Crew extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [ 'name',
+        'address_street1',
+        'address_street2',
+        'address_city',
+        'address_state',
+        'address_zip',
+        'phone',
+        'fax',
+        'logo_filename',
+        'statusable_type'];
+
+
 	public static $types = [
 		'handcrew'	=> 'Type 2 Handcrew',
 		'hotshot'	=> 'Interagency Hotshot Crew',
