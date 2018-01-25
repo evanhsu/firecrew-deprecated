@@ -19,7 +19,7 @@
     <div class="container form-box">
         <h1>Create a New User Account</h1>
 
-        <form action="{{ route('register_user') }}" method="POST" class="form-horizontal">
+        <form action="{{ route('create_user_for_crew', ['crewId' => $crewId]) }}" method="POST" class="form-horizontal">
             {{ csrf_field() }}
 
             <div class="form-group">
@@ -57,7 +57,7 @@
 
     		<div class="form-group">
                 <label for="crew_id" class="col-sm-3 control-label sr-only">Crew ID</label>
-                <input type="hidden" name="crew_id" id="crew_id" value="{{ $crew_id }}" class="form-control">
+                <input type="hidden" name="crew_id" id="crew_id" value="{{ $crewId }}" class="form-control">
             </div>
 
             <div class="form-group">

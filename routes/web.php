@@ -34,7 +34,6 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::group(['middleware' => 'auth'], function () {
 
 
-
 // AIRCRAFT
     Route::get('/aircraft',							array('as' => 'aircraft_index', 				'uses' => 'AircraftController@index'));
     Route::get('/aircraft/{tailnumber}/status',		array('as' => 'current_status_for_aircraft', 	'uses' => 'AircraftController@showCurrentStatus'));
@@ -59,22 +58,25 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         Route::prefix('{crewId}/accounts')->group(function () {
-            Route::get('/',             array('as' => 'users_for_crew',    'uses' => 'CrewAccountController@accounts'));
-            Route::get('/new',          array('as' => 'new_user_for_crew', 'uses' => 'AccountController@new'));
+            Route::get('/',             array('as' => 'users_for_crew',    'uses' => 'CrewAccountController@index'));
         });
 
         Route::post('/{crewId}/destroy',array('as' => 'destroy_crew', 'uses' => 'CrewController@destroy'));
     });
 
+
 // STATUS
     Route::post('/status',              array('as' => 'store_status',   'uses' => 'StatusController@store'));
 
 // ACCOUNTS
-    Route::get('/account',				array('as' => 'users_index',	'uses' => 'AccountController@index'));
-    Route::post('/account', 			array('as' => 'register_user',	'uses' => 'RegisterController@postRegister'));
-    Route::get('/account/{id}',			array('as' => 'edit_user',		'uses' => 'AccountController@edit'));
-    Route::post('/account/{id}',		array('as' => 'update_user',	'uses' => 'AccountController@update'));
-    Route::post('/account/{id}/destroy',array('as' => 'destroy_user',	'uses' => 'AccountController@destroy'));
+    Route::get('/account',				    array('as' => 'users_index',	    'uses' => 'AccountController@index'));
+    Route::post('/account', 			    array('as' => 'register_user',	    'uses' => 'Auth\RegisterController@postRegister'));
+    Route::get('/account/{id}',			    array('as' => 'edit_user',		    'uses' => 'AccountController@edit'));
+    Route::post('/account/{id}',		    array('as' => 'update_user',	    'uses' => 'AccountController@update'));
+    Route::post('/account/{id}/destroy',    array('as' => 'destroy_user',	    'uses' => 'AccountController@destroy'));
+
+    Route::get('crew/{crewId}/accounts/new',array('as' => 'new_user_for_crew',  'uses' => 'AccountController@getRegister'));
+    Route::post('crew/{crewId}/accounts',   array('as' => 'create_user_for_crew','uses' => 'AccountController@postRegisterUserForCrew'));
 
 });
 

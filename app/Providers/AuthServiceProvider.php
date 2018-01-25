@@ -47,5 +47,32 @@ class AuthServiceProvider extends ServiceProvider
             elseif (is_numeric($crew)) return $user->isAdminForCrew(intval($crew));
             else return false; // An invalid data type was passed in for $crew (only integer or Crew Object are allowed)
         });
+
+//        // The current user must be on the same crew as the Crew object passed in AND have the specified User->permission
+//        // If $action is null, User->hasPermission($action) will return TRUE
+//        Gate::define('performActionForCrew', function($currentUser, $targetCrew, $action=null) {
+//
+//            return ($currentUser->crew_id === $targetCrew->id)
+//                && ($currentUser.hasPermission($action));
+//
+//        })->before(function($currentUser, $ability) {
+//            // Global Admin users will always be granted this permission
+//            if($currentUser->isGlobalAdmin()) {
+//                return true;
+//            }
+//        });
+
+
+        // The current user must be on the same crew as the user being destroyed, unless the current user is a Global Admin
+        Gate::define('destroy-user', function($currentUser, $userToDestroy) {
+
+            return $currentUser->crew_id === $userToDestroy->crew_id;
+
+        })->before(function($currentUser, $ability) {
+            // Global Admin users will always be granted this permission
+            if($currentUser->isGlobalAdmin()) {
+                return true;
+            }
+        });
     }
 }

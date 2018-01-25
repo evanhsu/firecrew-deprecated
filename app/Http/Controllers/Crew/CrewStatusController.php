@@ -97,7 +97,7 @@ class CrewStatusController extends Controller
     {
 
         // Make sure this user is authorized...
-        /*  if(Auth::user()->cannot('actAsAdminForCrew', $id)) {
+        /*  if(Auth::user()->cannot('act-as-admin-for-crew', $id)) {
                 // The current user does not have permission to perform admin functions for this crew
                 return redirect()->back()->withErrors("You're not authorized to access that crew!");
             }
