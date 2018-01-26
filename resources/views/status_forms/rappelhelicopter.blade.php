@@ -5,6 +5,9 @@
 
 <nav>
     <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation">
+            <a href="{{ route('new_status_for_crew',$crew->id) }}">Intel</a>
+        </li>
         @foreach($aircrafts as $a)
         <li role="presentation"{!! ($a->id == $aircraft->id) ? " class=\"active\"" : "" !!}>
             <a href="{{ route('new_status_for_aircraft',$a->tailnumber) }}">{{ $a->tailnumber }}</a>

@@ -83,3 +83,11 @@ Route::group(['middleware' => 'auth'], function () {
  // These routes should be in the 'auth' group, but have been moved out for development
 // INVENTORY
 Route::get('/crew/{crewId}/inventory/{anything?}', 'PagesController@inventory');
+
+/*
+ * TODO: refactor crew status:
+ * Visiting the /crew/1/resource/3 route will display the "Status Update" page.
+ * Status data for the crew and all its resources will be loaded, and the active
+ * tab will be set to the resource with id=3
+ *
+ */
