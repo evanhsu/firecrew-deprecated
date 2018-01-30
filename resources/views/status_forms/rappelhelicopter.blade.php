@@ -19,10 +19,38 @@
     @include("status_forms._aircraft_form_headers")
     
 
-    <div class="col-xs-12 col-md-6 form-inline">
+    <div class="col-xs-12 form-inline">
         @include("status_forms._fields_for_location")
     </div>
-    
+
+    <div class="col-xs-12 col-md-6">
+        <h2>Staffing</h2>
+        <div class="form-group">
+            <label for="staffing_value1" class="col-xs-4 col-sm-2 control-label">Rappellers</label>
+            <div class="col-xs-4 col-sm-2">
+                <input type="text" name="staffing_value1" id="staffing_value1" class="form-control" value="{{ $status->staffing_value1 }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="staffing_value2" class="col-xs-4 col-sm-2 control-label">HRAP Surplus</label>
+            <div class="col-xs-4 col-sm-2">
+                <input type="text" name="staffing_value2" id="staffing_value2" class="form-control" value="{{ $status->staffing_value2 }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="manager_name" class="col-xs-4 col-sm-2 control-label">Manager</label>
+            <div class="col-xs-12 col-sm-4 col-md-6">
+                <input type="text" name="manager_name" id="manager_name" class="form-control" value="{{ $status->manager_name }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="manager_phone" class="col-xs-4 col-sm-2 control-label">Phone</label>
+            <div class="col-xs-12 col-sm-4 col-md-6">
+                <input type="text" name="manager_phone" id="manager_phone" class="form-control" value="{{ $status->manager_phone }}" placeholder="XXX-XXX-XXXX">
+            </div>
+        </div>
+    </div>
+
     <div class="col-xs-12 col-md-6">
         <h2>Current Assignment</h2>
         <div class="form-group">
@@ -51,47 +79,17 @@
         </div>
     </div>
 
-
-    <div class="col-xs-12">
-        <h2>Staffing</h2>
-        <div class="form-group">
-            <label for="staffing_value1" class="col-xs-4 col-sm-2 control-label">Rappellers</label>
-            <div class="col-xs-4 col-sm-2 col-md-1">
-                <input type="text" name="staffing_value1" id="staffing_value1" class="form-control" value="{{ $status->staffing_value1 }}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="staffing_value2" class="col-xs-4 col-sm-2 control-label">HRAP Surplus</label>
-            <div class="col-xs-4 col-sm-2 col-md-1">
-                <input type="text" name="staffing_value2" id="staffing_value2" class="form-control" value="{{ $status->staffing_value2 }}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="manager_name" class="col-xs-4 col-sm-2 control-label">Manager</label>
-            <div class="col-xs-12 col-sm-4 col-md-3">
-                <input type="text" name="manager_name" id="manager_name" class="form-control" value="{{ $status->manager_name }}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="manager_phone" class="col-xs-4 col-sm-2 control-label">Phone</label>
-            <div class="col-xs-12 col-sm-4 col-md-3">
-                <input type="text" name="manager_phone" id="manager_phone" class="form-control" value="{{ $status->manager_phone }}" placeholder="XXX-XXX-XXXX">
-            </div>
-        </div>
-    </div>
-
-
     <div class="col-xs-12">
         <h2>Remarks</h2>
         <div class="form-group">
             <label for="comments1" class="col-xs-4 col-sm-2 control-label">Situation</label>
-            <div class="col-xs-12 col-sm-6 col-md-5">
+            <div class="col-xs-12 col-sm-6 col-md-6">
                 <textarea name="comments1" id="comments1" class="form-control" rows="4">{{ $status->comments1 }}</textarea>
             </div>
         </div>
         <div class="form-group">
             <label for="comments2" class="col-xs-4 col-sm-2 control-label">Upcoming</label>
-            <div class="col-xs-12 col-sm-6 col-md-5">
+            <div class="col-xs-12 col-sm-6 col-md-6">
                 <textarea name="comments2" id="comments2" class="form-control" rows="4">{{ $status->comments2 }}</textarea>
             </div>
         </div>
