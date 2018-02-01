@@ -38,7 +38,6 @@ class CrewsWithAdminUsersSeeder extends Seeder
             'address_street1' => "45220 Canyon St.",
             'address_city' => "Canyon City",
             'address_state' => "AZ",
-            'statusable_type' => ShortHaulHelicopter::class,
         ));
         User::create(array(
             'name' => 'Grant Kenyon',
@@ -53,7 +52,6 @@ class CrewsWithAdminUsersSeeder extends Seeder
             'address_street1' => "9999 Reservoir Way",
             'address_city' => "Sun Valley",
             'address_state' => "ID",
-            'statusable_type' => RappelHelicopter::class,
         ));
         User::create(array(
             'name' => 'Pete Valles',
@@ -65,7 +63,6 @@ class CrewsWithAdminUsersSeeder extends Seeder
         $crew = Crew::create(array(
             'name' => 'Prineville Hotshots',
             'phone' => '541-887-5477',
-            'statusable_type' => Crew::class,
         ));
         User::create(array(
             'name' => 'Prine Vill',
@@ -76,7 +73,6 @@ class CrewsWithAdminUsersSeeder extends Seeder
         $crew = Crew::create(array(
             'name' => 'Redding Smokejumpers',
             'phone' => '541-555-6677',
-            'statusable_type' => SmokeJumperAirplane::class,
         ));
         User::create(array(
             'name' => 'Red Ding',

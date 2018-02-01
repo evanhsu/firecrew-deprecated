@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Domain\Crews\Crew;
 use App\Domain\Users\User;
-use App\Domain\Statuses\Status;
+use App\Domain\Statuses\ResourceStatus;
 
 class Aircraft extends Model
 {
@@ -15,9 +15,7 @@ class Aircraft extends Model
      *
      * @var string
      */
-    // protected $table = 'aircrafts'; // Force a unique plural form for the table name
     protected $table = 'aircrafts';
-    //protected $primaryKey = 'tailnumber'; // The primary key is NOT 'id' !!
 
     /**
      * The attributes that are mass assignable.
@@ -58,7 +56,7 @@ class Aircraft extends Model
     public function statuses()
     {
         // Create a relationship with the polymorphic Status model
-        return $this->morphMany('App\Domain\Statuses\Status', 'statusable');
+        return $this->morphMany('App\Domain\Statuses\ResourceStatus', 'statusable');
     }
 
     public function status()
@@ -66,7 +64,7 @@ class Aircraft extends Model
         // Get the MOST RECENT status for this Aircraft
         // If NONE are found, return a NEW, blank status to be filled in.
         $status = $this->statuses()->orderBy('created_at', 'desc')->first();
-        if (is_null($status)) return new Status;
+        if (is_null($status)) return new ResourceStatus;
         else return $status;
     }
 

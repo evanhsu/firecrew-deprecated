@@ -1,22 +1,8 @@
-@extends('../layouts.status_update_layout')
-
-@section('form')
-<h1>Rappel Aircraft Status Update</h1>
-
-<nav>
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation">
-            <a href="{{ route('new_status_for_crew',$crew->id) }}">Intel</a>
-        </li>
-        @foreach($aircrafts as $a)
-        <li role="presentation"{!! ($a->id == $aircraft->id) ? " class=\"active\"" : "" !!}>
-            <a href="{{ route('new_status_for_aircraft',$a->tailnumber) }}">{{ $a->tailnumber }}</a>
-        </li>
-        @endforeach
-    </ul>
-</nav>
 <form action="{{ route('store_status') }}" method="POST" class="form-horizontal">
-    @include("status_forms._aircraft_form_headers")
+    {{ csrf_field() }}
+    <input type="hidden" name="statusable_resource_type" value="rappel_helicopter" />
+    <input type="hidden" name="statusable_id" value="{{ $status->statusable_resource_id }}" />
+    <input type="hidden" name="statusable_name" value="{{ $status->statusable_resource_name}}" />
     
 
     <div class="col-xs-12 form-inline">
@@ -104,4 +90,3 @@
     </div>
 
 </form>
-@endsection

@@ -2,14 +2,15 @@
 
 namespace App\Domain\Crews;
 
-use App\Domain\Aircrafts\Aircraft;
+use App\Domain\StatusableResources\AbstractStatusableResource;
 use App\Domain\Statuses\CrewStatus;
-use App\Domain\Statuses\Status;
+use App\Domain\Statuses\ResourceStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Items\Item;
 use App\Domain\People\Person;
 use App\Domain\Users\User;
+use Illuminate\Support\Facades\DB;
 
 class Crew extends Model
 {
@@ -31,25 +32,38 @@ class Crew extends Model
 
 
 	public static $types = [
-		'handcrew'	    => 'Type 2 Handcrew',
+		'handcrew'	    => 'Handcrew',
 		'hotshot'	    => 'Interagency Hotshot Crew',
 		'engine'	    => 'Engine Crew',
-		'helitack'	    => 'Helitack Crew (not Short Haul or Rappel)',
-		'shorthaul'	    => 'Short Haul',
+		'helitack'	    => 'Helitack Crew',
+		'shorthaul'	    => 'Short Haul Crew',
 		'rappel'	    => 'Rappel Crew',
 		'smokejumper'   => 'Smokejumper Base',
 		'district'	    => 'A Ranger District or fire compound',
 	];
 
-    public function aircrafts() {
-        // return $this->hasMany(Aircraft::class);
-        if($this->is_an_aircraft_crew()) {
-            $classname = $this->statusable_type;
-            return $this->hasMany($classname);
-        }
-        else {
-            return false;
-        }
+    public function statusableResources() {
+         return $this->hasMany(AbstractStatusableResource::class);
+    }
+
+    public function resourceStatuses() {
+        return $this->hasManyThrough(ResourceStatus::class, AbstractStatusableResource::class, 'crew_id', 'statusable_resource_id');
+    }
+
+    public function latestResourceStatuses() {
+
+        $latestStatusForEachResource = DB::select('
+            select  t1.*
+                from resource_statuses as t1
+                left join resource_statuses as t2
+                  on t1.statusable_resource_id = t2.statusable_resource_id
+                  and t1.created_at < t2.created_at
+                inner join statusable_resources
+                  on statusable_resources.id = t1.statusable_resource_id
+            where t2.created_at is NULL
+                and statusable_resources.crew_id = :id', ['id' => $this->id]);
+
+        return ResourceStatus::hydrate($latestStatusForEachResource);
     }
 
 	public function people() {
@@ -68,10 +82,6 @@ class Crew extends Model
 	    return $this->hasMany(User::class);
     }
 
-    public function crew() {
-	    return $this;
-    }
-
     public function statuses() {
         return $this->hasMany(CrewStatus::class);
     }
@@ -85,43 +95,6 @@ class Crew extends Model
         else return $status;
     }
 
-    public function statusable_type_plain() {
-        if ($pos = strrpos($this->statusable_type, '\\')) {
-            $chunks = explode('\\', $this->statusable_type);
-            return strtolower($chunks[count($chunks)-1]);
-        } else {
-            return strtolower($this->statusable_type);
-        }
-    }
-
-    public function is_an_aircraft_crew() {
-        // Check to see if this Crew's 'statusable_type' is a class that inherits from the Aircraft class.
-        // $classname = "App\\".ucfirst($this->statusable_type);
-        $classname = $this->statusable_type;
-
-        $instance = new $classname;
-        if($instance instanceof Aircraft) {
-            $result = true;
-        }
-        else {
-            $result = false;
-        }
-        unset($instance);
-
-        return $result;
-    }
-    public function is_not_an_aircraft_crew() {
-        return !$this->is_an_aircraft_crew();
-    }
-    public function get_crew_id() {
-        // This is simply an alias for crew->id to provide a consistent notation for querying the crew id for all resource types
-        return $this->id;
-    }
-    public function resource_type()
-    {
-        // Returns a human-friendly text string that describes this crew's fire resource type (i.e. Short Haul Crew or Hotshot Crew)
-        return self::$types[$this->statusable_type_plain()];
-    }
 
     public function freshness() {
         // Check the timestamp of the most recent update for this Crew.

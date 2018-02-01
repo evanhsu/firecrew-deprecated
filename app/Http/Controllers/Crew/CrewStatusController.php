@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Crew;
 
 use App\Domain\Crews\Crew;
-use App\Domain\Statuses\Status;
+use App\Domain\Statuses\Coordinate;
+use App\Domain\Statuses\ResourceStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class CrewStatusController extends Controller
             echo "Access denied.";
         }
 
-        $status = Status::first();
+        $status = ResourceStatus::first();
 
         echo "Looking for tailnumber: ".$status->statusable_name."<br />\n"
             .var_export($status, true);
@@ -37,42 +38,32 @@ class CrewStatusController extends Controller
      * Note: this form POSTS its response to the StatusController
      *
      * @param Request $request
-     * @param $id
+     * @param $crewId
+     * @param null $tailnumber
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function newStatus(Request $request, $id)
+    public function newStatus(Request $request, $crewId, $tailnumber = null)
     {
         // Retrieve the requested Crew
-        $crew = Crew::findOrFail($id);
+        $crew = Crew::findOrFail($crewId);
 
         // Make sure this user is authorized...
-        if (Gate::denies('act-as-admin-for-crew', $id)) {
+        if (Gate::denies('act-as-admin-for-crew', $crewId)) {
             return redirect()->back()->withErrors("You're not authorized to update that crew's status!");
         }
 
         // Retrieve the most recent status update to prepopulate the form (returns a 'new Status' if none exist)
-        $last_status = $crew->status();
+        $statuses = $crew->latestResourceStatuses();
 
         // Convert the lat and lon from decimal-degrees into decimal-minutes
-        // TODO: MOVE THIS FUNCTIONALITY INTO A COORDINATES CLASS
-        if (!empty($last_status->latitude)) {
-            $sign = $last_status->latitude >= 0 ? 1 : -1; // Keep track of whether the latitude is positive or negative
-            $last_status->latitude_deg = floor(abs($last_status->latitude)) * $sign;
-            $last_status->latitude_min = round((abs($last_status->latitude) - $last_status->latitude_deg) * 60.0, 4);
-
-        } else {
-            $last_status->latitude_deg = "";
-            $last_status->latitude_min = "";
-        }
-
-        if (!empty($last_status->longitude)) {
-            $sign = $last_status->longitude >= 0 ? 1 : -1; // Keep track of whether the longitude is positive or negative
-            $last_status->longitude_deg = floor(abs($last_status->longitude)) * $sign * -1; // Convert to 'West-positive' reference
-            $last_status->longitude_min = round((abs($last_status->longitude) - $last_status->longitude_deg) * 60.0, 4);
-        } else {
-            $last_status->longitude_deg = "";
-            $last_status->longitude_min = "";
-        }
+        $modifiedStatuses = $statuses->map(function ($status, $index) {
+            $coords = (new Coordinate($status->latitude, $status->longitude))->asDecimalMinutes();
+            $status->latitude_deg = $coords['latitude']['degrees'];
+            $status->latitude_min = $coords['latitude']['minutes'];
+            $status->longitude_deg = $coords['longitude']['degrees'];
+            $status->longitude_min = $coords['longitude']['minutes'];
+            return $status;
+        });
 
         // Authorization complete - continue...
         // Display the status update form
@@ -81,7 +72,7 @@ class CrewStatusController extends Controller
         } else {
             $request->session()->flash('active_menubutton', 'status'); // Tell the menubar which button to highlight
         }
-        return view('status_forms/crew')->with('crew', $crew)->with('status', $last_status);
+        return view('status_forms/status')->with('crew', $crew)->with('statuses', $modifiedStatuses)->with('tailnumber', $tailnumber);
     }
 
 

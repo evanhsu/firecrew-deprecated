@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Carbon\Carbon;
 use App\Domain\Crews\Crew;
-use App\Domain\Statuses\Status;
+use App\Domain\Statuses\ResourceStatus;
 
 class StatusController extends Controller
 {
@@ -90,7 +90,7 @@ class StatusController extends Controller
         $longitude_dd = $this->decMinToDecDeg($request->get('longitude_deg'), $request->get('longitude_min')) * -1.0; // Convert to 'Easting' (Western hemisphere is negative)
 
         // Form is valid, continue...
-        $status = new Status(Input::all());
+        $status = new ResourceStatus(Input::all());
 
         // Add a period to the LabelText field - this is a a workaround for the ArcGIS server to be able to render a buffer around the shorthaulhelicopter features
         $status->label_text = ".";
