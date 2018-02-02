@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Status;
 
+use App\Events\ResourceStatusUpdated;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -114,7 +115,9 @@ class ResourceStatusController extends Controller
 
         // Attempt to save
         if($resource->statuses()->save($status)) {
-//        if($status->save()) {
+            // Fire an event
+            event(new ResourceStatusUpdated($status));
+
             return redirect()->back()->with('alert', array('message' => 'Status update saved!', 'type' => 'success'));
         }
         return redirect()->back()->with('alert', array('message' => 'Status update failed!', 'type' => 'danger'));
