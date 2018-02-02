@@ -80,8 +80,8 @@
                         <td style="border:none"></td>
                         <td style="border:none"></td>
                         <td style="border:none"></td>
-                        <td rowspan="{{ $rowsToSpan }}"></td>
-                        <td rowspan="{{ $rowsToSpan }}"></td>
+                        <td rowspan="{{ $rowsToSpan }}">{{ $crew->status->intel }}</td>
+                        <td rowspan="{{ $rowsToSpan }}">{{ $crew->status->created_at }}</td>
                     </tr>
                 @endforelse
 
