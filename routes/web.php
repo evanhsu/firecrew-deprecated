@@ -56,10 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/',             array('as' => 'crew', 'uses' => 'CrewController@show'));
                 Route::post('/',            array('as' => 'update_crew', 'uses' => 'CrewController@update')); // TODO: Update method to PATCH
                 Route::get('/identity',     array('as' => 'edit_crew', 'uses' => 'CrewController@edit'));
-            });
-
-            Route::prefix('accounts')->group(function () {
-                Route::get('/',             array('as' => 'users_for_crew', 'uses' => 'CrewAccountController@index'));
+                Route::get('/accounts',     array('as' => 'users_for_crew', 'uses' => 'CrewAccountController@index'));
             });
         });
 
