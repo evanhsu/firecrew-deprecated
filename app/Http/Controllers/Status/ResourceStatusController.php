@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Status;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -10,8 +11,11 @@ use Illuminate\Support\Facades\Input;
 use Carbon\Carbon;
 use App\Domain\Crews\Crew;
 use App\Domain\Statuses\ResourceStatus;
+use App\Domain\StatusableResources\RappelHelicopter;
+use App\Domain\StatusableResources\ShortHaulHelicopter;
+use App\Domain\StatusableResources\SmokeJumperAirplane;
 
-class StatusController extends Controller
+class ResourceStatusController extends Controller
 {
     /**
      * This function responds to AJAX requests from the map to update all resources
@@ -26,9 +30,9 @@ class StatusController extends Controller
         $max_age = config('app.days_until_updates_expire');
         $earliest_date = Carbon::now()->subDays($max_age); // The oldest Status that will be displayed
 
-        $resources = DB::table('statuses as newest')
-                        ->leftjoin('statuses as newer', function($join) {
-                            $join->on('newer.statusable_id','=','newest.statusable_id');
+        $resources = DB::table('resource_statuses as newest')
+                        ->leftjoin('resource_statuses as newer', function($join) {
+                            $join->on('newer.statusable_resource_id','=','newest.statusable_resource_id');
                             $join->on('newer.updated_at','>','newest.updated_at');
                             })
                         ->select('newest.*')
@@ -39,8 +43,8 @@ class StatusController extends Controller
 /*      Here's the raw SQL query for testing and debugging:
 
         select newest.* from
-        statuses as newest
-        left outer join statuses as newer
+        resource_statuses as newest
+        left outer join resource_statuses as newer
         on newer.statusable_id = newest.statusable_id
         and newer.updated_at > newest.updated_at
         where newer.updated_at IS NULL;
@@ -50,33 +54,30 @@ class StatusController extends Controller
     }
 
     /**
-     * Store a newly created Status in storage.
+     * Store a newly created ResourceStatus in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @param $crewId
+     * @param string    $identifier   The StatusableResource->identifier
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $crewId, $identifier)
     {
-        // Accept a form post from either the Aircraft Status Form (route: 'new_status_for_aircraft')
-        // or the Crew Status Form (route: 'new_status_for_crew')
-
-        // Determine whether this is a status update for an Aircraft or a Crew
-        // then store the ID of the Crew that owns this object.
-        $classname = $request->get('statusable_type');
-        $obj = $classname::find($request->get('statusable_id'));
-        if(!$obj) {
-            // The 'statusable_type' from the form is not one of the polymorphic 'statusable' classes.
-            // Add the 'morphMany()' function to the desired class to make it statusable.
-            return redirect()->back()->with('alert', array('message' => 'Status update failed! This status update is not linked to a statusable entity', 'type' => 'danger'));
-        }
-        $crew_id = $obj->get_crew_id();
-        $crew = Crew::find($crew_id);
+        $resourceClass = "App\Domain\StatusableResources\\" . $request->get('statusable_resource_type');
+        $resource = $resourceClass::where('identifier', $identifier)->first();
+        $crew = Crew::find($crewId);
 
         // Make sure current user is authorized
-        if(Auth::user()->cannot('act-as-admin-for-crew', $crew_id)) {
+        if(Auth::user()->cannot('act-as-admin-for-crew', $crewId)) {
             // The current user does not have permission to perform admin functions for this crew
             return redirect()->back()->withErrors("You're not authorized to update that crew!");
         }
+
+        if($resource->crew_id != $crewId) {
+            // This status update refers to a resource that is owned by a different crew
+            return redirect()->back()->withErrors("You're not authorized to update '$identifier'!");
+        }
+
         // This User is authorized - continue...
 
         $this->validate($request, [
@@ -100,15 +101,11 @@ class StatusController extends Controller
         $status->created_by_id = Auth::user()->id;
 
         // Insert the name of the Crew that owns this Status update (if this Status refers to a Crew, then 'crew_name' will be the same as 'statusable_name')
-        $status->crew_name = Crew::find($crew_id)->name;
+        $status->crew_name = $crew->name;
 
         // Insert the lat and lon in decimal-degree format
         $status->latitude = $latitude_dd;
         $status->longitude = $longitude_dd;
-
-        // Change the 'statusable_type' variable to a fully-namespaced class name (the html form only submits the class name, but not the namespace)
-        // i.e. Change 'Shorthaulhelicopter' to 'App\Shorthaulhelicopter'. This is required for the Status class to be able to retrieve the correct Aircraft (or Crew).
-        //$status->statusable_type = "App\\".ucwords($status->statusable_type);
 
         $status->created_at = date('Y-m-d H:m:s'); // Temporarily set the timestamp so that it can be included in the popup (timestamp will be reset when $status is saved)
 
@@ -116,7 +113,8 @@ class StatusController extends Controller
         $status->popup_content = $this->generatePopup($status, $crew);
 
         // Attempt to save
-        if($status->save()) {
+        if($resource->statuses()->save($status)) {
+//        if($status->save()) {
             return redirect()->back()->with('alert', array('message' => 'Status update saved!', 'type' => 'success'));
         }
         return redirect()->back()->with('alert', array('message' => 'Status update failed!', 'type' => 'danger'));
@@ -135,7 +133,7 @@ class StatusController extends Controller
         // This allows a different View to be rendered for local display versus the one that sent to the EGP database. 
         //
         // All properties of the Status object must be defined before calling this method.
-        $v = view('map_popups.'.$folder.".".$status->statusable_type_plain())->with("status",$status)->with("crew",$crew)->render();
+        $v = view('map_popups.'.$folder.".".$status->statusable_resource_type)->with("status",$status)->with("crew",$crew)->render();
         $v_no_whitespace = preg_replace('/\s+/', ' ', $v); // Remove line-breaks, new-line and repeated spaces
 
         return $v_no_whitespace;

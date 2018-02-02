@@ -4,7 +4,7 @@ namespace App\Domain\StatusableResources;
 
 class RappelHelicopter extends AbstractStatusableResource implements StatusableResourceInterface
 {
-    protected static $resource_type = "rappel_helicopter";
+    protected static $resource_type = "RappelHelicopter";
 
     public static function resourceType()
     {

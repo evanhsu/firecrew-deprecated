@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Crew;
+namespace App\Http\Controllers\Status;
 
 use App\Domain\Crews\Crew;
 use App\Domain\Statuses\Coordinate;
@@ -12,27 +12,6 @@ use Illuminate\Support\Facades\Gate;
 
 class CrewStatusController extends Controller
 {
-    /**
-     * Show the most recent Status for this Crew
-     *
-     * @param $id
-     */
-    public function showCurrentStatus($id) {
-
-        // Make sure this user is authorized...
-        // TODO: Move authorization logic to a Policy
-        if(Gate::denies('can-act-as-admin-for-crew', $id)) {
-            // The current user does not have permission to perform admin functions for this crew
-            // return redirect()->back()->withErrors("You're not authorized to access that crew!");
-            echo "Access denied.";
-        }
-
-        $status = ResourceStatus::first();
-
-        echo "Looking for tailnumber: ".$status->statusable_name."<br />\n"
-            .var_export($status, true);
-    }
-
     /**
      * Display the Crew Status update form
      * Note: this form POSTS its response to the StatusController
@@ -53,16 +32,19 @@ class CrewStatusController extends Controller
         }
 
         // Retrieve the most recent status update to prepopulate the form (returns a 'new Status' if none exist)
-        $statuses = $crew->latestResourceStatuses();
+        $resources = $crew->resourcesWithLatestStatus;
 
         // Convert the lat and lon from decimal-degrees into decimal-minutes
-        $modifiedStatuses = $statuses->map(function ($status, $index) {
-            $coords = (new Coordinate($status->latitude, $status->longitude))->asDecimalMinutes();
-            $status->latitude_deg = $coords['latitude']['degrees'];
-            $status->latitude_min = $coords['latitude']['minutes'];
-            $status->longitude_deg = $coords['longitude']['degrees'];
-            $status->longitude_min = $coords['longitude']['minutes'];
-            return $status;
+        $modifiedResources = $resources->map(function ($resource, $index) {
+            if(is_null($resource->latestStatus)) {
+                $resource->latestStatus = new ResourceStatus();
+            }
+            $coords = (new Coordinate($resource->latestStatus->latitude, $resource->latestStatus->longitude))->asDecimalMinutes();
+            $resource->latestStatus->latitude_deg = $coords['latitude']['degrees'];
+            $resource->latestStatus->latitude_min = $coords['latitude']['minutes'];
+            $resource->latestStatus->longitude_deg = $coords['longitude']['degrees'];
+            $resource->latestStatus->longitude_min = $coords['longitude']['minutes'];
+            return $resource;
         });
 
         // Authorization complete - continue...
@@ -72,7 +54,8 @@ class CrewStatusController extends Controller
         } else {
             $request->session()->flash('active_menubutton', 'status'); // Tell the menubar which button to highlight
         }
-        return view('status_forms/status')->with('crew', $crew)->with('statuses', $modifiedStatuses)->with('tailnumber', $tailnumber);
+
+        return view('status_forms/status')->with('crew', $crew)->with('resources', $modifiedResources)->with('tailnumber', $tailnumber);
     }
 
 
@@ -128,5 +111,15 @@ class CrewStatusController extends Controller
             // THIS FUNCTIONALITY STILL NEEDS TO BE CREATED
             return redirect()->route('edit_crew', $id)->withErrors("This Crew type hasn't been implemented yet - CrewController@redirectToStatusUpdate");
         }
+    }
+
+    /**
+     * Receive a post request from the Crew Status form (Intel) and create a new CrewStatus.
+     *
+     * @param Request $request
+     */
+    public function store(Request $request)
+    {
+
     }
 }

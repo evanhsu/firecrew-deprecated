@@ -1,42 +1,55 @@
 @extends('../layouts.app')
 
 <?php
-use App\Domain\Aircrafts\Aircraft;
+use App\Domain\StatusableResources\AbstractStatusableResource;
 
 /**
- * @param int       $index      The array index to use when submitting this form
- * @param Aircraft|array          $aircraft   An Aircraft model to populate this form with - ['tailnumber'=>'N12345', 'model'=>'Bell 205']
- * @param bool      $template   If TRUE, this function will draw the blank template for an Aircraft Form rather than a populated form.
+ * @param int $index The array index to use when submitting this form
+ * @param Aircraft|array $aircraft An Aircraft model to populate this form with - ['tailnumber'=>'N12345', 'model'=>'Bell 205']
+ * @param $crew
+ * @param bool $template If TRUE, this function will draw the blank template for an Aircraft Form rather than a populated form.
  */
-function drawOneAircraftForm($index, $aircraft, $template = false) {
+function drawOneAircraftForm($index, $aircraft, $crew, $template = false) {
+
     if($template) {
-        $aircraft = new Aircraft(array("tailnumber"=>"","model"=>""));
+        $aircraft = new App\Domain\StatusableResources\AbstractStatusableResource(array("identifier"=>"","model"=>""));
         $index = "";
     }
     $output = "<div class=\"crew-aircraft-form";
     if($template) $output .= " dynamic-form-template";
     $output .= "\">
         <div class=\"form-group\">
-            <label for=\"aircraft-tailnumber\" class=\"control-label col-sm-2\">Tailnumber</label>
+            <label for=\"aircraft-identifier\" class=\"control-label col-sm-2\">Tailnumber</label>
             <div class=\"col-sm-4 col-md-3\">
-                <input type=\"text\" class=\"form-control aircraft-tailnumber\" name=\"crew[aircrafts][".$index."][tailnumber]\" value=\"".$aircraft->tailnumber."\" ";
+                <input type=\"text\" class=\"form-control aircraft-identifier\" name=\"crew[statusableResources][".$index."][identifier]\" value=\"".$aircraft->identifier."\" ";
 
     if(!$template) $output .= "readonly ";
 
     $output .= "/>
             </div>\n";
-    
+
     if(!$template) {
         $output .= "<button class=\"btn btn-default release-aircraft-button\" data-aircraft-id=\"".$index."\" type=\"button\">Release</button>\n";
     }
-     
+
      $output .= "
         </div>
 
         <div class=\"form-group\">
             <label for=\"aircraft-model\" class=\"control-label col-sm-2\">Make/Model</label>
             <div class=\"col-sm-4 col-md-3\">
-                <input type=\"text\" class=\"form-control aircraft-model\" name=\"crew[aircrafts][".$index."][model]\" value=\"".$aircraft->model."\" />
+                <input type=\"text\" class=\"form-control aircraft-model\" name=\"crew[statusableResources][".$index."][model]\" value=\"".$aircraft->model."\" />
+            </div>
+        </div>
+
+        <div class=\"form-group\">
+            <label for=\"aircraft-type\" class=\"control-label col-sm-2\">Usage</label>
+            <div class=\"col-sm-4 col-md-3\">
+                <select class=\"form-control aircraft-type\" name=\"crew[statusableResources][".$index."][resource_type]\">
+                    <option value=\"RappelHelicopter\"".($aircraft->resource_type == "RappelHelicopter" ? " selected" : ""). ">Rappel</option>
+                    <option value=\"ShortHaulHelicopter\"".($aircraft->resource_type == "ShortHaulHelicopter" ? " selected" : ""). ">Short Haul</option>
+                    <option value=\"SmokejumperAirplane\"".($aircraft->resource_type == "SmokejumperAirplane" ? " selected" : ""). ">Smokejumper</option>
+                </select>
             </div>
         </div>\n";
 
@@ -44,7 +57,7 @@ function drawOneAircraftForm($index, $aircraft, $template = false) {
     if(!$template) {
         $output .= "<div class=\"form-group\">
                         <div class=\"col-sm-offset-2\">
-                            <a href=\"".route('new_status_for_aircraft',$aircraft->tailnumber)."\" class=\"btn btn-default\" role=\"button\">Go to the Status Page</a>
+                            <a href=\"".route('update_crew',['crewId' => $crew->id])."\" class=\"btn btn-default\" role=\"button\">Go to the Status Page</a>
                         </div>
                     </div>\n";
 
@@ -196,9 +209,9 @@ function freshnessNotify($freshness) {
                 </div>
             </div>
             <?php $i = 0; ?>
-            @foreach($crew->aircrafts as $aircraft)
-                <?php drawOneAircraftForm($i,$aircraft); ?>
-            <?php $i++; ?>
+            @foreach($crew->statusableResources as $aircraft)
+                <?php drawOneAircraftForm($i, $aircraft, $crew); ?>
+                <?php $i++; ?>
             @endforeach
 
 
@@ -213,7 +226,7 @@ function freshnessNotify($freshness) {
 
 
 @if($show_aircraft)
-        <?php drawOneAircraftForm(null,null,true); ?>
+        <?php drawOneAircraftForm(null, null, $crew, true); ?>
 
         <div id="aircraft-index" style="display:none;">{{ $i }}</div>
 @endif
@@ -234,7 +247,7 @@ function freshnessNotify($freshness) {
             // Disable the "Add an Aircraft" button if there are any blank "Tailnumber" fields on the aircraft form
             // Enable the button if there are no blank "Tailnumber" fields
             var blank_field_exists = false;
-            $(".form").children(".aircraft-tailnumber").each(function( i ) {
+            $(".form").children(".aircraft-identifier").each(function( i ) {
 
                 if($(this).val() == "") {
                     blank_field_exists = true;
@@ -257,8 +270,9 @@ function freshnessNotify($freshness) {
 
                 // Copy the aircraft form template into the active form
                 var newForm = $(".dynamic-form-template").clone().removeClass('dynamic-form-template');
-                newForm.find('.aircraft-tailnumber').prop("name","crew[aircrafts]["+i+"][tailnumber]")
-                newForm.find('.aircraft-model').prop("name","crew[aircrafts]["+i+"][model]");
+                newForm.find('.aircraft-identifier').prop("name","crew[statusableResources]["+i+"][identifier]")
+                newForm.find('.aircraft-model').prop("name","crew[statusableResources]["+i+"][model]");
+                newForm.find('.aircraft-type').prop("name","crew[statusableResources]["+i+"][resource_type]");
                 newForm.find('.release-aircraft-button').attr("data-aircraft-id",i);
                 newForm.insertBefore('#dynamic-form-insert-placeholder');
 
@@ -271,7 +285,7 @@ function freshnessNotify($freshness) {
             
             // Disable the "Add Aircraft" button if a blank "tailnumber" field exists anywhere in the form
             // Or enable the button if text is typed into a blank tailnumber field
-            $("#edit_crew_form").on("keyup",".aircraft-tailnumber", function(event) {
+            $("#edit_crew_form").on("keyup",".aircraft-identifier", function(event) {
                 setStatusForAddButton();
             });
 
@@ -280,7 +294,7 @@ function freshnessNotify($freshness) {
                 
                 // Get the tailnumber of the aircraft to release
                 var parent = $(this).parents('.crew-aircraft-form');
-                var tailnumber = withoutInvalidChars(parent.find('.aircraft-tailnumber').val().trim());
+                var tailnumber = withoutInvalidChars(parent.find('.aircraft-identifier').val().trim());
                 var csrf_token = $(this).parents('form').children("input[name='_token']").val();
                 var crew_id = $("input[name='crew_id']").val();
 

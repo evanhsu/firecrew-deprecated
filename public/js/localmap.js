@@ -124,17 +124,17 @@ require([
         heli = new Helicopter(fireResources[i]);
 
         switch (heli.resourceType) {
-          case 'App\\Domain\\Aircrafts\\ShortHaulHelicopter':
+          case 'ShortHaulHelicopter':
             gl1.add(heli.mapGraphic());              // Add a symbol to the appropriate GraphicsLayer
             gl1.add(heli.mapResponseRingGraphic());  // Add a circle to the "circles" GraphicsLayer to represent the response range for this helicopter
             break;
-          case 'App\\Domain\\Aircrafts\\RappelHelicopter':
+          case 'RappelHelicopter':
             gl3.add(heli.mapGraphic());
             break;
-          case 'App\\Domain\\Aircrafts\\SmokeJumperAirplane':
+          case 'SmokejumperAirplane':
             gl5.add(heli.mapGraphic());
             break;
-          case 'App\\Domain\\Crew':
+          case 'HotshotCrew':
             gl4.add(heli.mapGraphic());
             break;
         }

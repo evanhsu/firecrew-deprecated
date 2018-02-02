@@ -50,6 +50,11 @@ class Crew extends Model
         return $this->hasManyThrough(ResourceStatus::class, AbstractStatusableResource::class, 'crew_id', 'statusable_resource_id');
     }
 
+    /**
+     * Returns a Collection of ResourceStatus objects that represents the most recent
+     * status for each StatusableResource owned by this Crew.
+     * @return mixed
+     */
     public function latestResourceStatuses() {
 
         $latestStatusForEachResource = DB::select('
@@ -63,7 +68,15 @@ class Crew extends Model
             where t2.created_at is NULL
                 and statusable_resources.crew_id = :id', ['id' => $this->id]);
 
-        return ResourceStatus::hydrate($latestStatusForEachResource);
+        $statuses = ResourceStatus::hydrate($latestStatusForEachResource);
+
+        return $statuses->map(function($status) {
+            return $status->load('resource'); // Return the nested 'ResourceStatus->resource' object as well
+        });
+    }
+
+    public function resourcesWithLatestStatus() {
+        return $this->statusableResources()->with('latestStatus');
     }
 
 	public function people() {

@@ -3,7 +3,7 @@ namespace App\Domain\StatusableResources;
 
 class SmokeJumperAirplane extends AbstractStatusableResource implements StatusableResourceInterface
 {
-    protected static $resource_type = "smokejumper_airplane";
+    protected static $resource_type = "SmokejumperAirplane";
 
     public static function resourceType()
     {

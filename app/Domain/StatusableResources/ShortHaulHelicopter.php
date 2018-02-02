@@ -3,7 +3,7 @@ namespace App\Domain\StatusableResources;
 
 class ShortHaulHelicopter extends AbstractStatusableResource implements StatusableResourceInterface
 {
-    protected static $resource_type = "shorthaul_helicopter";
+    protected static $resource_type = "ShortHaulHelicopter";
 
     public static function resourceType()
     {

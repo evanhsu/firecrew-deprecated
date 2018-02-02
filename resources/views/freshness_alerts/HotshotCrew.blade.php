@@ -18,10 +18,10 @@ switch ($freshness) {
         break;
 }
 if ($freshness != "missing") {
-    $alert['msg'] .= "<br />Last update posted by " . $status->created_by_name . " " . $status->created_at->diffForHumans(); // Function provided by the Carbon date/time library
+    $alert['msg'] .= "<br />Last update posted by " . $resource->latestStatus->created_by_name . " " . $resource->latestStatus->created_at->diffForHumans(); // Function provided by the Carbon date/time library
 }
 ?>
 
 <div class="freshness_notification alert alert-{!! $alert['type'] !!}" role="alert">
-    {{ $alert['msg'] }}
+    {!! $alert['msg'] !!}
 </div>

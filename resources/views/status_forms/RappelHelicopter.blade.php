@@ -1,8 +1,11 @@
-<form action="{{ route('store_status') }}" method="POST" class="form-horizontal">
+<form action="{{ route('store_status_for_crew_resource', ['crewId' => $crew->id, 'identifier' => $resource->identifier]) }}"
+      method="POST"
+      class="form-horizontal"
+>
     {{ csrf_field() }}
-    <input type="hidden" name="statusable_resource_type" value="rappel_helicopter" />
-    <input type="hidden" name="statusable_id" value="{{ $status->statusable_resource_id }}" />
-    <input type="hidden" name="statusable_name" value="{{ $status->statusable_resource_name}}" />
+    <input type="hidden" name="statusable_resource_type" value="{{ $resource->resource_type }}" />
+    <input type="hidden" name="statusable_resource_id" value="{{ $resource->id }}" />
+    <input type="hidden" name="statusable_resource_name" value="{{ $resource->identifier}}" />
     
 
     <div class="col-xs-12 form-inline">

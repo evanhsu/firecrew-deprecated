@@ -8,10 +8,10 @@
             <li role="presentation"{!! ($tailnumber == "") ? " class=\"active\"" : "" !!}>
                 <a href="#intel" aria-controls="intel" role="tab" data-toggle="tab">Intel</a></li>
             </li>
-            @foreach($statuses as $status)
-                <li role="presentation"{!! ($status->statusable_resource_name == $tailnumber) ? " class=\"active\"" : "" !!}>
-                    <a href="#{!! $status->statusable_resource_name !!}" aria-controls="{!! $status->statusable_resource_name !!}" role="tab" data-toggle="tab">
-                        {{ $status->statusable_resource_name }}
+            @foreach($resources as $resource)
+                <li role="presentation"{!! ($resource->identifier == $tailnumber) ? " class=\"active\"" : "" !!}>
+                    <a href="#{!! $resource->identifier !!}" aria-controls="{!! $resource->identifier !!}" role="tab" data-toggle="tab">
+                        {{ $resource->identifier }}
                     </a>
                 </li>
             @endforeach
@@ -21,14 +21,14 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane{!! ($tailnumber == "") ? " in active" : "" !!}" id="intel">
-            Intel panel content
+            @include('status_forms/intel')
         </div>
 
-        @foreach($statuses as $status)
+        @foreach($resources as $resource)
 
-        <div role="tabpanel" class="tab-pane{!! ($tailnumber == $status->statusable_resource_name) ? " in active" : "" !!}" id="{!! $status->statusable_resource_name !!}">
-            @include('freshness_alerts/'.$status->statusable_resource_type, ['freshness' => $status->resource->freshness()])
-            @include('status_forms/'.$status->statusable_resource_type)
+        <div role="tabpanel" class="tab-pane{!! ($tailnumber == $resource->identifier) ? " in active" : "" !!}" id="{!! $resource->identifier !!}">
+            @include('freshness_alerts/'.$resource->resource_type, ['freshness' => $resource->freshness()])
+            @include('status_forms/'.$resource->resource_type, ['status' => $resource->latestStatus])
         </div>
 
         @endforeach

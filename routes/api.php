@@ -39,6 +39,6 @@ $api->version('v1', [], function (Router $api) {
         // A Status cannot be deleted or edited, only superceded. This maintains a history log of statuses.
         // Route::get('/status/{id}',	array('as' => 'show_status', 		'uses' => 'StatusController@show' ));
 //        $api->post('/status',       array('as' => 'create_status',      'uses' => 'StatusController@store' ));
-        $api->get('/status/all', 'StatusController@currentForAllResources');
+        $api->get('/status/all', 'Status\ResourceStatusController@currentForAllResources');
 	});
 });
