@@ -35,7 +35,6 @@ class AbstractStatusableResource extends Model
 
     public function users()
     {
-        // Allow access to the Users who have permission to edit this Aircraft
         return $this->hasManyThrough(User::class, Crew::class);
     }
 
@@ -52,10 +51,7 @@ class AbstractStatusableResource extends Model
     public function status()
     {
         // Get the MOST RECENT status for this Aircraft
-        // If NONE are found, return a NEW, blank status to be filled in.
-        $status = $this->statuses()->orderBy('created_at', 'desc')->first();
-        if (is_null($status)) return new ResourceStatus;
-        else return $status;
+        return $this->latestStatus();
     }
 
     public function freshness()
