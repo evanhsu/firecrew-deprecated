@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Transformers;
 
-use App\Domain\Crews\Crew;
 use App\Domain\StatusableResources\AbstractStatusableResource;
 use League\Fractal\TransformerAbstract;
 
