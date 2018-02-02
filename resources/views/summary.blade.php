@@ -3,9 +3,9 @@
 @section('title', 'Staffing Summary')
 
 @section('content')
+    <div id="container-fluid" class="container-fluid background-container">
     <h1>Staffing Summary</h1>
 
-    <div class="col-xs-12">
         <table border="1px">
             <thead>
             <tr>
@@ -173,5 +173,4 @@
 
             </tbody>
         </table>
-    </div>
 @endsection
