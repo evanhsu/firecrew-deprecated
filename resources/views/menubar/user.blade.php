@@ -27,6 +27,7 @@ function is_active($button, $active_menubutton)
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li<?php is_active('map', $a); ?>><a href="/">Map</a></li>
+                <li<?php is_active('summary', $a); ?>><a href="{{ route('summary') }}">Summary</a></li>
                 <li<?php is_active('status', $a); ?>><a href="{{ route('new_status_for_crew', ['crewId' => $user_crew_id]) }}">Status</a></li>
                 <li<?php is_active('identity', $a); ?>><a href="{{ route('edit_crew', ['crewId' => $user_crew_id]) }}">Identity</a></li>
                 <li<?php is_active('accounts', $a); ?>><a href="{{ route('users_for_crew', ['crewId' => $user_crew_id]) }}">Accounts</a></li>

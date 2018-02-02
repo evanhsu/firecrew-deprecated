@@ -21,7 +21,7 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane{!! ($tailnumber == "") ? " in active" : "" !!}" id="intel">
-            @include('status_forms/intel')
+            @include('status_forms/intel', ['status' => $crew->status])
         </div>
 
         @foreach($resources as $resource)

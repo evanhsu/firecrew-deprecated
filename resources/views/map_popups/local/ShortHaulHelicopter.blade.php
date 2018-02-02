@@ -23,8 +23,8 @@
         <td aria-label="Current Staffing" title="Current staffing levels">
             <div class="popup-col-header"><span class="glyphicon glyphicon-user"></span> Staffing</div>
             <table class="staffing_table">
-                <tr><td>EMT:</td><td>{{ $status->staffing_value1 }}</td></tr>
-                <tr><td>HAUL:</td><td>{{ $status->staffing_value2 }}</td></tr>
+                <tr><td>HAUL:</td><td>{{ $status->staffing_value1 }}</td></tr>
+                <tr><td>EMT:</td><td>{{ $status->staffing_value2 }}</td></tr>
             </table>
         </td>
 

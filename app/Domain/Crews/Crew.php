@@ -101,11 +101,9 @@ class Crew extends Model
 
     public function status() {
         // Get the MOST RECENT CrewStatus for this Crew
-        $status = $this->statuses()->orderBy('created_at','desc')->first();
-        if(is_null($status)) {
-            return new CrewStatus;
-        }
-        else return $status;
+//        return $this->statuses()->orderBy('created_at','desc')->first();
+
+        return $this->hasOne(CrewStatus::class)->latest();
     }
 
 

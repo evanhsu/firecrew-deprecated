@@ -19,8 +19,8 @@ class CreateCrewStatusesTable extends Migration
 
             $table->integer('crew_id')->unsigned();
 
-            $table->double('latitude',11,8);
-            $table->double('longitude',11,8);
+            $table->double('latitude',11,8)->nullable();
+            $table->double('longitude',11,8)->nullable();
 
             $table->text('popup_content')->nullable();
 

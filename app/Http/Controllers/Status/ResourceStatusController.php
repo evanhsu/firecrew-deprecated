@@ -107,7 +107,7 @@ class ResourceStatusController extends Controller
         $status->latitude = $latitude_dd;
         $status->longitude = $longitude_dd;
 
-        $status->created_at = date('Y-m-d H:m:s'); // Temporarily set the timestamp so that it can be included in the popup (timestamp will be reset when $status is saved)
+        $status->created_at = date('Y-m-d H:i:s'); // Temporarily set the timestamp so that it can be included in the popup (timestamp will be reset when $status is saved)
 
         // Build the HTML popup that will be displayed when this feature is clicked
         $status->popup_content = $this->generatePopup($status, $crew);

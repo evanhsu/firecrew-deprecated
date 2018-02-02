@@ -14,6 +14,7 @@ use Dingo\Api\Routing\Router;
 */
 
 Route::get('/', array('as' => 'map', 'uses' => 'MapController@getMap'));
+Route::get('/summary', array('as' => 'summary', 'uses' => 'Status\SummaryController@index'));
 Route::get('/home', 'HomeController@index');
 
 // Authentication Routes...
@@ -68,7 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::prefix('status')->group(function () {
                     Route::get('/router',           array('as' => 'status_form_selector_for_crew', 'uses' => 'CrewStatusController@redirectToStatusUpdate'));
                     Route::get('/{tailnumber?}',    array('as' => 'new_status_for_crew', 'uses' => 'CrewStatusController@newStatus'));
-                    Route::post('/',                array('as' => 'store_status_for_crew', 'uses' => 'CrewStatusController@newStatus'));
+                    Route::post('/',                array('as' => 'store_status_for_crew', 'uses' => 'CrewStatusController@store'));
                 });
 
                 Route::prefix('resource')->group(function () {

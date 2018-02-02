@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(StatusableResourcesTableSeeder::class);
         $this->call(ResourceStatusesTableSeeder::class);
+        $this->call(CrewStatusesTableSeeder::class);
         $this->call(EtlDbSeeder::class);
     }
 }

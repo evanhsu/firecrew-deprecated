@@ -57,7 +57,7 @@ function drawOneAircraftForm($index, $aircraft, $crew, $template = false) {
     if(!$template) {
         $output .= "<div class=\"form-group\">
                         <div class=\"col-sm-offset-2\">
-                            <a href=\"".route('update_crew',['crewId' => $crew->id])."\" class=\"btn btn-default\" role=\"button\">Go to the Status Page</a>
+                            <a href=\"".route('new_status_for_crew',['crewId' => $crew->id, 'tailnumber' => $aircraft->identifier])."\" class=\"btn btn-default\" role=\"button\">Go to the Status Page</a>
                         </div>
                     </div>\n";
 
