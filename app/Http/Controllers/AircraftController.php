@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Aircrafts\Aircraft;
+use App\Domain\StatusableResources\AbstractStatusableResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -28,77 +29,12 @@ class AircraftController extends Controller
     public function index(Request $request)
     {
         //
-        $aircrafts = Aircraft::orderBy('tailnumber', 'asc')->get();
+        $aircrafts = AbstractStatusableResource::orderBy('identifier', 'asc')->get();
 
         $request->session()->flash('active_menubutton', 'aircraft'); // Tell the menubar which button to highlight
         return view('aircrafts.index')->with('aircrafts', $aircrafts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  string $tailnumber
-     * @return \Illuminate\Http\Response
-     */
-    public function show($tailnumber)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  string $tailnumber
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($tailnumber)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  string $tailnumber
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $tailnumber)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  string $tailnumber
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($tailnumber)
-    {
-        //
-    }
 
     /**
      * @param Request $request

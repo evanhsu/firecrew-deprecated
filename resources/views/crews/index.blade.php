@@ -22,7 +22,6 @@
 			<thead>
 				<tr><th>ID</th>
 					<th>Crew Name</th>
-					<th>Resource Type</th>
 					<th>Update</th>
 					<th>Delete</th>
 				</tr>
@@ -31,12 +30,9 @@
 			@foreach($crews as $crew)
 				<tr>
 					<td>{{ $crew->id }}</td>
-					<td><a href="{{ route('edit_crew', array('id' => $crew->id)) }}">{{ $crew->name }}</td>
-					<td>{{ $crew->resource_type() }}</td>
+					<td><a href="{{ route('edit_crew', array('id' => $crew->id)) }}">{{ $crew->name }}</a></td>
 					<td>
-						@if(strtolower($crew->statusable_type_plain()) == "crew")
-							<a href="{{ route('new_status_for_crew',$crew->id) }}" class="btn btn-primary" role="button">!<a/>
-						@endif
+                        <a href="{{ route('new_status_for_crew',$crew->id) }}" class="btn btn-primary" role="button">!</a>
 					</td>
 					
 					<td><form action="{{ route('destroy_crew',$crew->id) }}" method="POST" class="form-inline">

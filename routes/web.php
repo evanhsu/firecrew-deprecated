@@ -1,6 +1,5 @@
 <?php
 
-use Dingo\Api\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +11,9 @@ use Dingo\Api\Routing\Router;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', array('as' => 'map', 'uses' => 'MapController@getMap'));
 Route::get('/summary', array('as' => 'summary', 'uses' => 'Status\SummaryController@index'));

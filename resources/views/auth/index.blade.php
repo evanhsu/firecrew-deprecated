@@ -1,6 +1,6 @@
 @extends('../layouts.app')
 
-@section('title','Accounts - RescueCircle')
+@section('title','Accounts')
 
 
 @section('content')

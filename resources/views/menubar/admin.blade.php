@@ -27,9 +27,9 @@ function is_active($button, $active_menubutton)
             <ul class="nav navbar-nav">
                 <li<?php is_active('map', $a); ?>><a href="/">Map</a></li>
                 <li<?php is_active('summary', $a); ?>><a href="{{ route('summary') }}">Summary</a></li>
-                <li<?php is_active('crews', $a); ?>><a href="/crews">Crews</a></li>
-                <li<?php is_active('aircraft', $a); ?>><a href="/aircraft">Aircraft</a></li>
-                <li<?php is_active('accounts', $a); ?>><a href="/accounts">Accounts</a></li>
+                <li<?php is_active('crews', $a); ?>><a href="{{ route('crews_index') }}">Crews</a></li>
+                <li<?php is_active('aircraft', $a); ?>><a href="{{ route('aircraft_index') }}">Aircraft</a></li>
+                <li<?php is_active('accounts', $a); ?>><a href="{{ route('users_index') }}">Accounts</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">

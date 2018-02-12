@@ -33,7 +33,7 @@
 			@foreach($aircrafts as $a)
 				<tr>
 					<td>{{ $a->id }}</td>
-					<td>{{ $a->tailnumber }}</td>
+					<td>{{ $a->identifier}}</td>
 					<td>{{ $a->model }}</td>
 					<td>
 						@if(!empty($a->crew_id))
@@ -42,7 +42,7 @@
 					</td>
 					<td>
 						@if(!empty($a->crew_id))
-							<a href="{{ route('new_status_for_aircraft',$a->tailnumber) }}" class="btn btn-primary" role="button">!<a/>
+							<a href="{{ route('new_status_for_crew',[$a->crew_id, $a->identifier]) }}" class="btn btn-primary" role="button">!<a/>
 						@endif
 					</td>
 					<td><form action="{{ route('destroy_aircraft',$a->id) }}" method="POST" class="form-inline">
