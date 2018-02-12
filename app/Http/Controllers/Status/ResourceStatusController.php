@@ -14,7 +14,7 @@ use App\Domain\Crews\Crew;
 use App\Domain\Statuses\ResourceStatus;
 use App\Domain\StatusableResources\RappelHelicopter;
 use App\Domain\StatusableResources\ShortHaulHelicopter;
-use App\Domain\StatusableResources\SmokeJumperAirplane;
+use App\Domain\StatusableResources\SmokejumperAirplane;
 
 class ResourceStatusController extends Controller
 {

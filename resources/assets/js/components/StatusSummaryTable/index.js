@@ -10,6 +10,7 @@ const getStatusSummaryTableStyle = () => (
     border: '2px solid black',
     paddingLeft: 0,
     paddingRight: 0,
+    minWidth: 800,
   }
 );
 
@@ -48,7 +49,7 @@ const HeaderRow = () => (
   <div className="col-xs-12" style={getHeaderRowStyle()}>
     <span className="col-xs-2">Crew</span>
     <span className="col-xs-7">
-      <span className="col-xs-1">HRAP Surplus</span>
+      <span className="col-xs-1" style={{ padding: 0 }}>HRAP Surplus</span>
       <span className="col-xs-3">Resource</span>
       <span className="col-xs-3">Location</span>
       <span className="col-xs-5">Notes</span>
