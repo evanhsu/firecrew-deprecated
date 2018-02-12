@@ -22,6 +22,17 @@ class StatusSummary extends Component {
     window.Echo.channel('publicStatusUpdates').listen('ResourceStatusUpdated', (event) => {
       this.props.receiveResourceStatusUpdate(event);
     });
+
+    this.timeout();
+  }
+
+  reRender = () => {
+    this.forceUpdate();
+    this.timeout();
+  };
+
+  timeout() {
+    setTimeout(this.reRender, 10000);
   }
 
   render() {
