@@ -45,26 +45,26 @@ const localDateString = (utcDateString) => {
 };
 
 const HeaderRow = () => (
-  <div className="col-sm-12" style={getHeaderRowStyle()}>
-    <span className="col-sm-2">Crew</span>
-    <span className="col-sm-7">
-      <span className="col-sm-1">HRAP Surplus</span>
-      <span className="col-sm-3">Resource</span>
-      <span className="col-sm-3">Location</span>
-      <span className="col-sm-5">Notes</span>
+  <div className="col-xs-12" style={getHeaderRowStyle()}>
+    <span className="col-xs-2">Crew</span>
+    <span className="col-xs-7">
+      <span className="col-xs-1">HRAP Surplus</span>
+      <span className="col-xs-3">Resource</span>
+      <span className="col-xs-3">Location</span>
+      <span className="col-xs-5">Notes</span>
     </span>
-    <span className="col-sm-3">Intel</span>
+    <span className="col-xs-3">Intel</span>
   </div>
 );
 
 const CrewRow = ({ crewRow }) => (
-  <div className="col-sm-12" style={getCrewRowStyle(crewRow)}>
-    <span className="col-sm-2">
+  <div className="col-xs-12" style={getCrewRowStyle(crewRow)}>
+    <span className="col-xs-2">
       <span style={{ fontWeight: 'bold' }}>{crewRow.get('name')}</span><br />
       {crewRow.get('phone')}<br />
       Updated {localDateString(crewRow.getIn(['status', 'updated_at']))} ({Moment.utc(crewRow.getIn(['status', 'updated_at'])).fromNow()})
     </span>
-    <span className="col-sm-7" style={{ paddingLeft: 0, paddingRight: 0, borderLeft: '1px dashed gray' }}>
+    <span className="col-xs-7" style={{ paddingLeft: 0, paddingRight: 0, borderLeft: '1px dashed gray' }}>
       {crewRow.get('statusable_resources').map((resource) => (
         <CrewResourceRow key={resource.get('id')} resource={resource} />
       ))}
@@ -80,7 +80,7 @@ const CrewRow = ({ crewRow }) => (
         />
       ))}
     </span>
-    <span className="col-sm-3" style={{ borderLeft: '1px dashed black' }}>
+    <span className="col-xs-3" style={{ borderLeft: '1px dashed black' }}>
       {crewRow.getIn(['status', 'intel'])}
     </span>
   </div>
@@ -92,11 +92,11 @@ CrewRow.propTypes = {
 
 
 const CrewResourceRow = ({ resource }) => (
-  <span className="col-sm-12" style={getCrewResourceRowStyle()}>
-    <span className="col-sm-1">{resource.getIn(['latest_status', 'staffing_value1'])}</span>
-    <span className="col-sm-3">{resource.get('identifier')} ({resource.get('model')})</span>
-    <span className="col-sm-3">{resource.getIn(['latest_status', 'assigned_fire_name'])}</span>
-    <span className="col-sm-5">
+  <span className="col-xs-12" style={getCrewResourceRowStyle()}>
+    <span className="col-xs-1">{resource.getIn(['latest_status', 'staffing_value1'])}</span>
+    <span className="col-xs-3">{resource.get('identifier')} ({resource.get('model')})</span>
+    <span className="col-xs-3">{resource.getIn(['latest_status', 'assigned_fire_name'])}</span>
+    <span className="col-xs-5">
       {resource.getIn(['latest_status', 'manager_name']) && `Contact: ${resource.getIn(['latest_status', 'manager_name'])}`}
       {resource.getIn(['latest_status', 'manager_phone']) && ` (${resource.getIn(['latest_status', 'manager_phone'])})`}<br />
       {resource.getIn(['latest_status', 'comments1']) && `${resource.getIn(['latest_status', 'comments1'])}`}<br />
@@ -112,11 +112,11 @@ CrewResourceRow.propTypes = {
 
 const CrewPersonnelRow = ({ person }) => (
   person.name ? (
-    <span className="col-sm-12" style={getCrewResourceRowStyle()}>
-      <span className="col-sm-1"> </span>
-      <span className="col-sm-3">{person.name}{person.role && ` [${person.role}]`}</span>
-      <span className="col-sm-3">{person.location}</span>
-      <span className="col-sm-5">{person.note}</span>
+    <span className="col-xs-12" style={getCrewResourceRowStyle()}>
+      <span className="col-xs-1"> </span>
+      <span className="col-xs-3">{person.name}{person.role && ` [${person.role}]`}</span>
+      <span className="col-xs-3">{person.location}</span>
+      <span className="col-xs-5">{person.note}</span>
     </span>) : null
 );
 
@@ -131,7 +131,7 @@ CrewPersonnelRow.propTypes = {
 
 
 const StatusSummaryTable = ({ crews }) => (
-  <div className="col-sm-12" style={getStatusSummaryTableStyle()}>
+  <div className="col-xs-12" style={getStatusSummaryTableStyle()}>
     <HeaderRow />
     {crews.map((crew) => (
       <CrewRow

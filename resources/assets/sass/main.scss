@@ -72,6 +72,7 @@ body {
   background-size: cover;
   position:fixed;
   height:100%;
+  width: 100%;
   overflow-y: scroll;
   text-align: center;
 }
@@ -101,5 +102,5 @@ h3 {
 
 .freshness_notification {
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
