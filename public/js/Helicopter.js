@@ -18,7 +18,7 @@ define(["dojo/_base/declare",
       constructor: function (params) {
         this.params = params || {};
 
-        this.resourceType = this.params.statusable_type;
+        this.resourceType = this.params.statusable_resource_type;
         this.iso_date = this.params.updated_at.replace(/-/g, "/") + " GMT"; // Convert date string from YYYY-mm-dd HH:mm:ss to YYYY/mm/dd HH:mm:ss
 
         this.latitude = this.params.latitude;
@@ -29,10 +29,10 @@ define(["dojo/_base/declare",
         this.iconSize = 75;		// Pixel dimensions of the helicopter icon on the map
         this.iconPath = '/images/symbols/';	// The folder that contains all of the map-symbol image files
         this.baseFilenames = {
-          'App\\Domain\\Aircrafts\\ShortHaulHelicopter': 'shorthaulhelicopter',
-          'App\\Domain\\Aircrafts\\RappelHelicopter': 'rappelhelicopter',
-          'App\\Domain\\Aircrafts\\SmokeJumperAirplane': 'smokejumperairplane',
-          'App\\Domain\\Crews\\Crew': 'crew',
+          'ShortHaulHelicopter': 'shorthaulhelicopter',
+          'RappelHelicopter': 'rappelhelicopter',
+          'SmokejumperAirplane': 'smokejumperairplane',
+          'HotshotCrew': 'hotshotcrew',
         };
 
         this.responseRingRadius = this.params.Distance || 100;	// NAUTICAL MILES (Default 100)
@@ -61,7 +61,7 @@ define(["dojo/_base/declare",
       mapMarker: function () {
         // Returns an ArcGIS PICTUREMARKERSYMBOL object (requires "esri/symbols/PictureMarkerSymbol" module).
         const filename = this.getIconFilename();
-        console.log(filename);
+        // console.log(filename);
 
         try {
           return new esri.symbol.PictureMarkerSymbol(
@@ -76,17 +76,17 @@ define(["dojo/_base/declare",
 
       getAttributes: function () {
         var prefix = "";
-        if (this.params.statusable_type.indexOf("helicopter") >= 0) prefix = "Helicopter ";
+        if (this.params.statusable_resource_type.indexOf("helicopter") >= 0) prefix = "Helicopter ";
 
         return {
-          popuptitle: prefix + this.params.statusable_name,
+          popuptitle: prefix + this.params.statusable_resource_name,
           popupcontent: this.params.popup_content,
           updated_at: this.iso_date,
         };
       },
 
       getIconFilename: function () {
-        return `${this.iconPath}${this.baseFilenames[this.params.statusable_type]}-${this.isFresh() ? 'fresh' : 'stale'}.png`;
+        return `${this.iconPath}${this.baseFilenames[this.params.statusable_resource_type]}-${this.isFresh() ? 'fresh' : 'stale'}.png`;
       },
 
       mapGraphic: function () {

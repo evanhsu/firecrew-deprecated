@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Crew;
+namespace App\Http\Controllers\Status;
 
 use App\Domain\Crews\Crew;
-use App\Domain\Statuses\Status;
+use App\Domain\Statuses\Coordinate;
+use App\Domain\Statuses\CrewStatus;
+use App\Domain\Statuses\ResourceStatus;
+use App\Events\CrewStatusUpdated;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,67 +15,41 @@ use Illuminate\Support\Facades\Gate;
 class CrewStatusController extends Controller
 {
     /**
-     * Show the most recent Status for this Crew
-     *
-     * @param $id
-     */
-    public function showCurrentStatus($id) {
-
-        // Make sure this user is authorized...
-        // TODO: Move authorization logic to a Policy
-        if(Gate::denies('can-act-as-admin-for-crew', $id)) {
-            // The current user does not have permission to perform admin functions for this crew
-            // return redirect()->back()->withErrors("You're not authorized to access that crew!");
-            echo "Access denied.";
-        }
-
-        $status = Status::first();
-
-        echo "Looking for tailnumber: ".$status->statusable_name."<br />\n"
-            .var_export($status, true);
-    }
-
-    /**
      * Display the Crew Status update form
      * Note: this form POSTS its response to the StatusController
      *
      * @param Request $request
-     * @param $id
+     * @param $crewId
+     * @param null $tailnumber
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function newStatus(Request $request, $id)
+    public function newStatus(Request $request, $crewId, $tailnumber = null)
     {
-        // Retrieve the requested Crew
-        $crew = Crew::findOrFail($id);
+        // Retrieve the requested Crew with the latest CrewStatus
+        $crew = Crew::findOrFail($crewId);
 
         // Make sure this user is authorized...
-        if (Gate::denies('act-as-admin-for-crew', $id)) {
+        if (Gate::denies('act-as-admin-for-crew', $crewId)) {
             return redirect()->back()->withErrors("You're not authorized to update that crew's status!");
         }
 
         // Retrieve the most recent status update to prepopulate the form (returns a 'new Status' if none exist)
-        $last_status = $crew->status();
+        $crew->load('status');
+        $resources = $crew->resourcesWithLatestStatus;
 
         // Convert the lat and lon from decimal-degrees into decimal-minutes
-        // TODO: MOVE THIS FUNCTIONALITY INTO A COORDINATES CLASS
-        if (!empty($last_status->latitude)) {
-            $sign = $last_status->latitude >= 0 ? 1 : -1; // Keep track of whether the latitude is positive or negative
-            $last_status->latitude_deg = floor(abs($last_status->latitude)) * $sign;
-            $last_status->latitude_min = round((abs($last_status->latitude) - $last_status->latitude_deg) * 60.0, 4);
+        $modifiedResources = $resources->map(function ($resource, $index) {
+            if(is_null($resource->latestStatus)) {
+                $resource->latestStatus = new ResourceStatus();
+            }
+            $coords = (new Coordinate($resource->latestStatus->latitude, $resource->latestStatus->longitude))->asDecimalMinutes();
+            $resource->latestStatus->latitude_deg = $coords['latitude']['degrees'];
+            $resource->latestStatus->latitude_min = $coords['latitude']['minutes'];
+            $resource->latestStatus->longitude_deg = $coords['longitude']['degrees'];
+            $resource->latestStatus->longitude_min = $coords['longitude']['minutes'];
+            return $resource;
+        });
 
-        } else {
-            $last_status->latitude_deg = "";
-            $last_status->latitude_min = "";
-        }
-
-        if (!empty($last_status->longitude)) {
-            $sign = $last_status->longitude >= 0 ? 1 : -1; // Keep track of whether the longitude is positive or negative
-            $last_status->longitude_deg = floor(abs($last_status->longitude)) * $sign * -1; // Convert to 'West-positive' reference
-            $last_status->longitude_min = round((abs($last_status->longitude) - $last_status->longitude_deg) * 60.0, 4);
-        } else {
-            $last_status->longitude_deg = "";
-            $last_status->longitude_min = "";
-        }
 
         // Authorization complete - continue...
         // Display the status update form
@@ -81,7 +58,8 @@ class CrewStatusController extends Controller
         } else {
             $request->session()->flash('active_menubutton', 'status'); // Tell the menubar which button to highlight
         }
-        return view('status_forms/crew')->with('crew', $crew)->with('status', $last_status);
+
+        return view('status_forms/status')->with('crew', $crew)->with('resources', $modifiedResources)->with('tailnumber', $tailnumber);
     }
 
 
@@ -137,5 +115,31 @@ class CrewStatusController extends Controller
             // THIS FUNCTIONALITY STILL NEEDS TO BE CREATED
             return redirect()->route('edit_crew', $id)->withErrors("This Crew type hasn't been implemented yet - CrewController@redirectToStatusUpdate");
         }
+    }
+
+    /**
+     * Receive a post request from the Crew Status form (Intel) and create a new CrewStatus.
+     *
+     * @param Request $request
+     * @param $crewId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request, $crewId)
+    {
+        $crew = Crew::findOrFail($crewId);
+        $status = new CrewStatus($request->all());
+
+        $status->created_by_name = Auth::user()->name;
+        $status->created_by_id = Auth::user()->id;
+
+         // Attempt to save
+        if($crew->statuses()->save($status)) {
+
+            // Fire an event
+            event(new CrewStatusUpdated($status));
+
+            return redirect()->back()->with('alert', array('message' => 'Status update saved!', 'type' => 'success'));
+        }
+        return redirect()->back()->with('alert', array('message' => 'Status update failed!', 'type' => 'danger'));
     }
 }

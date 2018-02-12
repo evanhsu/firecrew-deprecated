@@ -97,28 +97,27 @@ class CrewController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        //
-        if ($crew = Crew::findorfail($id)) {
-            // Make sure this user is authorized...
-            if (Gate::denies('act-as-admin-for-crew', $id)) {
-                // The current user does not have permission to perform admin functions for this crew
-                return redirect()->back()->withErrors("You're not authorized to access that crew!");
-            }
+        $crew = Crew::with('statusableResources')->where('id', $id)->first();
 
-            // Authorization complete - continue...
-            if (Auth::user()->isGlobalAdmin()) {
-                $request->session()->flash('active_menubutton', 'crews'); // Tell the menubar which button to highlight
-            } else {
-                $request->session()->flash('active_menubutton', 'identity'); // Tell the menubar which button to highlight
-            }
-
-            // Decide whether to show the Aircraft section of the Edit Crew form:
-            $show_aircraft = $crew->is_an_aircraft_crew();
-
-            return view('crews.edit')->with('crew', $crew)->with('show_aircraft', $show_aircraft);
+        // Make sure this user is authorized...
+        if (Gate::denies('act-as-admin-for-crew', $id)) {
+            // The current user does not have permission to perform admin functions for this crew
+            return redirect()->back()->withErrors("You're not authorized to access that crew!");
         }
-        $errors = new MessageBag(['Crew' => ['That Crew doesn\'t exist.']]);
-        //return redirect()->route('not_found')->withErrors($errors);
+
+        // Authorization complete - continue...
+        if (Auth::user()->isGlobalAdmin()) {
+            $request->session()->flash('active_menubutton', 'crews'); // Tell the menubar which button to highlight
+        } else {
+            $request->session()->flash('active_menubutton', 'identity'); // Tell the menubar which button to highlight
+        }
+
+        // Decide whether to show the Aircraft section of the Edit Crew form:
+        $show_aircraft = true; //$crew->is_an_aircraft_crew();
+
+        return view('crews.edit')->with('crew', $crew)->with('show_aircraft', $show_aircraft);
+//        $errors = new MessageBag(['Crew' => ['That Crew doesn\'t exist.']]);
+//        return redirect()->route('not_found')->withErrors($errors);
     }
 
     /**
@@ -140,7 +139,7 @@ class CrewController extends Controller
 
 
         // Grab the form input
-        $crew_fields = array_except($request->input('crew'), ['aircrafts']);
+        $crew_fields = array_except($request->input('crew'), ['statusableResources']);
 
         $crew = Crew::find($id);
 
@@ -164,23 +163,22 @@ class CrewController extends Controller
         // (don't update the model if nothing has changed)
         $aircraft_fields = array();
 
-        if (isset($request->input('crew')['aircrafts'])) {
-            $aircraft_fields = $request->input('crew')['aircrafts'];
+        if (isset($request->input('crew')['statusableResources'])) {
+            $aircraft_fields = $request->input('crew')['statusableResources'];
         }
 
         foreach ($aircraft_fields as $aircraft) {
-            if (!empty($aircraft['tailnumber'])) {
-                // Instantiate a new Aircraft - CONVERT TAILNUMBER TO ALL CAPS IN THE DATABASE
-                $temp_heli = Aircraft::firstOrCreate(array('tailnumber' => strtoupper($aircraft['tailnumber'])));
+            if (!empty($aircraft['identifier'])) {
 
-                $aircraft['crew_id'] = $id;
+                $resourceClass = "App\Domain\StatusableResources\\".$aircraft['resource_type'];
+                $resource = $resourceClass::firstOrCreate(array('identifier' => strtoupper($aircraft['identifier'])));
 
-                $temp_heli->updateIfChanged($aircraft);
-                // An error occurred during updateIfChanged()
-                // Go back to the form and display errors
-                // return redirect()->route('edit_crew', $crew->id)
-                //->withErrors($temp_heli->errors())
-                //            ->withInput();
+                $resource->crew_id = $crew->id;
+                $resource->resource_type = $aircraft['resource_type'];
+                $resource->model = $aircraft['model'];
+                // Identifier cannot be changed
+
+                $resource->save();
             }
         }
 

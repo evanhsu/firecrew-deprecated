@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatusesTable extends Migration
+class CreateResourceStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('resource_statuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('statusable_type');  // NOT NULL
-            $table->integer('statusable_id');   // NOT NULL
-            $table->string('statusable_name');  // NOT NULL
+            $table->integer('statusable_resource_id');   // NOT NULL
+            $table->string('statusable_resource_type')->nullable();
+            $table->string('statusable_resource_name')->nullable();
 
             $table->string('crew_name',100)->nullable();
 
@@ -47,7 +47,7 @@ class CreateStatusesTable extends Migration
             $table->string('created_by_name');
             $table->integer("created_by_id");
 
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 
@@ -58,6 +58,6 @@ class CreateStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('statuses');
+        Schema::drop('resource_statuses');
     }
 }

@@ -1,33 +1,31 @@
 <?php
 
-use App\Domain\Aircrafts\Aircraft;
-use App\Domain\Aircrafts\RappelHelicopter;
-use App\Domain\Aircrafts\ShortHaulHelicopter;
-use App\Domain\Aircrafts\SmokeJumperAirplane;
+use App\Domain\StatusableResources\RappelHelicopter;
+use App\Domain\StatusableResources\ShortHaulHelicopter;
+use App\Domain\StatusableResources\SmokeJumperAirplane;
 use App\Domain\Crews\Crew;
-use App\Domain\Statuses\Status;
+use App\Domain\Statuses\ResourceStatus;
 use App\Domain\Users\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class StatusesTableSeeder extends Seeder
+class ResourceStatusesTableSeeder extends Seeder
 {
 
     public function run()
     {
-        DB::table('statuses')->delete();
+        DB::table('resource_statuses')->delete();
 
         $rightNow = Carbon::now();
 
-        $heli = Aircraft::where("tailnumber", "N1111")->first();
-        $user = User::where("crew_id", $heli->crew_id)->first();
+        $heli = ShortHaulHelicopter::where("identifier", "N1111")->first();
         $crew = $heli->crew;
+        $user = $crew->users()->first();
         $oldtime = Carbon::now()->subday(); // A timestamp from yesterday
         $statusArray = array(
-            'statusable_type' => $crew->statusable_type,
-            'statusable_id' => $heli->id,
-            'statusable_name' => $heli->tailnumber,
+            'statusable_resource_type' => $heli->resource_type,
+            'statusable_resource_name' => $heli->identifier,
             'latitude' => 42.454223,
             'longitude' => -123.310388,
             'staffing_value1' => "3",
@@ -50,13 +48,12 @@ class StatusesTableSeeder extends Seeder
             'popup_content' => ""
         );
         $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
-        $status = Status::create($statusArray);
+        $status = $heli->statuses()->create($statusArray);
 
 
         $statusArray = array(
-            'statusable_type' => $crew->statusable_type,
-            'statusable_id' => $heli->id,
-            'statusable_name' => $heli->tailnumber,
+            'statusable_resource_type' => $heli->resource_type,
+            'statusable_resource_name' => $heli->identifier,
             'latitude' => 42.464223,
             'longitude' => -121.210388,
             'staffing_value1' => "3",
@@ -79,16 +76,15 @@ class StatusesTableSeeder extends Seeder
             'popup_content' => ""
         );
         $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
-        $status = Status::create($statusArray);
+        $status = $heli->statuses()->create($statusArray);
 
 
-        $heli = Aircraft::where("tailnumber", "N2222")->first();
-        $user = User::where("crew_id", $heli->crew_id)->first();
+        $heli = ShortHaulHelicopter::where("identifier", "N2222")->first();
         $crew = $heli->crew;
+        $user = $crew->users()->first();
         $statusArray = array(
-            'statusable_type' => $crew->statusable_type,
-            'statusable_id' => $heli->id,
-            'statusable_name' => $heli->tailnumber,
+            'statusable_resource_type' => $heli->resource_type,
+            'statusable_resource_name' => $heli->identifier,
             'latitude' => 44.084223,
             'longitude' => -119.310388,
             'staffing_value1' => "3",
@@ -111,16 +107,15 @@ class StatusesTableSeeder extends Seeder
             'popup_content' => ""
         );
         $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
-        $status = Status::create($statusArray);
+        $status = $heli->statuses()->create($statusArray);
 
 
-        $heli = Aircraft::where("tailnumber", "N3333")->first();
-        $user = User::where("crew_id", $heli->crew_id)->first();
+        $heli = RappelHelicopter::where("identifier", "N3333")->first();
         $crew = $heli->crew;
+        $user = $crew->users()->first();
         $statusArray = array(
-            'statusable_type' => $crew->statusable_type,
-            'statusable_id' => $heli->id,
-            'statusable_name' => $heli->tailnumber,
+            'statusable_resource_type' => $heli->resource_type,
+            'statusable_resource_name' => $heli->identifier,
             'latitude' => 46.384223,
             'longitude' => -115.310388,
             'staffing_value1' => "3",
@@ -143,16 +138,15 @@ class StatusesTableSeeder extends Seeder
             'popup_content' => ""
         );
         $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
-        $status = Status::create($statusArray);
+        $status = $heli->statuses()->create($statusArray);
 
 
-        $heli = Aircraft::where("tailnumber", "J-83")->first();
-        $user = User::where("crew_id", $heli->crew_id)->first();
-        $crew = $heli->crew;
+        $resource = SmokeJumperAirplane::where("identifier", "J-83")->first();
+        $crew = $resource->crew;
+        $user = $crew->users()->first();
         $statusArray = array(
-            'statusable_type' => $crew->statusable_type,
-            'statusable_id' => $heli->id,
-            'statusable_name' => $heli->tailnumber,
+            'statusable_resource_type' => $resource->resource_type,
+            'statusable_resource_name' => $resource->identifier,
             'latitude' => 38.511060,
             'longitude' => -118.441425,
             'staffing_value1' => "3",
@@ -175,17 +169,16 @@ class StatusesTableSeeder extends Seeder
             'popup_content' => ''
         );
         $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
-        $status = Status::create($statusArray);
+        $status = $resource->statuses()->create($statusArray);
 
 
-        $heli = Aircraft::where("tailnumber", "J-89")->first();
-        $user = User::where("crew_id", $heli->crew_id)->first();
-        $crew = $heli->crew;
+        $resource = SmokeJumperAirplane::where("identifier", "J-89")->first();
+        $crew = $resource->crew;
+        $user = $crew->users()->first();
         $oldtime = Carbon::now()->subDays(3); // A stale timestamp
         $statusArray = array(
-            'statusable_type' => $crew->statusable_type,
-            'statusable_id' => $heli->id,
-            'statusable_name' => $heli->tailnumber,
+            'statusable_resource_type' => $resource->resource_type,
+            'statusable_resource_name' => $resource->identifier,
             'latitude' => 45.281331,
             'longitude' => -116.225388,
             'staffing_value1' => "3",
@@ -208,47 +201,47 @@ class StatusesTableSeeder extends Seeder
             'popup_content' => ''
         );
         $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
-        $status = Status::create($statusArray);
+        $status = $resource->statuses()->create($statusArray);
 
 
-        $crew = Crew::where("name", "Prineville Hotshots")->first();
-        $user = User::where("crew_id", $crew->id)->first();
-        $oldtime = Carbon::now()->subDays(3); // A stale timestamp
-        $statusArray = array(
-            'statusable_type' => $crew->statusable_type,
-            'statusable_id' => $crew->id,
-            'statusable_name' => $crew->name,
-            'latitude' => 45.281331,
-            'longitude' => -111.225388,
-            'staffing_value1' => "3",
-            'staffing_value2' => "4",
-            'manager_name' => "Pat Stone",
-            'manager_phone' => "530-448-8581",
-            'comments1' => "This is update 1 of 1 from the db seeder",
-            'comments2' => "This is upcoming",
-            'assigned_fire_name' => "Morning Fire",
-            'assigned_fire_number' => "MT-FFT-150038",
-            'assigned_supervisor' => "Gary Pickett",
-            'assigned_supervisor_phone' => "333-444-5555",
-            'distance' => 100,
-            'label_text' => ".",
-            'created_by_name' => $user->name,
-            'created_by_id' => $user->id,
-            'created_at' => $oldtime,
-            'updated_at' => $oldtime,
-            'crew_name' => $crew->name,
-            'popup_content' => ''
-        );
-        $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
-        $status = Status::create($statusArray);
+//        $resource = HotshotCrew::where("identifier", "Prineville Hotshots")->first();
+//        $crew = $resource->crew;
+//        $user = $crew->users()->first();
+//        $oldtime = Carbon::now()->subDays(3); // A stale timestamp
+//        $statusArray = array(
+//            'statusable_resource_type' => $resource->resource_type,
+//            'statusable_resource_name' => $resource->identifier,
+//            'latitude' => 45.281331,
+//            'longitude' => -111.225388,
+//            'staffing_value1' => "3",
+//            'staffing_value2' => "4",
+//            'manager_name' => "Pat Stone",
+//            'manager_phone' => "530-448-8581",
+//            'comments1' => "This is update 1 of 1 from the db seeder",
+//            'comments2' => "This is upcoming",
+//            'assigned_fire_name' => "Morning Fire",
+//            'assigned_fire_number' => "MT-FFT-150038",
+//            'assigned_supervisor' => "Gary Pickett",
+//            'assigned_supervisor_phone' => "333-444-5555",
+//            'distance' => 100,
+//            'label_text' => ".",
+//            'created_by_name' => $user->name,
+//            'created_by_id' => $user->id,
+//            'created_at' => $oldtime,
+//            'updated_at' => $oldtime,
+//            'crew_name' => $crew->name,
+//            'popup_content' => ''
+//        );
+//        $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
+//        $status = $resource->statuses()->create($statusArray);
 
 
     }//End run()
 
     private function createPopupinfo($status)
     {
-        switch ($status['statusable_type']) {
-            case ShortHaulHelicopter::class:
+        switch ($status['statusable_resource_type']) {
+            case ShortHaulHelicopter::resourceType():
                 return "<table class=\"popup-table\">
                         <tr>
                             <td class=\"logo-cell\" aria-label=\"Logo\" title=\"Crew Logo\">
@@ -282,7 +275,7 @@ class StatusesTableSeeder extends Seeder
                     </table>";
                 break;
 
-            case RappelHelicopter::class:
+            case RappelHelicopter::resourceType():
                 return "<table class=\"popup-table\">
                         <tr>
                             <td class=\"logo-cell\" aria-label=\"Logo\" title=\"Crew Logo\">
@@ -316,7 +309,7 @@ class StatusesTableSeeder extends Seeder
                     </table>";
                 break;
 
-            case SmokeJumperAirplane::class:
+            case SmokeJumperAirplane::resourceType():
                 return "<table class=\"popup-table\">
                         <tr>
                             <td class=\"logo-cell\" aria-label=\"Logo\" title=\"Crew Logo\">
