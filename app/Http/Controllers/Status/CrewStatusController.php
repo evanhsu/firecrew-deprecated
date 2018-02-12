@@ -35,6 +35,9 @@ class CrewStatusController extends Controller
 
         // Retrieve the most recent status update to prepopulate the form (returns a 'new Status' if none exist)
         $crew->load('status');
+        if(is_null($crew->status)) {
+            $crew->status = new CrewStatus();
+        }
         $resources = $crew->resourcesWithLatestStatus;
 
         // Convert the lat and lon from decimal-degrees into decimal-minutes
