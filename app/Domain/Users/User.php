@@ -3,7 +3,7 @@
 namespace App\Domain\Users;
 
 use App\Domain\Crews\Crew;
-use App\Domain\Statuses\Status;
+use App\Domain\Statuses\ResourceStatus;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,7 +51,7 @@ class User extends Authenticatable
     {
         // Returns the most recent Status submitted by this User
         // If none are found, return NULL
-        return Status::where('created_by_id', $this->id)->orderBy('created_at', 'desc')->first();
+        return ResourceStatus::where('created_by_id', $this->id)->orderBy('created_at', 'desc')->first();
     }
 
     /**

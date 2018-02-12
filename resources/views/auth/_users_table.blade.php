@@ -11,7 +11,7 @@
 	@foreach($users as $user)
 		<tr>
 			<td>{{ $user->id }}</td>
-			<td>{{ $user->firstname }} {{ $user->lastname }}</td>
+			<td>{{ $user->name }}</td>
 			<td>{{ $user->email }}</td>
 			<td>{{ empty($user->crew_id) ? "Admin" : substr($user->crew->name,0,35) }}</td>
 			<td><form action="{{ route('destroy_user',$user->id) }}" method="POST" class="form-inline">

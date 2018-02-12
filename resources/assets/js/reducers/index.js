@@ -5,6 +5,7 @@ import { categoryMenuDrawerOpen, selectedItemCategory } from '../containers/App/
 import { items } from '../containers/CategoryItemsTable/itemsReducer';
 import { categoriesReducer } from '../containers/CategoryItemsTable/categoriesReducer';
 import { selectedItemRowReducer } from '../containers/CategoryItemsTable/selectedItemRowReducer';
+import { summaryReducer } from '../containers/StatusSummary/summaryReducer';
 
 const rootReducer = combineReducers({
   categories: categoriesReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   router: routerReducer,
   selectedItemCategory,
   selectedItemRow: selectedItemRowReducer,
+  summary: summaryReducer,
 });
 
 export default rootReducer;
