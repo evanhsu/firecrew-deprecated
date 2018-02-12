@@ -7,7 +7,6 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
 /**
@@ -22,6 +21,7 @@ class ResourceStatusUpdated implements ShouldBroadcastNow
      * @var ResourceStatus
      */
     public $resourceStatus;
+    public $crewId;
 
     /**
      * Create a new event instance.
@@ -31,6 +31,7 @@ class ResourceStatusUpdated implements ShouldBroadcastNow
     public function __construct(ResourceStatus $resourceStatus)
     {
         $this->resourceStatus = $resourceStatus;
+        $this->crewId = ($resourceStatus->crew())->id;
     }
 
     /**

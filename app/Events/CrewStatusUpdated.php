@@ -7,7 +7,6 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
 /**
@@ -19,18 +18,18 @@ class CrewStatusUpdated implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var CrewStatus
+     * @var CrewStatus status
      */
-    public $crewStatus;
+    public $status;
 
     /**
      * Create a new event instance.
      *
-     * @param CrewStatus $crewStatus
+     * @param CrewStatus $status
      */
-    public function __construct(CrewStatus $crewStatus)
+    public function __construct(CrewStatus $status)
     {
-        $this->crewStatus = $crewStatus;
+        $this->status = $status;
     }
 
     /**

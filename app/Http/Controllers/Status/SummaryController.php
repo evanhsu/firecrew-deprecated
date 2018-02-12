@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Status;
 
 use App\Http\Controllers\Controller;
 use App\Domain\Crews\Crew;
-use App\Http\Transformers\CrewTransformer;
 use Illuminate\Http\Request;
-use League\Fractal\Manager;
+//use App\Http\Transformers\CrewTransformer;
+//use League\Fractal\Manager;
 
 class SummaryController extends Controller
 {
     /**
-     *
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
@@ -28,17 +27,19 @@ class SummaryController extends Controller
     {
         $crews = $this->getData();
 
-        return $this->response->collection(
-            $crews,
-            new CrewTransformer,
-            ['key' => 'crew'],
-            function ($crews, Manager $fractal) {
-                $fractal->parseIncludes(array_merge(
-                    ['status', 'resources'],
-                    $fractal->getRequestedIncludes()
-                ));
-            }
-        );
+        return $crews->toJson();
+
+//        return $this->response->collection(
+//            $crews,
+//            new CrewTransformer,
+//            ['key' => 'crew'],
+//            function ($crews, Manager $fractal) {
+//                $fractal->parseIncludes(array_merge(
+//                    ['status', 'resources'],
+//                    $fractal->getRequestedIncludes()
+//                ));
+//            }
+//        );
     }
 
     private function getData()

@@ -47,7 +47,7 @@ class CreateResourceStatusesTable extends Migration
             $table->string('created_by_name');
             $table->integer("created_by_id");
 
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 

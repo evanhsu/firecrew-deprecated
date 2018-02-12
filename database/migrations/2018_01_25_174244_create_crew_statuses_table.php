@@ -60,7 +60,7 @@ class CreateCrewStatusesTable extends Migration
             $table->string('created_by_name');
             $table->integer("created_by_id");
 
-            $table->timestamps();
+            $table->timestampsTz();
 
 
             $table->foreign('crew_id')->references('id')->on('crews')->onDelete('cascade');

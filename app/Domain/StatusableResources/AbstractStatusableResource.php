@@ -63,8 +63,8 @@ class AbstractStatusableResource extends Model
         $expiration_age = config('app.days_until_updates_expire') * 24; // Converted to hours
 
         $now = Carbon::now();
-        $last_status = $this->status();
-        if ($last_status->exists) {
+        $last_status = $this->status;
+        if (!is_null($last_status)) {
             $last_update = $last_status->created_at;
             $age_hours = $now->diffInHours($last_update);  // The number of hours between NOW and the last update
 

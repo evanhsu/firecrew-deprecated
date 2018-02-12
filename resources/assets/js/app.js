@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { Route } from 'react-router-dom';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js'; // eslint-disable-line no-unused-vars
 import createHistory from 'history/createBrowserHistory';
 import { fromJS } from 'immutable';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -12,7 +14,9 @@ import Perf from 'react-addons-perf';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import rootReducer from './reducers';
 import App from './containers/App';
+import StatusSummary from './containers/StatusSummary';
 import { fetchItems } from './containers/CategoryItemsTable/actions';
+
 require('./bootstrap');
 
 
@@ -26,7 +30,7 @@ window.Perf = Perf;
 // Create a browser history for use with React Router
 const history = createHistory();
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // eslint-disable-line no-underscore-dangle
 const initialState = fromJS({});
 
 const store = createStore(
@@ -40,9 +44,16 @@ const store = createStore(
   )
 );
 
-store.dispatch(fetchItems()); // TODO: Move this to CategoryItemsTable.componentWillUpdate?
+// Set up Laravel Echo to connect to a Pusher account
+window.Echo = new Echo({
+  broadcaster: 'pusher',
+  key: '4bfb2ff98afa1fa4332a',
+  cluster: 'mt1',
+  encrypted: false,
+});
 
 if (document.getElementById('inventory')) {
+  store.dispatch(fetchItems()); // TODO: Move this to CategoryItemsTable.componentWillUpdate?
   ReactDOM.render(
     <Provider store={store}>
       <ConnectedRouter history={history}>
@@ -52,5 +63,18 @@ if (document.getElementById('inventory')) {
       </ConnectedRouter>
     </Provider>,
     document.getElementById('inventory')
+  );
+}
+
+if (document.getElementById('statusSummary')) {
+  ReactDOM.render(
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <MuiThemeProvider>
+          <Route path="/summary" component={StatusSummary} />
+        </MuiThemeProvider>
+      </ConnectedRouter>
+    </Provider>,
+    document.getElementById('statusSummary')
   );
 }

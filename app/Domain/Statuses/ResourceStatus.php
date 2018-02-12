@@ -9,6 +9,7 @@ class ResourceStatus extends Model
 {
     // Explicitly define the database table, since 'status' has an awkward plural form
     protected $table = 'resource_statuses';
+//    protected $dateFormat = 'Y-m-d H:i:s';
 
     /**
      * The attributes that are mass assignable.
@@ -49,4 +50,9 @@ class ResourceStatus extends Model
     {
         return $this->resource->crew;
     }
+
+//    public function getCreatedAtAttribute($date)
+//    {
+//        return Carbon::parse($date)->toW3cString();
+//    }
 }
