@@ -10,16 +10,18 @@ function is_active($button, $active_menubutton)
 ?>
 
 <nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse"
                     aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Rescue Circle</a>
+            <a class="navbar-brand" href="{{ url('/') }}">
+                {{ config('app.name', 'FireCrew') }}
+            </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
