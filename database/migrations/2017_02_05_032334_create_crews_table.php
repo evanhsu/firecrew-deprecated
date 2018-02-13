@@ -20,7 +20,7 @@ class CreateCrewsTable extends Migration
             $table->string('type')->nullable();
             $table->string("statusable_type")->nullable();
             $table->integer('region')->nullable();
-            $table->string('phone', 15)->nullable();
+            $table->string('phone', 25)->nullable();
             $table->string('fax', 15)->nullable();
             $table->string('logo_filename')->nullable();
             $table->string('address_street1')->nullable();

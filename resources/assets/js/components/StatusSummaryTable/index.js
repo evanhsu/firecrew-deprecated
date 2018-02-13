@@ -14,13 +14,6 @@ const getStatusSummaryTableStyle = () => (
   }
 );
 
-const getHeaderRowStyle = () => (
-  {
-    borderBottom: '2px solid black',
-    fontWeight: 'bold',
-  }
-);
-
 const getCrewRowStyle = (crewRow) => {
   const style = {
     borderBottom: '2px solid black',
@@ -46,30 +39,34 @@ const localDateString = (utcDateString) => {
 };
 
 const HeaderRow = () => (
-  <div className="col-xs-12" style={getHeaderRowStyle()}>
-    <span className="col-xs-2">Crew</span>
-    <span className="col-xs-7">
-      <span className="col-xs-1" style={{ padding: 0 }}>HRAP Surplus</span>
-      <span className="col-xs-3">Resource</span>
-      <span className="col-xs-3">Location</span>
-      <span className="col-xs-5">Notes</span>
-    </span>
-    <span className="col-xs-3">Intel</span>
-  </div>
+  <thead>
+    <tr>
+      <th className="col-xs-2">Crew</th>
+      <th className="col-xs-7">
+        <span className="col-xs-1" style={{ padding: 0 }}>HRAP Surplus</span>
+        <span className="col-xs-3">Resource</span>
+        <span className="col-xs-3">Location</span>
+        <span className="col-xs-5">Notes</span>
+      </th>
+      <th className="col-xs-3">Intel</th>
+    </tr>
+  </thead>
 );
 
 const CrewRow = ({ crewRow }) => (
-  <div className="col-xs-12" style={getCrewRowStyle(crewRow)}>
-    <span className="col-xs-2">
-      <span style={{ fontWeight: 'bold' }}>{crewRow.get('name')}</span><br />
-      {crewRow.get('phone')}<br />
-      Updated {localDateString(crewRow.getIn(['status', 'updated_at']))} ({Moment.utc(crewRow.getIn(['status', 'updated_at'])).fromNow()})
-    </span>
-    <span className="col-xs-7" style={{ paddingLeft: 0, paddingRight: 0, borderLeft: '1px dashed gray' }}>
-      {crewRow.get('statusable_resources').map((resource) => (
+  <tr style={getCrewRowStyle(crewRow)}>
+    <td className="col-xs-2"><span style={{ fontWeight: 'bold' }}>{ crewRow.get('name') }</span><br />
+      { crewRow.get('phone') }<br />
+      Updated { localDateString(crewRow.getIn(['status', 'updated_at'])) } ({ Moment.utc(crewRow.getIn(['status', 'updated_at'])).fromNow() })
+    </td>
+    <td
+      className="col-xs-7"
+      style={{ paddingLeft: 0, paddingRight: 0, borderLeft: '1px dashed gray' }}
+    >
+      { crewRow.get('statusable_resources').map((resource) => (
         <CrewResourceRow key={resource.get('id')} resource={resource} />
-      ))}
-      {['personnel_1_', 'personnel_2_', 'personnel_3_', 'personnel_4_', 'personnel_5_', 'personnel_6_'].map((person) => (
+      )) }
+      { ['personnel_1_', 'personnel_2_', 'personnel_3_', 'personnel_4_', 'personnel_5_', 'personnel_6_'].map((person) => (
         <CrewPersonnelRow
           key={person}
           person={{
@@ -79,12 +76,12 @@ const CrewRow = ({ crewRow }) => (
             note: crewRow.getIn(['status', `${person}note`]),
           }}
         />
-      ))}
-    </span>
-    <span className="col-xs-3" style={{ borderLeft: '1px dashed black' }}>
-      {crewRow.getIn(['status', 'intel'])}
-    </span>
-  </div>
+      )) }
+    </td>
+    <td className="col-xs-3" style={{ borderLeft: '1px dashed black' }}>
+      { crewRow.getIn(['status', 'intel']) }
+    </td>
+  </tr>
 );
 
 CrewRow.propTypes = {
@@ -94,14 +91,14 @@ CrewRow.propTypes = {
 
 const CrewResourceRow = ({ resource }) => (
   <span className="col-xs-12" style={getCrewResourceRowStyle()}>
-    <span className="col-xs-1">{resource.getIn(['latest_status', 'staffing_value1'])}</span>
-    <span className="col-xs-3">{resource.get('identifier')} ({resource.get('model')})</span>
-    <span className="col-xs-3">{resource.getIn(['latest_status', 'assigned_fire_name'])}</span>
+    <span className="col-xs-1">{ resource.getIn(['latest_status', 'staffing_value1']) }</span>
+    <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
+    <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) }</span>
     <span className="col-xs-5">
-      {resource.getIn(['latest_status', 'manager_name']) && `Contact: ${resource.getIn(['latest_status', 'manager_name'])}`}
-      {resource.getIn(['latest_status', 'manager_phone']) && ` (${resource.getIn(['latest_status', 'manager_phone'])})`}<br />
-      {resource.getIn(['latest_status', 'comments1']) && `${resource.getIn(['latest_status', 'comments1'])}`}<br />
-      {resource.getIn(['latest_status', 'comments2'])}
+      { resource.getIn(['latest_status', 'manager_name']) && `Contact: ${resource.getIn(['latest_status', 'manager_name'])}` }
+      { resource.getIn(['latest_status', 'manager_phone']) && ` (${resource.getIn(['latest_status', 'manager_phone'])})` }<br />
+      { resource.getIn(['latest_status', 'comments1']) && `${resource.getIn(['latest_status', 'comments1'])}` }<br />
+      { resource.getIn(['latest_status', 'comments2']) }
     </span>
   </span>
 );
@@ -113,11 +110,11 @@ CrewResourceRow.propTypes = {
 
 const CrewPersonnelRow = ({ person }) => (
   person.name ? (
-    <span className="col-xs-12" style={getCrewResourceRowStyle()}>
+    <span className="col-xs-12" style={ getCrewResourceRowStyle() }>
       <span className="col-xs-1"> </span>
-      <span className="col-xs-3">{person.name}{person.role && ` [${person.role}]`}</span>
-      <span className="col-xs-3">{person.location}</span>
-      <span className="col-xs-5">{person.note}</span>
+      <span className="col-xs-3">{ person.name }{ person.role && ` [${person.role}]` }</span>
+      <span className="col-xs-3">{ person.location }</span>
+      <span className="col-xs-5">{ person.note }</span>
     </span>) : null
 );
 
@@ -132,15 +129,17 @@ CrewPersonnelRow.propTypes = {
 
 
 const StatusSummaryTable = ({ crews }) => (
-  <div className="col-xs-12" style={getStatusSummaryTableStyle()}>
+  <table className="table table-condensed table-hover" style={getStatusSummaryTableStyle()}>
     <HeaderRow />
-    {crews.map((crew) => (
-      <CrewRow
-        key={crew.get('id')}
-        crewRow={crew}
-      />
-    ))}
-  </div>
+    <tbody>
+      { crews.map((crew) => (
+        <CrewRow
+          key={crew.get('id')}
+          crewRow={crew}
+        />
+      )) }
+    </tbody>
+  </table>
 );
 
 StatusSummaryTable.propTypes = {

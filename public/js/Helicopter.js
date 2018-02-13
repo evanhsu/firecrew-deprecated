@@ -102,6 +102,32 @@ define(["dojo/_base/declare",
         return new esri.Graphic(this.mapPoint(), this.mapMarker(), this.getAttributes());
       },
 
+      mapLabelSymbol: function () {
+        // Returns an ArcGIS TextSymbol
+        try {
+          return new esri.symbol.TextSymbol(
+            {
+              type: "text",  // autocasts as new TextSymbol()
+              text: this.params.statusable_resource_name,
+              color: "black",
+              xoffset: 14,
+              yoffset: 18,
+              font: {  // autocast as new Font()
+                size: 10,
+                family: "sans-serif",
+                weight: "bolder",
+              }
+            }
+          );
+        } catch (e) {
+          console.error("Error: " + e);
+        }
+      },
+
+      mapLabel: function () {
+        return new esri.Graphic(this.mapPoint(), this.mapLabelSymbol());
+      },
+
       mapResponseRingGraphic: function () {
         // Returns an ArcGIS GRAPHIC object that can be placed onto a GraphicsLayer.
 

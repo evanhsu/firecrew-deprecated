@@ -70,7 +70,6 @@ class CrewController extends Controller
 
         // Form is valid, continue...
         $crew = new Crew(Input::all());
-        $crew->statusable_type = $request->input('statusable_type'); // Must be fully namespaced, i.e. "App\Domain\Crews\Crew"
 
         if ($crew->save()) {
             return redirect()->route('crews_index');

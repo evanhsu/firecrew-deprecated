@@ -35,8 +35,7 @@ class AccountController extends Controller
         }
 
         // Authorization complete - continue...
-        $users = User::orderBy('firstname', 'asc')
-            ->orderBy('lastname','asc')
+        $users = User::orderBy('name', 'asc')
             ->get();
         $crews = Crew::orderBy('name')->get();
 

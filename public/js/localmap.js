@@ -127,15 +127,19 @@ require([
           case 'ShortHaulHelicopter':
             gl1.add(heli.mapGraphic());              // Add a symbol to the appropriate GraphicsLayer
             gl1.add(heli.mapResponseRingGraphic());  // Add a circle to the "circles" GraphicsLayer to represent the response range for this helicopter
+            gl1.add(heli.mapLabel());               // Add the tailnumber to the map next to the helicopter icon
             break;
           case 'RappelHelicopter':
             gl3.add(heli.mapGraphic());
+            gl3.add(heli.mapLabel());
             break;
           case 'SmokejumperAirplane':
             gl5.add(heli.mapGraphic());
+            gl5.add(heli.mapLabel());
             break;
           case 'HotshotCrew':
             gl4.add(heli.mapGraphic());
+            gl4.add(heli.mapLabel());
             break;
         }
 
