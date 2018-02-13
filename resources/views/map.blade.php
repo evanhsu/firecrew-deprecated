@@ -5,7 +5,7 @@
 
 @section('stylesheets')
     @parent
-    <link rel="stylesheet" href="http://js.arcgis.com/3.14/esri/css/esri.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.14/esri/css/esri.css">
 @endsection
 
 
@@ -42,7 +42,7 @@
 
 @section('scripts-postload')
     @parent
-    <script src="http://js.arcgis.com/3.14/init.js"></script>  <?php /* ArcGIS API - must load before other classes */?>
+    <script src="https://js.arcgis.com/3.14/init.js"></script>  <?php /* ArcGIS API - must load before other classes */?>
     {{--<script src="/js/esri/init.js"></script>--}}
     <script>
         $(document).ready(function() {

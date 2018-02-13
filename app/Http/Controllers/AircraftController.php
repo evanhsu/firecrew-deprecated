@@ -45,8 +45,7 @@ class AircraftController extends Controller
     {
         // Disassociate the specified aircraft with this Crew (set crew_id = null) if the current user has authorization
 
-        $heli = Aircraft::where('tailnumber', $tailnumber)->first();
-        //echo ("Heli:".$heli.".");
+        $heli = AbstractStatusableResource::where('identifier', $tailnumber)->first();
 
         if (empty($heli)) {
             // Aircraft not found. Nothing to release. Consider this success.
