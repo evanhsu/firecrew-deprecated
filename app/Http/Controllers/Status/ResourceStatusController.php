@@ -25,9 +25,6 @@ class ResourceStatusController extends Controller
      */
     public function currentForAllResources()
     {
-        // 1. Retrieve the most recent Status for each resource that's been updated within the last 30 days.
-        // 2. Package the response into a JSON object and return.
-
         $max_age = config('app.days_until_updates_expire');
         $earliest_date = Carbon::now()->subDays($max_age); // The oldest Status that will be displayed
 
@@ -36,21 +33,13 @@ class ResourceStatusController extends Controller
                             $join->on('newer.statusable_resource_id','=','newest.statusable_resource_id');
                             $join->on('newer.updated_at','>','newest.updated_at');
                             })
-                        ->select('newest.*')
+                        ->join('statusable_resources', 'statusable_resources.id', '=', 'newest.statusable_resource_id')
+                        ->select('newest.*', 'statusable_resources.crew_id')
+                        ->whereNotNull('statusable_resources.crew_id')
                         ->whereNull('newer.updated_at')
                         ->where('newest.updated_at','>=',$earliest_date)
                         ->get();
 
-/*      Here's the raw SQL query for testing and debugging:
-
-        select newest.* from
-        resource_statuses as newest
-        left outer join resource_statuses as newer
-        on newer.statusable_id = newest.statusable_id
-        and newer.updated_at > newest.updated_at
-        where newer.updated_at IS NULL;
-*/
-        // sleep(4); // Test asynchronous loading on the map view
         return json_encode($resources);
     }
 
