@@ -29,7 +29,10 @@
         @include('menubar')
 
         @if (Session::has('alert'))
-            <div class="alert alert-{{ isset(Session::get('alert')['type']) ? Session::get('alert')['type'] : 'info' }}" role="alert">
+            <div class="alert alert-{{ isset(Session::get('alert')['type']) ? Session::get('alert')['type'] : 'info' }}"
+                 style="margin-bottom: 0"
+                 role="alert"
+            >
                 {{ Session::get('alert')['message'] }}
             </div>
         @endif
