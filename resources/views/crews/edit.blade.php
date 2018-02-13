@@ -99,7 +99,7 @@ function freshnessNotify($freshness) {
 
 
 
-@section('title','Crew Info - RescueCircle')
+@section('title','Crew Info')
 
 
 @section('content')

@@ -31,6 +31,7 @@
 				<tr>
 					<td>{{ $crew->id }}</td>
 					<td><a href="{{ route('edit_crew', array('id' => $crew->id)) }}">{{ $crew->name }}</a></td>
+					<td>Type</td>
 					<td>
                         <a href="{{ route('new_status_for_crew',$crew->id) }}" class="btn btn-primary" role="button">!</a>
 					</td>
