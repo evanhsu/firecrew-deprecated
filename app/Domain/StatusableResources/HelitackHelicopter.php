@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Domain\StatusableResources;
 
-class ShortHaulHelicopter extends AbstractStatusableResource implements StatusableResourceInterface
+class HelitackHelicopter extends AbstractStatusableResource implements StatusableResourceInterface
 {
-    protected static $resource_type = "ShortHaulHelicopter";
-    protected static $staffing_category1 = "HAUL";
-    protected static $staffing_category2 = "EMT";
+    protected static $resource_type = "HelitackHelicopter";
+    protected static $staffing_category1 = "Crewmembers";
+    protected static $staffing_category2 = null;
 
     public static function resourceType()
     {

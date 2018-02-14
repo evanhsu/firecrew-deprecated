@@ -54,6 +54,12 @@ class AbstractStatusableResource extends Model
         return $this->latestStatus();
     }
 
+    public function toSubclass()
+    {
+        $subclass= "App\\Domain\\StatusableResources\\$this->resource_type";
+        return $subclass::find($this->id);
+    }
+
     public function freshness()
     {
         // Check the timestamp of the most recent update for this Aircraft.

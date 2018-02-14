@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Input;
 use Carbon\Carbon;
 use App\Domain\Crews\Crew;
 use App\Domain\Statuses\ResourceStatus;
-use App\Domain\StatusableResources\RappelHelicopter;
-use App\Domain\StatusableResources\ShortHaulHelicopter;
-use App\Domain\StatusableResources\SmokejumperAirplane;
 
 class ResourceStatusController extends Controller
 {

@@ -26,13 +26,25 @@ define(["dojo/_base/declare",
 
         this.freshTime = 18 * 60 * 60 * 1000;	// Milliseconds until this helicopter's position info is considered stale
 
-        this.iconSize = 75;		// Pixel dimensions of the helicopter icon on the map
+        switch(this.resourceType) {
+          case 'Type1Helicopter':
+            this.iconSize = 45;
+            break;
+          case 'HelitackHelicopter':
+            this.iconSize = 45;
+            break;
+          default:
+            this.iconSize = 75;
+            break;
+        }
         this.iconPath = '/images/symbols/';	// The folder that contains all of the map-symbol image files
         this.baseFilenames = {
           'ShortHaulHelicopter': 'shorthaulhelicopter',
           'RappelHelicopter': 'rappelhelicopter',
           'SmokejumperAirplane': 'smokejumperairplane',
           'HotshotCrew': 'hotshotcrew',
+          'HelitackHelicopter' : 'helitackhelicopter',
+          'Type1Helicopter' : 'type1helicopter',
         };
 
         this.responseRingRadius = this.params.Distance || 100;	// NAUTICAL MILES (Default 100)
@@ -48,7 +60,7 @@ define(["dojo/_base/declare",
 
       showResponseRing: function () {
         // Return TRUE or FALSE, depending on whether a ring should be drawn around this feature on the map to denote its response radius.
-        return (this.resourceType === "App\\Domain\\Aircrafts\\ShortHaulHelicopter");
+        return (this.resourceType === "App\\Domain\\StatusableResources\\ShortHaulHelicopter");
       },
 
       mapPoint: function () {
@@ -105,11 +117,12 @@ define(["dojo/_base/declare",
       mapLabelSymbol: function () {
         // Returns an ArcGIS TextSymbol
         try {
+          const colorValue = this.isFresh() ? "#000000" : "#888888";
           return new esri.symbol.TextSymbol(
             {
               type: "text",  // autocasts as new TextSymbol()
               text: this.params.statusable_resource_name,
-              color: "black",
+              color: new esri.Color(colorValue),
               xoffset: 14,
               yoffset: 18,
               font: {  // autocast as new Font()
