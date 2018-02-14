@@ -16,7 +16,7 @@
         <h2>Staffing</h2>
         @if(!is_null($resource->staffingCategory1()))
         <div class="form-group">
-            <label for="staffing_value1" class="col-xs-4 col-sm-2 control-label">Crewmembers</label>
+            <label for="staffing_value1" class="col-xs-4 col-sm-2 control-label">{{ $resource->staffingCategory1() }}</label>
             <div class="col-xs-4 col-sm-2">
                 <input type="text" name="staffing_category1" id="staffing_category1" class="hidden" value="{{ $resource->staffingCategory1() }}">
                 <input type="text" name="staffing_value1" id="staffing_value1" class="form-control" value="{{ $status->staffing_value1 }}">
@@ -25,7 +25,7 @@
         @endif
         @if(!is_null($resource->staffingCategory2()))
         <div class="form-group">
-            <label for="staffing_value2" class="col-xs-4 col-sm-2 control-label">HRAP Surplus</label>
+            <label for="staffing_value2" class="col-xs-4 col-sm-2 control-label">{{ $resource->staffingCategory2() }}</label>
             <div class="col-xs-4 col-sm-2">
                 <input type="text" name="staffing_category2" id="staffing_category2" class="hidden" value="{{ $resource->staffingCategory2() }}">
                 <input type="text" name="staffing_value2" id="staffing_value2" class="form-control" value="{{ $status->staffing_value2 }}">
