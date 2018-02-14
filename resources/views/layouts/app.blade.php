@@ -18,6 +18,11 @@
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'pusher' => [
+                'appKey' => env('PUSHER_APP_KEY'),
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'encrypted' => env('PUSHER_APP_ENCRYPTED'),
+            ],
         ]) !!};
     </script>
     @section('scripts-preload')
