@@ -46,6 +46,8 @@ class ResourceStatusesTableSeeder extends Seeder
             'statusable_resource_name' => $heli->identifier,
             'latitude' => $coords[0],
             'longitude' => $coords[1],
+            'staffing_category1' => $heli->staffingCategory1(),
+            'staffing_category2' => $heli->staffingCategory2(),
             'staffing_value1' => "3",
             'staffing_value2' => "4",
             'manager_name' => $managerName,
