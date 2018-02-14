@@ -94,63 +94,63 @@ class AircraftController extends Controller
      * @param $tailnumber
      * @return $this
      */
-    public function newStatus(Request $request, $tailnumber)
-    {
-        // Determine the subclass for this Aircraft (Shorthaulhelicopter, Rappelhelicopter, Smokejumperairplane, etc)
-        $aircraft = Aircraft::where('tailnumber', '=', $tailnumber)->first();
-        if (is_null($aircraft)) {
-            return "Aircraft not found";
-        }
-        $aircraft = $aircraft->subclass(); // Instantiate a child class (Rappelhelicopter, for example) NOT the parent "Aircraft" class
-
-        // Make sure this user is authorized...
-        if (Gate::denies('act-as-admin-for-crew', $aircraft->crew_id)) {
-            // The current user does not have permission to perform admin functions for this crew
-            return redirect()->back()->withErrors("You're not authorized to access that aircraft!");
-        }
-        // Authorization complete - continue...
-
-        // Retrieve the other Aircrafts that are owned by the same Crew (to build a navigation menu)
-        $crew = $aircraft->crew;
-        $aircraft_class = $aircraft->classname();
-        $crew_aircrafts = $aircraft_class::where('crew_id', $aircraft->crew_id)->orderBy('tailnumber')->get();
-
-        // Retrieve the most recent status update to prepopulate the form (returns a 'new Status' if none exist)
-        $last_status = $aircraft->status();
-
-        // Convert the lat and lon from decimal-degrees into decimal-minutes
-        // MOVE THIS FUNCTIONALITY INTO A COORDINATES CLASS
-        if (!empty($last_status->latitude)) {
-            $sign = $last_status->latitude >= 0 ? 1 : -1; // Keep track of whether the latitude is positive or negative
-            $last_status->latitude_deg = floor(abs($last_status->latitude)) * $sign;
-            $last_status->latitude_min = round((abs($last_status->latitude) - $last_status->latitude_deg) * 60.0, 4);
-
-        } else {
-            $last_status->latitude_deg = "";
-            $last_status->latitude_min = "";
-        }
-
-        if (!empty($last_status->longitude)) {
-            $sign = $last_status->longitude >= 0 ? 1 : -1; // Keep track of whether the longitude is positive or negative
-            $last_status->longitude_deg = floor(abs($last_status->longitude)) * $sign * -1; // Convert to 'West-positive' reference
-            $last_status->longitude_min = round((abs($last_status->longitude) - $last_status->longitude_deg) * 60.0, 4);
-        } else {
-            $last_status->longitude_deg = "";
-            $last_status->longitude_min = "";
-        }
-
-        // Display the status update form
-        if (Auth::user()->isGlobalAdmin()) {
-            $request->session()->flash('active_menubutton', 'aircraft'); // Tell the menubar which button to highlight
-        } else {
-            $request->session()->flash('active_menubutton', 'status'); // Tell the menubar which button to highlight
-        }
-        // return view('aircrafts.new_status')->with("aircraft",$aircraft)->with("aircrafts",$crew_aircrafts)->with("status",$last_status)->with("crew",$crew);
-        $resource_type = $crew->statusable_type_plain();
-        return view('status_forms.' . $resource_type)->with("aircraft", $aircraft)->with("aircrafts", $crew_aircrafts)->with("status", $last_status)->with("crew", $crew);
-        // return view('status_forms.shorthaulhelicopter')->with("aircraft",$aircraft)->with("aircrafts",$crew_aircrafts)->with("status",$last_status)->with("crew",$crew);
-
-        // return var_dump($aircraft);
-        // return var_dump($last_status);
-    }
+//    public function newStatus(Request $request, $tailnumber)
+//    {
+//        // Determine the subclass for this Aircraft (Shorthaulhelicopter, Rappelhelicopter, Smokejumperairplane, etc)
+//        $aircraft = Aircraft::where('tailnumber', '=', $tailnumber)->first();
+//        if (is_null($aircraft)) {
+//            return "Aircraft not found";
+//        }
+//        $aircraft = $aircraft->subclass(); // Instantiate a child class (Rappelhelicopter, for example) NOT the parent "Aircraft" class
+//
+//        // Make sure this user is authorized...
+//        if (Gate::denies('act-as-admin-for-crew', $aircraft->crew_id)) {
+//            // The current user does not have permission to perform admin functions for this crew
+//            return redirect()->back()->withErrors("You're not authorized to access that aircraft!");
+//        }
+//        // Authorization complete - continue...
+//
+//        // Retrieve the other Aircrafts that are owned by the same Crew (to build a navigation menu)
+//        $crew = $aircraft->crew;
+//        $aircraft_class = $aircraft->classname();
+//        $crew_aircrafts = $aircraft_class::where('crew_id', $aircraft->crew_id)->orderBy('tailnumber')->get();
+//
+//        // Retrieve the most recent status update to prepopulate the form (returns a 'new Status' if none exist)
+//        $last_status = $aircraft->status();
+//
+//        // Convert the lat and lon from decimal-degrees into decimal-minutes
+//        // MOVE THIS FUNCTIONALITY INTO A COORDINATES CLASS
+//        if (!empty($last_status->latitude)) {
+//            $sign = $last_status->latitude >= 0 ? 1 : -1; // Keep track of whether the latitude is positive or negative
+//            $last_status->latitude_deg = floor(abs($last_status->latitude)) * $sign;
+//            $last_status->latitude_min = round((abs($last_status->latitude) - $last_status->latitude_deg) * 60.0, 4);
+//
+//        } else {
+//            $last_status->latitude_deg = "";
+//            $last_status->latitude_min = "";
+//        }
+//
+//        if (!empty($last_status->longitude)) {
+//            $sign = $last_status->longitude >= 0 ? 1 : -1; // Keep track of whether the longitude is positive or negative
+//            $last_status->longitude_deg = floor(abs($last_status->longitude)) * $sign * -1; // Convert to 'West-positive' reference
+//            $last_status->longitude_min = round((abs($last_status->longitude) - $last_status->longitude_deg) * 60.0, 4);
+//        } else {
+//            $last_status->longitude_deg = "";
+//            $last_status->longitude_min = "";
+//        }
+//
+//        // Display the status update form
+//        if (Auth::user()->isGlobalAdmin()) {
+//            $request->session()->flash('active_menubutton', 'aircraft'); // Tell the menubar which button to highlight
+//        } else {
+//            $request->session()->flash('active_menubutton', 'status'); // Tell the menubar which button to highlight
+//        }
+//        // return view('aircrafts.new_status')->with("aircraft",$aircraft)->with("aircrafts",$crew_aircrafts)->with("status",$last_status)->with("crew",$crew);
+//        $resource_type = $crew->statusable_type_plain();
+//        return view('status_forms.' . $resource_type)->with("aircraft", $aircraft)->with("aircrafts", $crew_aircrafts)->with("status", $last_status)->with("crew", $crew);
+//        // return view('status_forms.shorthaulhelicopter')->with("aircraft",$aircraft)->with("aircrafts",$crew_aircrafts)->with("status",$last_status)->with("crew",$crew);
+//
+//        // return var_dump($aircraft);
+//        // return var_dump($last_status);
+//    }
 }

@@ -47,6 +47,8 @@ function drawOneAircraftForm($index, $aircraft, $crew, $template = false) {
             <div class=\"col-sm-4 col-md-3\">
                 <select class=\"form-control aircraft-type\" name=\"crew[statusableResources][".$index."][resource_type]\">
                     <option value=\"RappelHelicopter\"".($aircraft->resource_type == "RappelHelicopter" ? " selected" : ""). ">Rappel</option>
+                    <option value=\"HelitackHelicopter\"".($aircraft->resource_type == "HelitackHelicopter" ? " selected" : ""). ">Helitack</option>
+                    <option value=\"Type1Helicopter\"".($aircraft->resource_type == "Type1Helicopter" ? " selected" : ""). ">Type 1 Helicopter</option>
                     <option value=\"ShortHaulHelicopter\"".($aircraft->resource_type == "ShortHaulHelicopter" ? " selected" : ""). ">Short Haul</option>
                     <option value=\"SmokejumperAirplane\"".($aircraft->resource_type == "SmokejumperAirplane" ? " selected" : ""). ">Smokejumper</option>
                 </select>
@@ -99,7 +101,7 @@ function freshnessNotify($freshness) {
 
 
 
-@section('title','Crew Info - RescueCircle')
+@section('title','Crew Info')
 
 
 @section('content')

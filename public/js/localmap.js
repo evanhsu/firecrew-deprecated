@@ -73,6 +73,8 @@ require([
   var gl3 = new GraphicsLayer({id: "Rappel", infoTemplate: infoTemplate});        // This layer holds the rappel helicopters
   var gl4 = new GraphicsLayer({id: "Hotshots", infoTemplate: infoTemplate});      // This layer holds the hotshot crews
   var gl5 = new GraphicsLayer({id: "Smokejumpers", infoTemplate: infoTemplate});  // This layer holds the smokejumper airplanes
+  var gl6 = new GraphicsLayer({id: "Helitack", infoTemplate: infoTemplate});  // This layer holds the
+  var gl7 = new GraphicsLayer({id: "Type 1 Heli", infoTemplate: infoTemplate});  // This layer holds the
 
 
   //Add each Feature point to the GraphicsLayer
@@ -87,6 +89,8 @@ require([
       map.addLayer(gl3);
       map.addLayer(gl4);
       map.addLayer(gl5);
+      map.addLayer(gl6);
+      map.addLayer(gl7);
 
       // Add the Legend to the map - this must be done AFTER all of the data layers have been added
       // so that it knows which symbols to describe.
@@ -111,6 +115,12 @@ require([
         {
           layer: gl5,
         },
+        {
+          layer: gl6,
+        },
+        {
+          layer: gl7,
+        },
       ];
       const layerList = new LayerList({
         map: map,
@@ -133,16 +143,23 @@ require([
             gl3.add(heli.mapGraphic());
             gl3.add(heli.mapLabel());
             break;
-          case 'SmokejumperAirplane':
-            gl5.add(heli.mapGraphic());
-            gl5.add(heli.mapLabel());
-            break;
           case 'HotshotCrew':
             gl4.add(heli.mapGraphic());
             gl4.add(heli.mapLabel());
             break;
+          case 'SmokejumperAirplane':
+            gl5.add(heli.mapGraphic());
+            gl5.add(heli.mapLabel());
+            break;
+          case 'HelitackHelicopter':
+            gl6.add(heli.mapGraphic());
+            gl6.add(heli.mapLabel());
+            break;
+          case 'Type1Helicopter':
+            gl7.add(heli.mapGraphic());
+            gl7.add(heli.mapLabel());
+            break;
         }
-
       }
     });
 }); // End require()

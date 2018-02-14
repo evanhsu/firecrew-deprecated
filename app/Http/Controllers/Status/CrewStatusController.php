@@ -42,6 +42,8 @@ class CrewStatusController extends Controller
 
         // Convert the lat and lon from decimal-degrees into decimal-minutes
         $modifiedResources = $resources->map(function ($resource, $index) {
+            $resource = $resource->toSubclass();
+
             if(is_null($resource->latestStatus)) {
                 $resource->latestStatus = new ResourceStatus();
             }

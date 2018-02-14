@@ -42,7 +42,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/aircraft/{tailnumber}/status', array('as' => 'current_status_for_aircraft', 'uses' => 'AircraftController@showCurrentStatus'));
     Route::get('/aircraft/{tailnumber}/update', array('as' => 'new_status_for_aircraft', 'uses' => 'AircraftController@newStatus'));
     Route::post('/aircraft/{tailnumber}/release', array('as' => 'release_aircraft', 'uses' => 'AircraftController@releaseFromCrew'));
-    Route::post('/aircraft/{tailnumber}/destroy', array('as' => 'destroy_aircraft', 'uses' => 'AircraftController@destroy'));
 
 
 // CREWS

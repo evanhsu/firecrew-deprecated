@@ -1,5 +1,7 @@
 @extends('../layouts.status_update_layout')
 
+
+
 @section('form')
     <h1>Status Update</h1>
 
@@ -9,8 +11,12 @@
                 <a href="#intel" aria-controls="intel" role="tab" data-toggle="tab">Intel</a></li>
             </li>
             @foreach($resources as $resource)
+                @php
+                    $sanitizedIdentifier = str_replace('=', '', base64_encode($resource->identifier));
+                @endphp
+
                 <li role="presentation"{!! ($resource->identifier == $tailnumber) ? " class=\"active\"" : "" !!}>
-                    <a href="#{!! $resource->identifier !!}" aria-controls="{!! $resource->identifier !!}" role="tab" data-toggle="tab">
+                    <a href="#{{ $sanitizedIdentifier }}" aria-controls="{{ $resource->identifier }}" role="tab" data-toggle="tab">
                         {{ $resource->identifier }}
                     </a>
                 </li>
@@ -25,8 +31,11 @@
         </div>
 
         @foreach($resources as $resource)
+            @php
+                $sanitizedIdentifier = str_replace('=', '', base64_encode($resource->identifier));
+            @endphp
 
-        <div role="tabpanel" class="tab-pane{!! ($tailnumber == $resource->identifier) ? " in active" : "" !!}" id="{!! $resource->identifier !!}">
+        <div role="tabpanel" class="tab-pane{!! ($tailnumber == $resource->identifier) ? " in active" : "" !!}" id="{{ $sanitizedIdentifier }}">
             @include('freshness_alerts/'.$resource->resource_type, ['freshness' => $resource->freshness()])
             @include('status_forms/'.$resource->resource_type, ['status' => $resource->latestStatus])
         </div>
