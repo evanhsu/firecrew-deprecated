@@ -47,9 +47,9 @@ const store = createStore(
 // Set up Laravel Echo to connect to a Pusher account
 window.Echo = new Echo({
   broadcaster: 'pusher',
-  key: '4bfb2ff98afa1fa4332a',
-  cluster: 'mt1',
-  encrypted: false,
+  key: window.Laravel.pusher.appKey, // TODO: key: process.env.MIX_PUSHER_KEY (requires Mix v2.0)
+  cluster: window.Laravel.pusher.cluster,
+  encrypted: window.Laravel.pusher.encrypted,
 });
 
 if (document.getElementById('inventory')) {

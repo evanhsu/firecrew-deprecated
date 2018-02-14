@@ -91,7 +91,7 @@ CrewRow.propTypes = {
 
 const CrewResourceRow = ({ resource }) => (
   <span className="col-xs-12" style={getCrewResourceRowStyle()}>
-    <span className="col-xs-1">{ resource.getIn(['latest_status', 'staffing_value1']) }</span>
+    <span className="col-xs-1">{ resource.getIn(['latest_status', 'staffing_value2']) }</span>
     <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
     <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) }</span>
     <span className="col-xs-5">
