@@ -2,7 +2,7 @@
 // rendered map to the requested DIV
 
 // Configuration variables
-var mapDiv = "mapDiv";
+var mapDiv = 'mapDiv';
 
 // Send AJAX request to retrieve all active Fire Resources
 
@@ -14,28 +14,29 @@ var loadingFeatures = $.Deferred();
 // Track completion of the ajax request with the 'loadingFireResources' deferred
 var fireResources;
 var loadingFireResources = $.ajax({
-  url: "/api/status/all",
-  type: "get",
+  url: '/api/status/all',
+  type: 'get',
   dataType: 'text',
 }).done(function (o) {
   fireResources = JSON.parse(o);
 }).fail(function (e) {
   // An error occurred
-  console.error("Status Code: " + e.status + ",  Text: " + e.statusText);
+  console.error('Status Code: ' + e.status + ',  Text: ' + e.statusText);
 });
+
 
 // Assemble and render the entire map
 var map;    // Accessible in the global scope
 require([
-  "esri/map",
-  "esri/config", "esri/urlUtils",
-  "esri/dijit/Popup", "esri/dijit/PopupMobile", "esri/dijit/PopupTemplate",
-  "esri/dijit/Legend", "esri/dijit/LayerList",
-  "esri/InfoTemplate",
-  "dojo/dom-construct", "dojo/dom-style",
-  "esri/layers/GraphicsLayer",
-  "js/Helicopter",
-  "dojo/domReady!",
+  'esri/map',
+  'esri/config', 'esri/urlUtils',
+  'esri/dijit/Popup', 'esri/dijit/PopupMobile', 'esri/dijit/PopupTemplate',
+  'esri/dijit/Legend', 'esri/dijit/LayerList',
+  'esri/InfoTemplate',
+  'dojo/dom-construct', 'dojo/dom-style',
+  'esri/layers/GraphicsLayer',
+  'js/Helicopter',
+  'dojo/domReady!',
 ], function (Map,
              esriConfig, urlUtils,
              Popup, PopupMobile, PopupTemplate,
@@ -45,20 +46,27 @@ require([
              GraphicsLayer,
              Helicopter) {
 
+  // Subscribe to the Pusher broadcast channel for ResourceStatus updates
+  window.Echo.channel('publicStatusUpdates').listen('ResourceStatusUpdated', (event) => {
+    fireResources = mergeHelicopter(event.resourceStatus, fireResources);
+    clearLayers();
+    addHelicoptersToMap(fireResources);
+  });
+
   // Define the default popup settings and size for every feature that is clicked on
   var popup = new Popup({
     fillSymbol: false,
     titleInBody: false,
-  }, domConstruct.create("div"));
+  }, domConstruct.create('div'));
   popup.resize(450, 200);
 
-  var infoTemplate = new InfoTemplate("${popuptitle}", "${popupcontent}");
+  var infoTemplate = new InfoTemplate('${popuptitle}', '${popupcontent}');
 
   // Grab the basemap, set the initial map view, and load the map into the specified DOM element ("mapDiv")
   map = new Map(mapDiv, {
     center: [-113, 45],
     zoom: 6,
-    basemap: "topo",
+    basemap: 'topo',
     showLabels: true,
     infoWindow: popup,
   });
@@ -68,13 +76,13 @@ require([
   });
 
 
-  var gl1 = new GraphicsLayer({id: "Short Haul", infoTemplate: infoTemplate});    // This layer holds the short haul helicopters
-  //var gl2 = new GraphicsLayer({ id: "Response Range" });                        // This layer holds the 100nm distance rings around each short haul helicopter
-  var gl3 = new GraphicsLayer({id: "Rappel", infoTemplate: infoTemplate});        // This layer holds the rappel helicopters
-  var gl4 = new GraphicsLayer({id: "Hotshots", infoTemplate: infoTemplate});      // This layer holds the hotshot crews
-  var gl5 = new GraphicsLayer({id: "Smokejumpers", infoTemplate: infoTemplate});  // This layer holds the smokejumper airplanes
-  var gl6 = new GraphicsLayer({id: "Helitack", infoTemplate: infoTemplate});  // This layer holds the
-  var gl7 = new GraphicsLayer({id: "Type 1 Heli", infoTemplate: infoTemplate});  // This layer holds the
+  const gl1 = new GraphicsLayer({ id: 'Short Haul', infoTemplate });
+  // var gl2 = new GraphicsLayer({ id: 'Response Range' });
+  const gl3 = new GraphicsLayer({ id: 'Rappel', infoTemplate });
+  const gl4 = new GraphicsLayer({ id: 'Hotshots', infoTemplate });
+  const gl5 = new GraphicsLayer({ id: 'Smokejumpers', infoTemplate });
+  const gl6 = new GraphicsLayer({ id: 'Helitack', infoTemplate });
+  const gl7 = new GraphicsLayer({ id: 'Type 1 Heli', infoTemplate });
 
 
   //Add each Feature point to the GraphicsLayer
@@ -126,40 +134,83 @@ require([
         map: map,
         showLegend: false,
         layers: layers,
-      }, "legendDiv");
+      }, 'legendDiv');
       layerList.startup();
 
-      // Draw each helicopter on the map and place a 100nm ring around it
-      for (let i = 0; i < fireResources.length; i++) {
-        heli = new Helicopter(fireResources[i]);
-
-        switch (heli.resourceType) {
-          case 'ShortHaulHelicopter':
-            gl1.add(heli.mapGraphic());              // Add a symbol to the appropriate GraphicsLayer
-            gl1.add(heli.mapResponseRingGraphic());  // Add a circle to the "circles" GraphicsLayer to represent the response range for this helicopter
-            gl1.add(heli.mapLabel());               // Add the tailnumber to the map next to the helicopter icon
-            break;
-          case 'RappelHelicopter':
-            gl3.add(heli.mapGraphic());
-            gl3.add(heli.mapLabel());
-            break;
-          case 'HotshotCrew':
-            gl4.add(heli.mapGraphic());
-            gl4.add(heli.mapLabel());
-            break;
-          case 'SmokejumperAirplane':
-            gl5.add(heli.mapGraphic());
-            gl5.add(heli.mapLabel());
-            break;
-          case 'HelitackHelicopter':
-            gl6.add(heli.mapGraphic());
-            gl6.add(heli.mapLabel());
-            break;
-          case 'Type1Helicopter':
-            gl7.add(heli.mapGraphic());
-            gl7.add(heli.mapLabel());
-            break;
-        }
-      }
+      // Draw each helicopter on the map
+      addHelicoptersToMap(fireResources);
     });
+
+  function clearLayers() {
+    gl1.clear();
+    // gl2.clear();
+    gl3.clear();
+    gl4.clear();
+    gl5.clear();
+    gl6.clear();
+    gl7.clear();
+  }
+
+  function addHelicopterToLayer(heliAttributes) {
+    const helicopter = new Helicopter(heliAttributes);
+
+    switch (helicopter.resourceType) {
+      case 'ShortHaulHelicopter':
+        gl1.add(helicopter.mapGraphic());
+        gl1.add(helicopter.mapResponseRingGraphic());
+        gl1.add(helicopter.mapLabel());
+        break;
+      case 'RappelHelicopter':
+        gl3.add(helicopter.mapGraphic());
+        gl3.add(helicopter.mapLabel());
+        break;
+      case 'HotshotCrew':
+        gl4.add(helicopter.mapGraphic());
+        gl4.add(helicopter.mapLabel());
+        break;
+      case 'SmokejumperAirplane':
+        gl5.add(helicopter.mapGraphic());
+        gl5.add(helicopter.mapLabel());
+        break;
+      case 'HelitackHelicopter':
+        gl6.add(helicopter.mapGraphic());
+        gl6.add(helicopter.mapLabel());
+        break;
+      case 'Type1Helicopter':
+        gl7.add(helicopter.mapGraphic());
+        gl7.add(helicopter.mapLabel());
+        break;
+      default:
+        break;
+    }
+  }
+
+  function addHelicoptersToMap(helicopters) {
+    for (let i = 0; i < helicopters.length; i++) {
+      addHelicopterToLayer(helicopters[i]);
+    }
+  }
+
+  function getIndexOfHelicopter(helicopter, helicopters) {
+    let i;
+    let found = false;
+    for (i = 0; i < helicopters.length; i++) {
+      if (helicopters[i].statusable_resource_id === helicopter.statusable_resource_id) {
+        found = true;
+        break;
+      }
+    }
+    return found ? i : false;
+  }
+
+  function mergeHelicopter(helicopter, helicopters) {
+    const newHelicopters = helicopters;
+    const i = getIndexOfHelicopter(helicopter, newHelicopters);
+    if (i !== false) {
+      newHelicopters[i] = helicopter;
+    } else {
+      newHelicopters.push(helicopter);
+    }
+    return newHelicopters;
+  }
 }); // End require()

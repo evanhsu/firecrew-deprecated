@@ -59,5 +59,6 @@
         });
 
     </script>
-    <script src="{{ asset('/js/localmap.js') }}"></script>         <?php /* Render the map and all layers - waits for the DOM to load so dependencies will always load first */?>
+    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{{ asset('/js/localmap.js') }}"></script>
 @endsection
