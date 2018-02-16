@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { fromJS } from 'immutable';
@@ -17,6 +17,8 @@ const getStatusSummaryTableStyle = () => (
 const getCrewRowStyle = (crewRow) => {
   const style = {
     borderBottom: '2px solid black',
+    webkitTransition: '0.5s',
+    transition: '0.5s',
   };
 
   if (crewRow && Moment.utc(crewRow.getIn(['status', 'updated_at'])).add(18, 'hours').isSameOrBefore(Moment.now())) {
@@ -38,12 +40,24 @@ const localDateString = (utcDateString) => {
   return `${Moment.utc(utcDateString).tz(localTimeZone).calendar()} ${localTimeZoneAbbr}`;
 };
 
+const renderDispatchPhone = (crew) => (
+  crew.get('dispatch_center_24_hour_phone') === null ? null : <span>{crew.get('dispatch_center_name')} 24-hour: {crew.get('dispatch_center_24_hour_phone')}</span>
+);
+
+const DispatchCenterRow = ({ crew }) => (
+  crew.get('name') ? (
+    <span className="col-xs-12" style={{ minHeight: 100 }}>
+      <span className="col-xs-7">{renderDispatchPhone(crew)}</span>
+      <span className="col-xs-5">Additional notes here</span>
+    </span>) : null
+);
+
 const HeaderRow = () => (
   <thead>
     <tr>
       <th className="col-xs-2">Crew</th>
       <th className="col-xs-7">
-        <span className="col-xs-1" style={{ padding: 0 }}>HRAP Surplus</span>
+        <span className="col-xs-1" style={{ padding: 0 }}>HRAPS / Surplus</span>
         <span className="col-xs-3">Resource</span>
         <span className="col-xs-3">Location</span>
         <span className="col-xs-5">Notes</span>
@@ -53,8 +67,8 @@ const HeaderRow = () => (
   </thead>
 );
 
-const CrewRow = ({ crewRow }) => (
-  <tr style={getCrewRowStyle(crewRow)}>
+const CrewRow = ({ crewRow, isSelected, handleClick }) => (
+  <tr style={getCrewRowStyle(crewRow)} className={isSelected ? 'bg-primary' : ''} onClick={handleClick(crewRow.get('id'))}>
     <td className="col-xs-2"><span style={{ fontWeight: 'bold' }}>{ crewRow.get('name') }</span><br />
       { crewRow.get('phone') }<br />
       Updated { localDateString(crewRow.getIn(['status', 'updated_at'])) } ({ Moment.utc(crewRow.getIn(['status', 'updated_at'])).fromNow() })
@@ -77,6 +91,7 @@ const CrewRow = ({ crewRow }) => (
           }}
         />
       )) }
+      { isSelected ? <DispatchCenterRow crew={crewRow} /> : null}
     </td>
     <td className="col-xs-3" style={{ borderLeft: '1px dashed black' }}>
       { crewRow.getIn(['status', 'intel']) }
@@ -86,12 +101,13 @@ const CrewRow = ({ crewRow }) => (
 
 CrewRow.propTypes = {
   crewRow: ImmutablePropTypes.map,
+  isSelected: PropTypes.bool,
 };
 
 
 const CrewResourceRow = ({ resource }) => (
   <span className="col-xs-12" style={getCrewResourceRowStyle()}>
-    <span className="col-xs-1">{ resource.getIn(['latest_status', 'staffing_value2']) }</span>
+    <span className="col-xs-1">{ `${resource.getIn(['latest_status', 'staffing_value1'])}/${resource.getIn(['latest_status', 'staffing_value2'])}` }</span>
     <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
     <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) }</span>
     <span className="col-xs-5">
@@ -128,19 +144,40 @@ CrewPersonnelRow.propTypes = {
 };
 
 
-const StatusSummaryTable = ({ crews }) => (
-  <table className="table table-condensed table-hover" style={getStatusSummaryTableStyle()}>
-    <HeaderRow />
-    <tbody>
-      { crews.map((crew) => (
+// const StatusSummaryTable = ({ crews }) => (
+class StatusSummaryTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedCrewRow: null,
+    };
+  }
+
+  handleCrewRowClick = (crewId) => () => {
+    this.setState(prevState => {
+      return {
+        selectedCrewRow: (prevState.selectedCrewRow === crewId ? null : crewId)
+      }
+    });
+  };
+
+  render() {
+    return (
+      <table className="table table-condensed" style={getStatusSummaryTableStyle()}>
+      <HeaderRow />
+      <tbody>
+      {this.props.crews.map((crew) => (
         <CrewRow
           key={crew.get('id')}
           crewRow={crew}
+          isSelected={parseInt(this.state.selectedCrewRow, 10) === parseInt(crew.get('id'), 10)}
+          handleClick={this.handleCrewRowClick}
         />
-      )) }
-    </tbody>
-  </table>
-);
+      ))}
+      </tbody>
+    </table>);
+  }
+};
 
 StatusSummaryTable.propTypes = {
   crews: ImmutablePropTypes.list,
