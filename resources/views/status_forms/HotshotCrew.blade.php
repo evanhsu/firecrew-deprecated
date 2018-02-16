@@ -39,7 +39,7 @@
     <input type="hidden" name="statusable_id" value="{{ $crew->id }}" />
     <input type="hidden" name="statusable_name" value="{{ $crew->name }}" />
     
-    <div class="col-xs-12 col-md-6 form-inline">
+    <div class="col-xs-12">
         @include("status_forms._fields_for_location")
     </div>
     
