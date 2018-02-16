@@ -28,7 +28,8 @@ class CreateCrewsTable extends Migration
             $table->string('address_city')->nullable();
             $table->string('address_state')->nullable();
             $table->string('address_zip')->nullable();
-            $table->timestamps();
+
+            $table->timestampsTz();
         });
     }
 
