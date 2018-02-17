@@ -9,12 +9,14 @@ export const getStatusSummaryTableStyle = () => (
   }
 );
 
-export const getCrewRowStyle = (crewRow) => {
+export const getCrewRowStyle = (props) => {
   const style = {
     borderBottom: '2px solid black',
+    WebkitTransition: '0.25s',
+    transition: '0.25s',
   };
 
-  if (crewRow && Moment.utc(crewRow.getIn(['status', 'updated_at'])).add(18, 'hours').isSameOrBefore(Moment.now())) {
+  if (props.crewRow && Moment.utc(props.crewRow.getIn(['status', 'updated_at'])).add(18, 'hours').isSameOrBefore(Moment.now())) {
     style.backgroundColor = '#fbec5d';
   }
   return style;

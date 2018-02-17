@@ -7,51 +7,30 @@ import DutyOfficer from './DutyOfficer';
 import Timestamp from './Timestamp';
 import * as styles from './styles';
 
-const getStatusSummaryTableStyle = () => (
-  {
-    border: '2px solid black',
-    paddingLeft: 0,
-    paddingRight: 0,
-    minWidth: 800,
-  }
+
+const renderDispatch24HourPhone = (crew) => (
+  crew.get('dispatch_center_24_hour_phone') === null ? null : <div style={{ paddingLeft: 15 }}>24-hour: {crew.get('dispatch_center_24_hour_phone')}</div>
 );
 
-const getCrewRowStyle = (crewRow) => {
-  const style = {
-    borderBottom: '2px solid black',
-    webkitTransition: '0.5s',
-    transition: '0.5s',
-  };
-
-  if (crewRow && Moment.utc(crewRow.getIn(['status', 'updated_at'])).add(18, 'hours').isSameOrBefore(Moment.now())) {
-    style.backgroundColor = '#fbec5d';
-  }
-  return style;
-};
-
-const getCrewResourceRowStyle = () => (
-  {
-    borderBottom: '1px dashed gray',
-  }
+const renderDispatchDaytimePhone = (crew) => (
+  crew.get('dispatch_center_daytime_phone') === null ? null : <div style={{ paddingLeft: 15 }}>Daytime: {crew.get('dispatch_center_daytime_phone')}</div>
 );
 
-const localDateString = (utcDateString) => {
-  const localTimeZone = momentTz.tz.guess();
-  const localTimeZoneAbbr = momentTz.tz.zone(localTimeZone).abbr(Moment.now());
-
-  return `${Moment.utc(utcDateString).tz(localTimeZone).calendar()} ${localTimeZoneAbbr}`;
-};
-
-const renderDispatchPhone = (crew) => (
-  crew.get('dispatch_center_24_hour_phone') === null ? null : <span>{crew.get('dispatch_center_name')} 24-hour: {crew.get('dispatch_center_24_hour_phone')}</span>
+const DispatchCenterRow = (props) => (
+  props.crew.get('dispatch_center_name') ? (
+    <span>
+      {props.crew.get('dispatch_center_name')} ({props.crew.get('dispatch_center_identifier')})<br />
+      {renderDispatchDaytimePhone(props.crew)}
+      {renderDispatch24HourPhone(props.crew)}
+    </span>
+  ) : null
 );
 
-const DispatchCenterRow = ({ crew }) => (
-  crew.get('name') ? (
+const ExtraInfoRow = (props) => (
     <span className="col-xs-12" style={{ minHeight: 100 }}>
-      <span className="col-xs-7">{renderDispatchPhone(crew)}</span>
+      <span className="col-xs-7"><DispatchCenterRow crew={props.crew} /></span>
       <span className="col-xs-5">Additional notes here</span>
-    </span>) : null
+    </span>
 );
 
 const HeaderRow = () => (
@@ -70,10 +49,12 @@ const HeaderRow = () => (
 );
 
 const CrewRow = ({ crewRow, isSelected, handleClick }) => (
-  <tr style={getCrewRowStyle(crewRow)} className={isSelected ? 'bg-primary' : ''} onClick={handleClick(crewRow.get('id'))}>
-    <td className="col-xs-2"><span style={{ fontWeight: 'bold' }}>{ crewRow.get('name') }</span><br />
-      { crewRow.get('phone') }<br />
-      Updated { localDateString(crewRow.getIn(['status', 'updated_at'])) } ({ Moment.utc(crewRow.getIn(['status', 'updated_at'])).fromNow() })
+  <tr 
+    style={styles.getCrewRowStyle(crewRow)} 
+    className={isSelected ? 'bg-primary' : ''} 
+    onClick={handleClick(crewRow.get('id'))}
+  >
+    <td className="col-xs-2">
       <CrewInfo crew={crewRow} />
       <DutyOfficer {...crewRow.get('status').toJS()} />
       <Timestamp timestamp={crewRow.get('updated_at')} />
@@ -96,7 +77,7 @@ const CrewRow = ({ crewRow, isSelected, handleClick }) => (
           }}
         />
       )) }
-      { isSelected ? <DispatchCenterRow crew={crewRow} /> : null}
+      { isSelected ? <ExtraInfoRow crew={crewRow} /> : null}
     </td>
     <td className="col-xs-3" style={{ borderLeft: '1px dashed black' }}>
       { crewRow.getIn(['status', 'intel']) }
@@ -168,19 +149,20 @@ class StatusSummaryTable extends Component {
 
   render() {
     return (
-      <HeaderRow />
-      <tbody>
-      {this.props.crews.map((crew) => (
-      <table className="table table-condensed" style={getStatusSummaryTableStyle()}>
-        <CrewRow
-          key={crew.get('id')}
-          crewRow={crew}
-          isSelected={parseInt(this.state.selectedCrewRow, 10) === parseInt(crew.get('id'), 10)}
-          handleClick={this.handleCrewRowClick}
-        />
-      ))}
-      </tbody>
-    </table>);
+      <table className="table table-condensed" style={styles.getStatusSummaryTableStyle()}>
+        <HeaderRow />
+        <tbody>
+        {this.props.crews.map((crew) => (
+          <CrewRow
+            key={crew.get('id')}
+            crewRow={crew}
+            isSelected={parseInt(this.state.selectedCrewRow, 10) === parseInt(crew.get('id'), 10)}
+            handleClick={this.handleCrewRowClick}
+          />
+        ))}
+        </tbody>
+      </table>
+    );
   }
 };
 
