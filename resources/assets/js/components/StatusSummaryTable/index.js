@@ -3,35 +3,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { fromJS } from 'immutable';
 import CrewInfo from './CrewInfo';
+import DispatchCenter from './DispatchCenter';
 import DutyOfficer from './DutyOfficer';
+import ExtraInfoRow from './ExtraInfoRow';
 import Timestamp from './Timestamp';
 import * as styles from './styles';
 
-
-const renderDispatch24HourPhone = (crew) => (
-  crew.get('dispatch_center_24_hour_phone') === null ? null : <div style={{ paddingLeft: 15 }}>24-hour: {crew.get('dispatch_center_24_hour_phone')}</div>
-);
-
-const renderDispatchDaytimePhone = (crew) => (
-  crew.get('dispatch_center_daytime_phone') === null ? null : <div style={{ paddingLeft: 15 }}>Daytime: {crew.get('dispatch_center_daytime_phone')}</div>
-);
-
-const DispatchCenterRow = (props) => (
-  props.crew.get('dispatch_center_name') ? (
-    <span>
-      {props.crew.get('dispatch_center_name')} ({props.crew.get('dispatch_center_identifier')})<br />
-      {renderDispatchDaytimePhone(props.crew)}
-      {renderDispatch24HourPhone(props.crew)}
-    </span>
-  ) : null
-);
-
-const ExtraInfoRow = (props) => (
-    <span className="col-xs-12" style={{ minHeight: 100 }}>
-      <span className="col-xs-7"><DispatchCenterRow crew={props.crew} /></span>
-      <span className="col-xs-5">Additional notes here</span>
-    </span>
-);
 
 const HeaderRow = () => (
   <thead>
