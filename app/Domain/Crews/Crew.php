@@ -19,7 +19,8 @@ class Crew extends Model
      *
      * @var array
      */
-    protected $fillable = [ 'name',
+    protected $fillable = [
+        'name',
         'address_street1',
         'address_street2',
         'address_city',
@@ -28,7 +29,13 @@ class Crew extends Model
         'phone',
         'fax',
         'logo_filename',
-        'statusable_type'];
+        'statusable_type',
+        'dispatch_center_name',
+        'dispatch_center_identifier',
+        'dispatch_center_daytime_phone',
+        'dispatch_center_24_hour_phone',
+        ];
+
 
 
 	public static $types = [

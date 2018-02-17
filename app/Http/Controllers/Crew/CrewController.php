@@ -153,6 +153,7 @@ class CrewController extends Controller
         }
 
         // Save any changes to the Crew model
+//        dd($crew_fields);
         $crew->update($crew_fields);
         // *** Add error handling/validation for the Crew model
 

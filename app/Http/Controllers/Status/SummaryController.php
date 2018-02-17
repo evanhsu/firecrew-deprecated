@@ -17,31 +17,19 @@ class SummaryController extends Controller
      */
     public function index(Request $request)
     {
-        $crews = $this->getData();
-
         $request->session()->flash('active_menubutton', 'summary'); // Tell the menubar which button to highlight
-
-        return view('summary')->with('crews', $crews);
+        return view('summary');
     }
 
     public function indexApi(Request $request)
     {
-        $crews = $this->getData();
-        $modifiedCrews = $crews->map(function ($crew) {
-            $mostRecentTimestamp = $crew->status->updated_at;
-
-            if (!is_null($crew->statusableResources)) {
-                $crew->statusableResources->each(function ($resource) use (&$mostRecentTimestamp) {
-                    if ($resource->latestStatus->updated_at->gt($mostRecentTimestamp)) {
-                        $mostRecentTimestamp = $resource->latestStatus->updated_at;
-                    }
-                });
-                $crew->status->updated_at = $mostRecentTimestamp;
-            }
-            return $crew;
-        });
-
-        return $modifiedCrews->toJson();
+        return $this->getData()->toJson();
+//        $modifiedCrews = $crews->map(function ($crew) {
+//            $crew->status->updated_at = $crew->updated_at;
+//            return $crew;
+//        });
+//
+//        return $modifiedCrews->toJson();
 
 //        return $this->response->collection(
 //            $crews,
@@ -58,6 +46,6 @@ class SummaryController extends Controller
 
     private function getData()
     {
-        return Crew::with(['status', 'statusableResources.latestStatus'])->get();
+        return Crew::with(['status', 'statusableResources.latestStatus'])->orderBy('crews.name')->get();
     }
 }

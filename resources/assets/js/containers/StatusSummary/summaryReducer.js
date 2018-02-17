@@ -37,7 +37,13 @@ export const summaryReducer = (state = initialState, action) => {
       return state.set('loading', true);
 
     case RECEIVE_CREW_STATUS_UPDATE:
-      return state.mergeDeepIn(['data', indexOfCrew(state, action.payload.getIn(['status', 'crew_id']))], action.payload);
+      crewIndex = indexOfCrew(state, action.payload.getIn(['status', 'crew_id']));
+      return state
+        .mergeDeepIn([
+          'data',
+          crewIndex,
+        ], action.payload)
+        .setIn(['data', crewIndex, 'updated_at'], action.payload.getIn(['status', 'updated_at']));
 
     case RECEIVE_RESOURCE_STATUS_UPDATE:
       crewIndex = indexOfCrew(state, action.payload.get('crewId'));
@@ -49,7 +55,7 @@ export const summaryReducer = (state = initialState, action) => {
           indexOfResource(state, crewIndex, action.payload.getIn(['resourceStatus', 'statusable_resource_id'])),
           'latest_status',
         ], action.payload.get('resourceStatus'))
-        .setIn(['data', crewIndex, 'status', 'updated_at'], action.payload.getIn(['resourceStatus', 'updated_at']));
+        .setIn(['data', crewIndex, 'updated_at'], action.payload.getIn(['resourceStatus', 'updated_at']));
 
     default:
       return state;

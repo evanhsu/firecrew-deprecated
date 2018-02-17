@@ -9,7 +9,6 @@ class ResourceStatus extends Model
 {
     // Explicitly define the database table, since 'status' has an awkward plural form
     protected $table = 'resource_statuses';
-//    protected $dateFormat = 'Y-m-d H:i:s';
 
     /**
      * The attributes that are mass assignable.
@@ -38,8 +37,16 @@ class ResourceStatus extends Model
         'statusable_resource_id',
         'statusable_resource_type',
         'statusable_resource_name',
-        'created_by'];
+        'created_by'
+    ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        self::created(function ($model) {
+            $model->crew()->update(['updated_at' => $model->created_at]);
+        });
+    }
 
     public function resource()
     {
@@ -50,9 +57,4 @@ class ResourceStatus extends Model
     {
         return $this->resource->crew;
     }
-
-//    public function getCreatedAtAttribute($date)
-//    {
-//        return Carbon::parse($date)->toW3cString();
-//    }
 }

@@ -25,6 +25,9 @@ class CreateCrewStatusesTable extends Migration
             $table->text('popup_content')->nullable();
 
             $table->text('intel')->nullable();
+            $table->text('duty_officer_name')->nullable();
+            $table->text('duty_officer_phone')->nullable();
+
             $table->string('personnel_1_name',30)->nullable();
             $table->string('personnel_1_role',15)->nullable();
             $table->string('personnel_1_location',50)->nullable();
