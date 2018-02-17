@@ -30,7 +30,13 @@ class Crew extends Model
         'fax',
         'logo_filename',
         'statusable_type',
+        'dispatch_center_name',
+        'dispatch_center_identifier',
+        'dispatch_center_daytime_phone',
+        'dispatch_center_24_hour_phone',
         ];
+
+
 
 	public static $types = [
 		'handcrew'	    => 'Handcrew',

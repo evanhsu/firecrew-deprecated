@@ -200,6 +200,39 @@ function freshnessNotify($freshness) {
                 </div>
             </div>
 
+            <h3>Home Dispatch Center</h3>
+
+            <div class="form-group">
+                <label for="dispatch_center_name" class="col-xs-12 col-sm-2 control-label">Name</label>
+
+                <div class="col-xs-12 col-sm-6">
+                    <input id="dispatch_center_name" name="crew[dispatch_center_name]" value="{{ $crew->dispatch_center_name}}" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dispatch_center_identifier" class="col-xs-12 col-sm-2 control-label">Identifier</label>
+
+                <div class="col-xs-12 col-sm-6">
+                    <input id="dispatch_center_identifier" name="crew[dispatch_center_identifier]" value="{{ $crew->dispatch_center_identifier}}" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dispatch_center_daytime_phone" class="col-xs-12 col-sm-2 control-label">Daytime Phone</label>
+
+                <div class="col-xs-12 col-sm-6">
+                    <input type="tel" id="dispatch_center_daytime_phone" name="crew[dispatch_center_daytime_phone]" value="{{ $crew->dispatch_center_daytime_phone}}" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dispatch_center_24_hour_phone" class="col-xs-12 col-sm-2 control-label">24-Hour Phone</label>
+
+                <div class="col-xs-12 col-sm-6">
+                    <input type="tel" id="dispatch_center_24_hour_phone" name="crew[dispatch_center_24_hour_phone]" value="{{ $crew->dispatch_center_24_hour_phone}}" class="form-control" />
+                </div>
+            </div>
 
 @if($show_aircraft)
             

@@ -46,6 +46,6 @@ class SummaryController extends Controller
 
     private function getData()
     {
-        return Crew::with(['status', 'statusableResources.latestStatus'])->get();
+        return Crew::with(['status', 'statusableResources.latestStatus'])->orderBy('crews.name')->get();
     }
 }
