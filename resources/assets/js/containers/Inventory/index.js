@@ -13,8 +13,13 @@ import LoadingIndicator from '../LoadingIndicator';
 
 import { selectCategories } from '../CategoryItemsTable/selectors';
 import { toggleCategoryMenuDrawer } from './actions';
+import { fetchItems } from '../CategoryItemsTable/actions';
 
-class App extends Component {
+class Inventory extends Component {
+  componentDidMount() {
+    this.props.fetchItems();
+  }
+  
   render() {
     return (
       <div className="col-xs-12">
@@ -43,13 +48,14 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
+Inventory.propTypes = {
   categories: ImmutablePropTypes.list,
   categoryMenuDrawerOpen: PropTypes.bool,
+  fetchItems: PropTypes.func,
   toggleCategoryMenuDrawer: PropTypes.func.isRequired,
 };
 
-App.defaultProps = {
+Inventory.defaultProps = {
   categories: new List(),
   categoryMenuDrawerOpen: false,
 };
@@ -64,7 +70,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     toggleCategoryMenuDrawer: () => dispatch(toggleCategoryMenuDrawer()),
+    fetchItems: () => dispatch(fetchItems()),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Inventory);

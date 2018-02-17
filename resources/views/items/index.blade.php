@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="row" id="inventory"></div>
+    <div class="row" id="react-root"></div>
 </div>
 @endsection
 

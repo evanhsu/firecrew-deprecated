@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { Route } from 'react-router-dom';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js'; // eslint-disable-line no-unused-vars
@@ -13,9 +12,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import Perf from 'react-addons-perf';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import rootReducer from './reducers';
-import App from './containers/App';
+import Inventory from './containers/Inventory';
 import StatusSummary from './containers/StatusSummary';
-import { fetchItems } from './containers/CategoryItemsTable/actions';
+import Routes from './routes.js';
 
 require('./bootstrap');
 
@@ -52,29 +51,16 @@ window.Echo = new Echo({
   encrypted: window.Laravel.pusher.encrypted,
 });
 
-if (document.getElementById('inventory')) {
-  store.dispatch(fetchItems()); // TODO: Move this to CategoryItemsTable.componentWillUpdate?
+if (document.getElementById('react-root')) {
   ReactDOM.render(
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <MuiThemeProvider>
-          <Route path="/crew/:crewId/inventory" component={App} />
+          <Routes />
         </MuiThemeProvider>
       </ConnectedRouter>
     </Provider>,
-    document.getElementById('inventory')
+    document.getElementById('react-root')
   );
 }
 
-if (document.getElementById('statusSummary')) {
-  ReactDOM.render(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <MuiThemeProvider>
-          <Route path="/summary" component={StatusSummary} />
-        </MuiThemeProvider>
-      </ConnectedRouter>
-    </Provider>,
-    document.getElementById('statusSummary')
-  );
-}

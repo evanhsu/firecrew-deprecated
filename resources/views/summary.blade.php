@@ -3,7 +3,7 @@
 @section('title', 'Staffing Summary')
 
 @section('content')
-    <div id="statusSummary"></div>
+    <div id="react-root"></div>
 @endsection
 
 @section('scripts-postload')
