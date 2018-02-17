@@ -2,41 +2,10 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { fromJS } from 'immutable';
-import Moment from 'moment';
-import momentTz from 'moment-timezone';
-
-const getStatusSummaryTableStyle = () => (
-  {
-    border: '2px solid black',
-    paddingLeft: 0,
-    paddingRight: 0,
-    minWidth: 800,
-  }
-);
-
-const getCrewRowStyle = (crewRow) => {
-  const style = {
-    borderBottom: '2px solid black',
-  };
-
-  if (crewRow && Moment.utc(crewRow.getIn(['status', 'updated_at'])).add(18, 'hours').isSameOrBefore(Moment.now())) {
-    style.backgroundColor = '#fbec5d';
-  }
-  return style;
-};
-
-const getCrewResourceRowStyle = () => (
-  {
-    borderBottom: '1px dashed gray',
-  }
-);
-
-const localDateString = (utcDateString) => {
-  const localTimeZone = momentTz.tz.guess();
-  const localTimeZoneAbbr = momentTz.tz.zone(localTimeZone).abbr(Moment.now());
-
-  return `${Moment.utc(utcDateString).tz(localTimeZone).calendar()} ${localTimeZoneAbbr}`;
-};
+import CrewInfo from './CrewInfo';
+import DutyOfficer from './DutyOfficer';
+import Timestamp from './Timestamp';
+import * as styles from './styles';
 
 const HeaderRow = () => (
   <thead>
@@ -54,10 +23,11 @@ const HeaderRow = () => (
 );
 
 const CrewRow = ({ crewRow }) => (
-  <tr style={getCrewRowStyle(crewRow)}>
-    <td className="col-xs-2"><span style={{ fontWeight: 'bold' }}>{ crewRow.get('name') }</span><br />
-      { crewRow.get('phone') }<br />
-      Updated { localDateString(crewRow.getIn(['status', 'updated_at'])) } ({ Moment.utc(crewRow.getIn(['status', 'updated_at'])).fromNow() })
+  <tr style={styles.getCrewRowStyle(crewRow)}>
+    <td className="col-xs-2">
+      <CrewInfo crew={crewRow} />
+      <DutyOfficer {...crewRow.get('status').toJS()} />
+      <Timestamp timestamp={crewRow.get('updated_at')} />
     </td>
     <td
       className="col-xs-7"
@@ -90,7 +60,7 @@ CrewRow.propTypes = {
 
 
 const CrewResourceRow = ({ resource }) => (
-  <span className="col-xs-12" style={getCrewResourceRowStyle()}>
+  <span className="col-xs-12" style={styles.getCrewResourceRowStyle()}>
     <span className="col-xs-1">{ resource.getIn(['latest_status', 'staffing_value2']) }</span>
     <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
     <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) }</span>
@@ -110,7 +80,7 @@ CrewResourceRow.propTypes = {
 
 const CrewPersonnelRow = ({ person }) => (
   person.name ? (
-    <span className="col-xs-12" style={ getCrewResourceRowStyle() }>
+    <span className="col-xs-12" style={ styles.getCrewResourceRowStyle() }>
       <span className="col-xs-1"> </span>
       <span className="col-xs-3">{ person.name }{ person.role && ` [${person.role}]` }</span>
       <span className="col-xs-3">{ person.location }</span>
@@ -129,7 +99,7 @@ CrewPersonnelRow.propTypes = {
 
 
 const StatusSummaryTable = ({ crews }) => (
-  <table className="table table-condensed table-hover" style={getStatusSummaryTableStyle()}>
+  <table className="table table-condensed table-hover" style={styles.getStatusSummaryTableStyle()}>
     <HeaderRow />
     <tbody>
       { crews.map((crew) => (
