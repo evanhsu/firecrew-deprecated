@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { fromJS } from 'immutable';
@@ -54,7 +55,12 @@ const CrewRow = ({ crewRow, isSelected, handleClick }) => (
           }}
         />
       )) }
-      { isSelected ? <ExtraInfoRow crew={crewRow} /> : null}
+      <ReactCSSTransitionGroup
+        transitionName="slide"
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={50}>
+      { isSelected ? <ExtraInfoRow key="extra-row" crew={crewRow} isSelected={isSelected} /> : null }
+      </ReactCSSTransitionGroup>
     </td>
     <td className="col-xs-3" style={{ borderLeft: '1px dashed black' }}>
       { crewRow.getIn(['status', 'intel']) }

@@ -21,6 +21,8 @@ class CategoryItemsTable extends Component {
         decrementItem: PropTypes.func,
         itemRowSelected: PropTypes.func,
         itemRowDeselected: PropTypes.func,
+        fetchItems: PropTypes.func,
+        updateItem: PropTypes.func,
     };
 
     static defaultProps = {
@@ -30,6 +32,7 @@ class CategoryItemsTable extends Component {
         bulkIssuedItems: null,
         activeItemRow: null,
     };
+
 
     handleDecrement = (itemId) => {
         return () => {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import DispatchCenter from './DispatchCenter';
 
 const ExtraInfoRow = (props) => (
-    <span className="col-xs-12" style={{ minHeight: 100 }}>
+    <span className="col-xs-12">
       <span className="col-xs-7"><DispatchCenter crew={props.crew} /></span>
       <span className="col-xs-5">Additional notes here</span>
     </span>

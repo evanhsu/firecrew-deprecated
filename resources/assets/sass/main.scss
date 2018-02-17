@@ -106,3 +106,21 @@ h3 {
   margin-top: 5px;
   margin-bottom: 0;
 }
+
+.slide-enter {
+  max-height: 0px;
+}
+
+.slide-enter.slide-enter-active {
+  max-height: 300px;
+  transition: max-height 300ms ease-in;
+}
+
+.slide-leave {
+  max-height: 200px;
+}
+
+.slide-leave.slide-leave-active {
+  max-height: 0px;
+  transition: max-height 50ms ease-in;
+}
