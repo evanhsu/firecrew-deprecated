@@ -64,18 +64,18 @@
             </div>
         </div>
     </div>
-</div>
 
-<nav class="navbar navbar-default navbar-fixed-bottom">
-  <div class="container" style="text-align: center;">
-    <p class="navbar-text navbar-center-brand">
-        A service of SmirkSoftware, LLC
-    </p>
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            <a href="/privacy">Privacy</a>
-        </li>
-    </ul>
-  </div>
-</nav>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container" style="text-align: center;">
+        <p class="navbar-text navbar-center-brand">
+            A service of SmirkSoftware, LLC
+        </p>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="/privacy">Privacy</a>
+            </li>
+        </ul>
+      </div>
+    </nav>
+</div>
 @endsection
