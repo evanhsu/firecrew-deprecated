@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 col-md-offset-2" id="login-wrapper">
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
@@ -64,5 +64,18 @@
             </div>
         </div>
     </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container" style="text-align: center;">
+        <p class="navbar-text navbar-center-brand">
+            A service of SmirkSoftware, LLC
+        </p>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="/privacy">Privacy</a>
+            </li>
+        </ul>
+      </div>
+    </nav>
 </div>
 @endsection

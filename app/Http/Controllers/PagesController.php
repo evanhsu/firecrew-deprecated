@@ -17,4 +17,12 @@ class PagesController extends Controller
     {
         return view('items.index');
     }
+
+    public function privacy(Request $request)
+    {
+    	// Tell the menubar which button to highlight
+    	$request->session()->flash('active_menubutton', '');
+
+    	return view('privacy');
+    }
 }

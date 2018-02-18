@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
-
-@section('title','RescueCircle')
-
-@section('stylesheets')
-    @parent
-@endsection
-
+@section('title','FireCrew')
 
 @section('content')
     <div id="container-fluid" class="container-fluid background-container">
