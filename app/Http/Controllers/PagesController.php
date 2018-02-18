@@ -17,4 +17,9 @@ class PagesController extends Controller
     {
         return view('items.index');
     }
+
+    public function privacy()
+    {
+    	return view('privacy');
+    }
 }

@@ -3,8 +3,8 @@ html {
 }
 
 body {
-  /*min-height: 2000px;*/
   height: 100%;
+  padding-bottom: 50px; /* Compensate for the height of the fixed top navbar */
 }
 
 #app {
@@ -13,29 +13,13 @@ body {
 
 #content {
   padding: 0px;
-  //height: 100%;
   width: 100%;
   min-width: 100%;
   overflow: hidden;
 }
 
-#login-form {
-  margin: 0 auto 0 auto;
-  width: 75%;
-  text-align: left;
-}
-
-#login-window {
-  width: 350px;
-  height: 350px;
-  border: 4px dashed #99dd99;
-  margin: 50px auto 0 auto;
-  padding-top: 100px;
-  padding-left: 0px;
-  background: url('/images/crew-login-heli.png') no-repeat white;
-  background-position: right bottom;
-  border-radius: 175px;
-  text-align: center;
+#login-wrapper {
+  padding-top: 10%;
 }
 
 #forgot-password {
@@ -76,7 +60,6 @@ body {
   overflow-y: scroll;
   text-align: center;
   padding-top: 20px;
-  padding-bottom: 100px;
 }
 
 .crew-aircraft-form {
@@ -123,4 +106,10 @@ h3 {
 .slide-leave.slide-leave-active {
   max-height: 0px;
   transition: max-height 50ms ease-in;
+}
+
+.navbar-center-brand {
+  float: none !important;
+  margin-top: 18px !important;
+  display: inline-block !important;
 }

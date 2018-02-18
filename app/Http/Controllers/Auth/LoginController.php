@@ -44,6 +44,19 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
     }
 
+    /**
+     * Show the application's login form.
+     * This overrides the 'showLoginForm()' method in the 'AuthenticatesUsers' trait.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm(Request $request)
+    {
+        $request->session()->flash('active_menubutton', 'login'); // Tell the menubar which button to highlight
+        return view('auth.login');
+    }
+
     protected function redirectToLandingPage(User $user)
     {
         // Determine what page the current user should land on after a successful login.
