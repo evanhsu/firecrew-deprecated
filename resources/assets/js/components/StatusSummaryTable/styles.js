@@ -10,16 +10,20 @@ export const getStatusSummaryTableStyle = () => (
 );
 
 export const getCrewRowStyle = (props) => {
-  const style = {
-    borderBottom: '2px solid black',
-    // WebkitTransition: '0.25s',
-    transition: 'background-color 100ms ease-in, color 100ms ease-in',
-  };
-
-  if (props.crewRow && Moment.utc(props.crewRow.get('updated_at')).add(18, 'hours').isSameOrBefore(Moment.now())) {
-    style.backgroundColor = '#fbec5d';
+  const stale = props.crewRow && Moment.utc(props.crewRow.get('updated_at')).add(18, 'hours').isSameOrBefore(Moment.now());
+  let backgroundColor = stale ? '#fbec5d' : 'white';
+  if (props.isSelected) {
+    backgroundColor = '#337ab7';
   }
-  return style;
+
+  return {
+    root: {
+      borderBottom: '2px solid black',
+      transition: 'background-color 100ms ease-in, color 100ms ease-in',
+      backgroundColor,
+      color: props.isSelected ? 'white' : 'black',
+    },
+  };
 };
 
 export const getCrewResourceRowStyle = () => (
@@ -27,3 +31,4 @@ export const getCrewResourceRowStyle = () => (
     borderBottom: '1px dashed gray',
   }
 );
+
