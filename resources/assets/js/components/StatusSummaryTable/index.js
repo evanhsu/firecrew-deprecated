@@ -28,8 +28,7 @@ const HeaderRow = () => (
 
 const CrewRow = ({ crewRow, isSelected, handleClick }) => (
   <tr 
-    style={styles.getCrewRowStyle({crewRow})}
-    className={isSelected ? 'bg-primary' : ''} 
+    style={styles.getCrewRowStyle({crewRow, isSelected}).root}
     onClick={handleClick(crewRow.get('id'))}
   >
     <td className="col-xs-2">
