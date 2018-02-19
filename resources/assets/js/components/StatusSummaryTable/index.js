@@ -28,7 +28,7 @@ const HeaderRow = () => (
 
 const CrewRow = ({ crewRow, isSelected, handleClick }) => (
   <tr 
-    style={styles.getCrewRowStyle(crewRow)} 
+    style={styles.getCrewRowStyle({crewRow})}
     className={isSelected ? 'bg-primary' : ''} 
     onClick={handleClick(crewRow.get('id'))}
   >
@@ -58,7 +58,7 @@ const CrewRow = ({ crewRow, isSelected, handleClick }) => (
       <ReactCSSTransitionGroup
         transitionName="slide"
         transitionEnterTimeout={300}
-        transitionLeaveTimeout={50}>
+        transitionLeaveTimeout={250}>
       { isSelected ? <ExtraInfoRow key="extra-row" crew={crewRow} isSelected={isSelected} /> : null }
       </ReactCSSTransitionGroup>
     </td>
