@@ -106,7 +106,8 @@ h3 {
 
 .slide-leave.slide-leave-active {
   max-height: 0px;
-  transition: max-height 50ms ease-in;
+  overflow: hidden;
+  transition: max-height 250ms ease-in, background-color 250ms ease-in;
 }
 
 .navbar-center-brand {

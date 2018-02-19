@@ -37,6 +37,10 @@ class CrewUserResourceTableSeeder extends Seeder
             'address_city' => "Grants Pass",
             'address_state' => "OR",
             'address_zip' => "97526",
+            'dispatch_center_name' => 'Rogue Dispatch',
+            'dispatch_center_identifier' => 'RVICC',
+            'dispatch_center_daytime_phone' => '222-999-9999',
+            'dispatch_center_24_hour_phone' => '222-555-3344',
         ));
         $user = User::create(array(
             'name' => 'Dan Quinones',
@@ -44,7 +48,7 @@ class CrewUserResourceTableSeeder extends Seeder
             'password' => '$2y$10$qwgF2oUG4r4F7RQKXVCQVOWtsrjZwapWP0SJvoGFaeiKKqz/DR7eO',
             'crew_id' => $crew->id,
         ));
-        $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id));
+        $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id, 'Quinones', '541-471-6847'));
         Rappelhelicopter::create(array(
             'identifier' => 'N205RH',
             'model' => 'Bell 205A1++',
@@ -56,6 +60,10 @@ class CrewUserResourceTableSeeder extends Seeder
         $crew = Crew::create(array(
             'name' => 'Central Oregon Rappellers',
             'phone' => '541-416-6840',
+            'dispatch_center_name' => 'Central Oregon Dispatch',
+            'dispatch_center_identifier' => 'COIDC',
+            'dispatch_center_daytime_phone' => '222-999-9999',
+            'dispatch_center_24_hour_phone' => '222-555-3344',
         ));
         $user = User::create(array(
             'name' => 'Chad Schmidt',
@@ -63,7 +71,7 @@ class CrewUserResourceTableSeeder extends Seeder
             'password' => '$2y$10$qwgF2oUG4r4F7RQKXVCQVOWtsrjZwapWP0SJvoGFaeiKKqz/DR7eO',
             'crew_id' => $crew->id,
         ));
-        $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id));
+        $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id, 'Schmidt', '541-416-6840'));
         Rappelhelicopter::create(array(
             'identifier' => 'N223HT',
             'model' => 'Bell 205A1++',
@@ -75,6 +83,11 @@ class CrewUserResourceTableSeeder extends Seeder
         $crew = Crew::create(array(
             'name' => 'Malheur Rappellers',
             'phone' => '541-575-3384',
+            'dispatch_center_name' => 'John Day Dispatch',
+            'dispatch_center_identifier' => '',
+            'dispatch_center_daytime_phone' => '222-999-9999',
+            'dispatch_center_24_hour_phone' => '222-555-3344',
+
         ));
         $user = User::create(array(
             'name' => 'Anthony Hernandez',
@@ -82,7 +95,7 @@ class CrewUserResourceTableSeeder extends Seeder
             'password' => '$2y$10$qwgF2oUG4r4F7RQKXVCQVOWtsrjZwapWP0SJvoGFaeiKKqz/DR7eO',
             'crew_id' => $crew->id,
         ));
-        $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id));
+        $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id, 'Hernandez', '541-333-2233'));
         Rappelhelicopter::create(array(
             'identifier' => 'N510WW',
             'model' => 'Bell 210',
@@ -101,7 +114,7 @@ class CrewUserResourceTableSeeder extends Seeder
             'password' => '$2y$10$qwgF2oUG4r4F7RQKXVCQVOWtsrjZwapWP0SJvoGFaeiKKqz/DR7eO',
             'crew_id' => $crew->id,
         ));
-        $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id));
+        $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id, 'Smith', '444-999-8080'));
         Rappelhelicopter::create(array(
             'identifier' => 'N502HQ',
             'model' => 'Bell 205++',
@@ -237,6 +250,10 @@ class CrewUserResourceTableSeeder extends Seeder
         $crew = Crew::create(array(
             'name' => 'Sierra Helitack ',
             'phone' => '559-855-8325',
+            'dispatch_center_name' => 'Cali Dispatch',
+            'dispatch_center_identifier' => 'CD',
+            'dispatch_center_daytime_phone' => '222-999-9999',
+            'dispatch_center_24_hour_phone' => '222-555-3344',
         ));
         $user = User::create(array(
             'name' => 'Casey Jones',
@@ -285,7 +302,7 @@ class CrewUserResourceTableSeeder extends Seeder
         $crew->statuses()->create($this->createCrewStatusArray($user->name, $user->id));
     }
 
-    private function createCrewStatusArray($updatedByName, $updatedById)
+    private function createCrewStatusArray($updatedByName, $updatedById, $dutyOfficerName='', $dutyOfficerPhone='')
     {
         return [
             'intel'                 => "",
@@ -295,6 +312,8 @@ class CrewUserResourceTableSeeder extends Seeder
             'personnel_1_note'      => "",
             'created_by_name'       => $updatedByName,
             'created_by_id'         => $updatedById,
+            'duty_officer_name'     => $dutyOfficerName,
+            'duty_officer_phone'    => $dutyOfficerPhone,
         ];
     }
 }

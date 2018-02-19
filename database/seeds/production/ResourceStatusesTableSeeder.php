@@ -14,30 +14,30 @@ class ResourceStatusesTableSeeder extends Seeder
 
     public function run()
     {
+        $rightNow = Carbon::now();
+        $yesterday = Carbon::now()->subday(); // A timestamp from yesterday
+        $lastWeek = Carbon::now()->subweek(); // A timestamp from last week
+
         DB::table('resource_statuses')->delete();
 
-        $this->createStatusForRappelHelicopter('N205RH', 'Tim Lyda', [42.5063, -123.3823]);
-        $this->createStatusForRappelHelicopter('N223HT', 'Adam Kahler', [44.2792, -120.9022]);
-        $this->createStatusForRappelHelicopter('N510WW', 'Nick Sailer', [44.404, -118.9635]);
-        $this->createStatusForRappelHelicopter('N502HQ', 'Wallace', [47.40, -120.2045]);
-        $this->createStatusForRappelHelicopter('N669H', 'Simon Driskell', [45.29, -118.0]);
-        $this->createStatusForRappelHelicopter('N689H', 'Jake Mason', [45.295, -118.0]);
-        $this->createStatusForRappelHelicopter('N16HX', 'Bohnstedt', [45.0207, -116.4369]);
-        $this->createStatusForRappelHelicopter('N9122Z', 'Benfatti', [45.45, -111.2428]);
-        $this->createStatusForRappelHelicopter('N932CH', 'Parkhouse', [45.1151, -113.881]);
-        $this->createStatusForRappelHelicopter('N933CH', 'Todd Sexton', [45.115, -113.89]);
-        $this->createStatusForRappelHelicopter('N205DY', 'Schwandt', [43.5757, -115.9853]);
-        $this->createStatusForRappelHelicopter('N183HQ (H-502)', 'Torres', [41.557, -122.8533]);
-        $this->createStatusForRappelHelicopter('N213KA (H-520)', 'Casey Jones', [36.905, -119.3155]);
-        $this->createStatusForRappelHelicopter('N571SC', '', [48.3863367, -115.55058]);
+        $this->createStatusForRappelHelicopter('N205RH', 'Tim Lyda', [42.5063, -123.3823], $rightNow);
+        $this->createStatusForRappelHelicopter('N223HT', 'Adam Kahler', [44.2792, -120.9022], $yesterday);
+        $this->createStatusForRappelHelicopter('N510WW', 'Nick Sailer', [44.404, -118.9635], $rightNow);
+        $this->createStatusForRappelHelicopter('N502HQ', 'Wallace', [47.40, -120.2045], $rightNow);
+        $this->createStatusForRappelHelicopter('N669H', 'Simon Driskell', [45.29, -118.0], $lastWeek);
+        $this->createStatusForRappelHelicopter('N689H', 'Jake Mason', [45.295, -118.0], $rightNow);
+        $this->createStatusForRappelHelicopter('N16HX', 'Bohnstedt', [45.0207, -116.4369], $yesterday);
+        $this->createStatusForRappelHelicopter('N9122Z', 'Benfatti', [45.45, -111.2428], $lastWeek);
+        $this->createStatusForRappelHelicopter('N932CH', 'Parkhouse', [45.1151, -113.881], $rightNow);
+        $this->createStatusForRappelHelicopter('N933CH', 'Todd Sexton', [45.115, -113.89], $lastWeek);
+        $this->createStatusForRappelHelicopter('N205DY', 'Schwandt', [43.5757, -115.9853], $yesterday);
+        $this->createStatusForRappelHelicopter('N183HQ (H-502)', 'Torres', [41.557, -122.8533], $rightNow);
+        $this->createStatusForRappelHelicopter('N213KA (H-520)', 'Casey Jones', [36.905, -119.3155], $rightNow);
+        $this->createStatusForRappelHelicopter('N571SC', '', [48.3863367, -115.55058], $lastWeek);
     }//End run()
 
-    private function createStatusForRappelHelicopter($tailnumber, $managerName, $coords)
+    private function createStatusForRappelHelicopter($tailnumber, $managerName, $coords, $timestamp)
     {
-        $rightNow = Carbon::now();
-//        $yesterday = Carbon::now()->subday(); // A timestamp from yesterday
-//        $lastWeek = Carbon::now()->subweek(); // A timestamp from last week
-
         $heli = RappelHelicopter::where("identifier", $tailnumber)->first();
         $crew = $heli->crew;
         $user = $crew->users()->first();
@@ -62,8 +62,8 @@ class ResourceStatusesTableSeeder extends Seeder
             'label_text' => ".",
             'created_by_name' => $user->name,
             'created_by_id' => $user->id,
-            'created_at' => $rightNow,
-            'updated_at' => $rightNow,
+            'created_at' => $timestamp,
+            'updated_at' => $timestamp,
             'crew_name' => $crew->name,
             'popup_content' => ""
         );
