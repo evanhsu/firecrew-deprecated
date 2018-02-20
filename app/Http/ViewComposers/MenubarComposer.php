@@ -1,5 +1,6 @@
 <?php namespace App\Http\ViewComposers;
 
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -29,7 +30,11 @@ class MenubarComposer
                         break;
                 }
         */
-        $this->active_menubutton = $request->session()->get('active_menubutton');
+        try {
+            $this->active_menubutton = $request->session()->get('active_menubutton');
+        } catch (Exception $e) {
+            // There's probably no session associated with this request (maybe it's an error page, 404, 500, etc.)
+        }
 
         // Determine which menubar View to display depending on user account type
         if (Auth::check()) {

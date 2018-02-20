@@ -63,6 +63,14 @@ body {
   padding-top: 20px;
 }
 
+.fullscreen {
+  background-size: cover;
+  position:fixed;
+  height:100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
 .crew-aircraft-form {
   background-color: #fafafa;
   border: 1px solid #777777;
