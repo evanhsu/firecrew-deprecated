@@ -28,6 +28,12 @@ class CrewUserResourceTableSeeder extends Seeder
             'global_admin' => true,
         ));
 
+        User::create(array(
+            'name' => 'Curt Parkhouse (Admin)',
+            'email' => 'cparkhouse+admin@fs.fed.us',
+            'password' => '$2y$10$qwgF2oUG4r4F7RQKXVCQVOWtsrjZwapWP0SJvoGFaeiKKqz/DR7eO',
+            'global_admin' => true,
+        ));
 //
 
         $crew = Crew::create(array(
