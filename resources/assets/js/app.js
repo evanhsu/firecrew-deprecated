@@ -4,8 +4,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js'; // eslint-disable-line no-unused-vars
 import createHistory from 'history/createBrowserHistory';
 import { fromJS } from 'immutable';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -42,14 +40,6 @@ const store = createStore(
     )
   )
 );
-
-// Set up Laravel Echo to connect to a Pusher account
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: window.Laravel.pusher.appKey, // TODO: key: process.env.MIX_PUSHER_KEY (requires Mix v2.0)
-  cluster: window.Laravel.pusher.cluster,
-  encrypted: window.Laravel.pusher.encrypted,
-});
 
 if (document.getElementById('react-root')) {
   ReactDOM.render(
