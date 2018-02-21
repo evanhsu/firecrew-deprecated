@@ -28,6 +28,7 @@ before_deploy:
   - chmod 600 /tmp/deploy_rsa
   - ssh-add /tmp/deploy_rsa
   - rm .env
+  - rm -rf node_modules
 
 deploy:
   provider: script
