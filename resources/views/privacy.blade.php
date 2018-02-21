@@ -1,6 +1,7 @@
 @extends('./layouts.app')
 
-@section('title', 'Privacy Policy')
+@section('page-title','Privacy Policy - FireCrew')
+@section('page-description','An explanation of the data that we collect and how we use it.')
 
 @section('content')
 <main class="container" style="padding-top: 40px">

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('page-title','Password Reset - FireCrew')
+@section('page-description','Request a password reset email.')
+
 @section('content')
 <div class="container">
     <div class="row">

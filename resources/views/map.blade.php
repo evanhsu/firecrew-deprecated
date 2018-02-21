@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-
-@section('title','Fire Crew')
+@section('page-title','Map - FireCrew')
+@section('page-description','View fire resources on the map with their staffing intel.')
 
 @section('stylesheets')
     @parent

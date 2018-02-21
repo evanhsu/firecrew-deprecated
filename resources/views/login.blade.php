@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title','FireCrew')
+@section('page-title','Login - FireCrew')
+@section('page-description','Log in to post status updates and manage your account')
 
 @section('content')
     <div id="container-fluid" class="container-fluid background-container">
