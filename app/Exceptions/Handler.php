@@ -68,10 +68,6 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
-        $request->session()->flash('alert', [
-            'type'      => 'info',
-            'message'   => 'Your session has expired.'
-        ]);
         return redirect()->guest('login');
     }
 }
