@@ -5,7 +5,7 @@ export const getStatusSummaryTableStyle = () => (
     border: '2px solid black',
     paddingLeft: 0,
     paddingRight: 0,
-    minWidth: 800,
+    minWidth: 1000,
   }
 );
 
@@ -22,6 +22,7 @@ export const getCrewRowStyle = (props) => {
       transition: 'background-color 100ms ease-in, color 100ms ease-in',
       backgroundColor,
       color: props.isSelected ? 'white' : 'black',
+      whiteSpace: 'unset',
     },
     resourceCell: {
       paddingLeft: 0,
@@ -31,6 +32,7 @@ export const getCrewRowStyle = (props) => {
     },
     intelCell: {
       border: '1px dashed gray',
+      whiteSpace: 'unset',
     },
   };
 };
@@ -39,6 +41,7 @@ export const getCrewResourceRowStyle = () => (
   {
     borderBottom: '1px dashed gray',
     margin: 0,
+    whiteSpace: 'unset',
   }
 );
 

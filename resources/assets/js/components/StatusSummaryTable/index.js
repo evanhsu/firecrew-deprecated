@@ -16,18 +16,18 @@ const HeaderRow = () => (
     <tr>
       <th className="col-xs-2">Crew</th>
       <th className="col-xs-7">
-        <span className="col-xs-1" style={{ padding: 0 }}>
-          <span style={{ whiteSpace: 'nowrap' }}>
-            <span className="glyphicon glyphicon-user" aria-hidden="true"></span><span className="hidden-xs">HRAPS</span>
+          <span className="col-xs-1" style={{ padding: 0 }}>
+            <span style={{ whiteSpace: 'nowrap' }}>
+              <span className="glyphicon glyphicon-user" aria-hidden="true"></span><span className="hidden-xs">HRAPS</span>
+            </span>
+            &nbsp;/
+            <span style={{ whiteSpace: 'nowrap' }}>
+              <span className="glyphicon glyphicon-share-alt" aria-hidden="true"></span><span className="hidden-xs">Surplus</span>
+            </span>
           </span>
-          &nbsp;/
-          <span style={{ whiteSpace: 'nowrap' }}>
-            <span className="glyphicon glyphicon-share-alt" aria-hidden="true"></span><span className="hidden-xs">Surplus</span>
-          </span>
-        </span>
-        <span className="col-xs-3">Resource</span>
-        <span className="col-xs-3">Location</span>
-        <span className="col-xs-5">Notes</span>
+          <span className="col-xs-3">Resource</span>
+          <span className="col-xs-3">Location</span>
+          <span className="col-xs-5">Notes</span>
       </th>
       <th className="col-xs-3">Intel</th>
     </tr>
@@ -105,7 +105,7 @@ CrewResourceRow.propTypes = {
 
 const CrewPersonnelRow = ({ person }) => (
   person.name ? (
-    <span className="col-xs-12" style={ styles.getCrewResourceRowStyle() }>
+    <span className="row" style={ styles.getCrewResourceRowStyle() }>
       <span className="col-xs-1"> </span>
       <span className="col-xs-3">{ person.name }{ person.role && ` [${person.role}]` }</span>
       <span className="col-xs-3">{ person.location }</span>
