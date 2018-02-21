@@ -1,29 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const DutyOfficer = (props) => {
-  if(props.duty_officer_name && props.duty_officer_phone) { 
+  if(props.dutyOfficer === null) {
+    return null;
+  }
+
+  if(props.dutyOfficer.get('duty_officer_name') && props.dutyOfficer.get('duty_officer_phone')) { 
     return (
       <span>
         <b>Duty Officer:</b><br />
-        {props.duty_officer_name}<br />
-        {props.duty_officer_phone}<br />
+        {props.dutyOfficer.get('duty_officer_name')}<br />
+        {props.dutyOfficer.get('duty_officer_phone')}<br />
       </span>
     );
   }
-  if(props.duty_officer_name) {
+  if(props.dutyOfficer.get('duty_officer_name')) {
     return (
       <span>
         <b>Duty Officer:</b><br />
-        {props.duty_officer_name}<br />
+        {props.dutyOfficer.get('duty_officer_name')}<br />
       </span>
     );
   }
-  if(props.duty_officer_phone) {
+  if(props.dutyOfficer.get('duty_officer_phone')) {
     return (
       <span>
         <b>Duty Officer:</b><br />
-        {props.duty_officer_phone}<br />
+        {props.dutyOfficer.get('duty_officer_phone')}<br />
       </span>
     );
   }
@@ -31,8 +35,7 @@ const DutyOfficer = (props) => {
 };
 
 DutyOfficer.propTypes = {
-  duty_officer_name: PropTypes.string,
-  duty_officer_phone: PropTypes.string,
+  dutyOfficer: ImmutablePropTypes.map,
 };
 
 export default DutyOfficer;
