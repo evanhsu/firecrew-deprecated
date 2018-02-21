@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('page-title','Login - FireCrew')
+@section('page-description','Log in to post status updates and manage your account')
+
 @section('content')
 <div class="container">
     <div class="row">
