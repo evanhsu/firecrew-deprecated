@@ -34,46 +34,49 @@ const HeaderRow = () => (
   </thead>
 );
 
-const CrewRow = ({ crewRow, isSelected, handleClick }) => (
-  <tr 
-    style={styles.getCrewRowStyle({crewRow, isSelected}).root}
-    onClick={handleClick(crewRow.get('id'))}
-  >
-    <td className="col-xs-2">
-      <CrewInfo crew={crewRow} />
-      <DutyOfficer dutyOfficer={crewRow.get('status', new Map())} />
-      <Timestamp timestamp={crewRow.get('updated_at')} />
-    </td>
-    <td
-      className="col-xs-7"
-      style={{ paddingLeft: 0, paddingRight: 0, borderLeft: '1px dashed gray' }}
+const CrewRow = ({ crewRow, isSelected, handleClick }) => {
+  const crewRowStyle = styles.getCrewRowStyle({crewRow, isSelected});
+  return (
+    <tr 
+      style={crewRowStyle.root}
+      onClick={handleClick(crewRow.get('id'))}
     >
-      { crewRow.get('statusable_resources').map((resource) => (
-        <CrewResourceRow key={resource.get('id')} resource={resource} />
-      )) }
-      { ['personnel_1_', 'personnel_2_', 'personnel_3_', 'personnel_4_', 'personnel_5_', 'personnel_6_'].map((person) => (
-        <CrewPersonnelRow
-          key={person}
-          person={{
-            name: crewRow.getIn(['status', `${person}name`]),
-            role: crewRow.getIn(['status', `${person}role`]),
-            location: crewRow.getIn(['status', `${person}location`]),
-            note: crewRow.getIn(['status', `${person}note`]),
-          }}
-        />
-      )) }
-      <ReactCSSTransitionGroup
-        transitionName="slide"
-        transitionEnterTimeout={300}
-        transitionLeaveTimeout={250}>
-      { isSelected ? <ExtraInfoRow key="extra-row" crew={crewRow} isSelected={isSelected} /> : null }
-      </ReactCSSTransitionGroup>
-    </td>
-    <td className="col-xs-3" style={{ borderLeft: '1px dashed black' }}>
-      { crewRow.getIn(['status', 'intel']) }
-    </td>
-  </tr>
-);
+      <td className="col-xs-2">
+        <CrewInfo crew={crewRow} />
+        <DutyOfficer dutyOfficer={crewRow.get('status', new Map())} />
+        <Timestamp timestamp={crewRow.get('updated_at')} />
+      </td>
+      <td
+        className="col-xs-7 row"
+        style={crewRowStyle.resourceCell}
+      >
+        { crewRow.get('statusable_resources').map((resource) => (
+          <CrewResourceRow key={resource.get('id')} resource={resource} />
+        )) }
+        { ['personnel_1_', 'personnel_2_', 'personnel_3_', 'personnel_4_', 'personnel_5_', 'personnel_6_'].map((person) => (
+          <CrewPersonnelRow
+            key={person}
+            person={{
+              name: crewRow.getIn(['status', `${person}name`]),
+              role: crewRow.getIn(['status', `${person}role`]),
+              location: crewRow.getIn(['status', `${person}location`]),
+              note: crewRow.getIn(['status', `${person}note`]),
+            }}
+          />
+        )) }
+        <ReactCSSTransitionGroup
+          transitionName="slide"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={250}>
+        { isSelected ? <ExtraInfoRow key="extra-row" crew={crewRow} isSelected={isSelected} /> : null }
+        </ReactCSSTransitionGroup>
+      </td>
+      <td className="col-xs-3" style={crewRowStyle.intelCell}>
+        { crewRow.getIn(['status', 'intel']) }
+      </td>
+    </tr>
+  );
+};
 
 CrewRow.propTypes = {
   crewRow: ImmutablePropTypes.map,
@@ -82,7 +85,7 @@ CrewRow.propTypes = {
 
 
 const CrewResourceRow = ({ resource }) => (
-  <span className="col-xs-12" style={styles.getCrewResourceRowStyle()}>
+  <span className="row" style={styles.getCrewResourceRowStyle()}>
     <span className="col-xs-1">{ `${resource.getIn(['latest_status', 'staffing_value1'], '')}/${resource.getIn(['latest_status', 'staffing_value2'], '')}` }</span>
     <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
     <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) }</span>

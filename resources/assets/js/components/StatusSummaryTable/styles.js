@@ -23,12 +23,22 @@ export const getCrewRowStyle = (props) => {
       backgroundColor,
       color: props.isSelected ? 'white' : 'black',
     },
+    resourceCell: {
+      paddingLeft: 0,
+      paddingRight: 0,
+      borderLeft: '1px dashed gray',
+      whiteSpace: 'unset',
+    },
+    intelCell: {
+      border: '1px dashed gray',
+    },
   };
 };
 
 export const getCrewResourceRowStyle = () => (
   {
     borderBottom: '1px dashed gray',
+    margin: 0,
   }
 );
 
