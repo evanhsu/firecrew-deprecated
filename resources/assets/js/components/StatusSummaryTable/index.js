@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import { fromJS } from 'immutable';
+import { Map, fromJS } from 'immutable';
 import CrewInfo from './CrewInfo';
 import DispatchCenter from './DispatchCenter';
 import DutyOfficer from './DutyOfficer';
@@ -16,7 +16,15 @@ const HeaderRow = () => (
     <tr>
       <th className="col-xs-2">Crew</th>
       <th className="col-xs-7">
-        <span className="col-xs-1" style={{ padding: 0 }}>HRAPS / Surplus</span>
+        <span className="col-xs-1" style={{ padding: 0 }}>
+          <span style={{ whiteSpace: 'nowrap' }}>
+            <span className="glyphicon glyphicon-user" aria-hidden="true"></span><span className="hidden-xs">HRAPS</span>
+          </span>
+          &nbsp;/
+          <span style={{ whiteSpace: 'nowrap' }}>
+            <span className="glyphicon glyphicon-share-alt" aria-hidden="true"></span><span className="hidden-xs">Surplus</span>
+          </span>
+        </span>
         <span className="col-xs-3">Resource</span>
         <span className="col-xs-3">Location</span>
         <span className="col-xs-5">Notes</span>
@@ -33,7 +41,7 @@ const CrewRow = ({ crewRow, isSelected, handleClick }) => (
   >
     <td className="col-xs-2">
       <CrewInfo crew={crewRow} />
-      <DutyOfficer {...crewRow.get('status').toJS()} />
+      <DutyOfficer dutyOfficer={crewRow.get('status', new Map())} />
       <Timestamp timestamp={crewRow.get('updated_at')} />
     </td>
     <td
@@ -75,7 +83,7 @@ CrewRow.propTypes = {
 
 const CrewResourceRow = ({ resource }) => (
   <span className="col-xs-12" style={styles.getCrewResourceRowStyle()}>
-    <span className="col-xs-1">{ `${resource.getIn(['latest_status', 'staffing_value1'])}/${resource.getIn(['latest_status', 'staffing_value2'])}` }</span>
+    <span className="col-xs-1">{ `${resource.getIn(['latest_status', 'staffing_value1'], '')}/${resource.getIn(['latest_status', 'staffing_value2'], '')}` }</span>
     <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
     <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) }</span>
     <span className="col-xs-5">
@@ -131,6 +139,7 @@ class StatusSummaryTable extends Component {
 
   render() {
     return (
+      <div className="table-responsive">
       <table className="table table-condensed" style={styles.getStatusSummaryTableStyle()}>
         <HeaderRow />
         <tbody>
@@ -144,6 +153,7 @@ class StatusSummaryTable extends Component {
         ))}
         </tbody>
       </table>
+      </div>
     );
   }
 };
