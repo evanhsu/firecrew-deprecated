@@ -25,7 +25,7 @@
 		<section class="how-it-works-section">
 			<div class="row">
 				<div class="col-xs-12">
-					<img style="width: 75%" src="images/previews/iPad Pro - Screenshot 3.png" title="Post a single update and everone's in the loop." />
+					<img style="width: 75%" src="images/previews/iPad Pro - Screenshot Form.png" title="Post a single update and everone's in the loop." />
 				</div>
 				<div class="col-xs-12">
 					<header class="section-header"><h2>Simple to update. Accessible from anywhere.</h2></header>
@@ -35,7 +35,7 @@
 
 			<div class="row">
 				<div class="col-sm-12 col-sm-push-6">
-					<img src="images/previews/iPad Pro - Screenshot 2.png" title="View resources on the map" />
+					<img src="images/previews/iPad Pro - Screenshot Map.png" title="View resources on the map" />
 				</div>
 				<div class="col-sm-12 col-sm-pull-6">
 					<header class="section-header"><h2>Geographic Visualization</h2></header>
