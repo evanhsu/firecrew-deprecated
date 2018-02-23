@@ -76,11 +76,11 @@ require([
   });
 
 
-  // const gl1 = new GraphicsLayer({ id: 'Short Haul', infoTemplate });
-  // var gl2 = new GraphicsLayer({ id: 'Response Range' });
+  const gl1 = new GraphicsLayer({ id: 'Short Haul', infoTemplate });
+  // const gl2 = new GraphicsLayer({ id: 'Response Range' });
   const gl3 = new GraphicsLayer({ id: 'Rappel', infoTemplate });
-  // const gl4 = new GraphicsLayer({ id: 'Hotshots', infoTemplate });
-  // const gl5 = new GraphicsLayer({ id: 'Smokejumpers', infoTemplate });
+  const gl4 = new GraphicsLayer({ id: 'Hotshots', infoTemplate });
+  const gl5 = new GraphicsLayer({ id: 'Smokejumpers', infoTemplate });
   const gl6 = new GraphicsLayer({ id: 'Helitack', infoTemplate });
   const gl7 = new GraphicsLayer({ id: 'Type 1 Heli', infoTemplate });
 
@@ -92,11 +92,11 @@ require([
   $.when(loadingMap, loadingFireResources).then(
     function () {
       // Add our layers to the map
-      // map.addLayer(gl1);
+      map.addLayer(gl1);
       //map.addLayer(gl2);
       map.addLayer(gl3);
-      // map.addLayer(gl4);
-      // map.addLayer(gl5);
+      map.addLayer(gl4);
+      map.addLayer(gl5);
       map.addLayer(gl6);
       map.addLayer(gl7);
 
@@ -108,21 +108,21 @@ require([
                   legend.startup();
       */
       const layers = [
-        // {
-          // layer: gl1,
-        // },
+        {
+          layer: gl1,
+        },
         /*{
             layer: gl2
         },*/
         {
           layer: gl3,
         },
-        // {
-          // layer: gl4,
-        // },
-        // {
-          // layer: gl5,
-        // },
+        {
+          layer: gl4,
+        },
+        {
+          layer: gl5,
+        },
         {
           layer: gl6,
         },
@@ -142,11 +142,11 @@ require([
     });
 
   function clearLayers() {
-    // gl1.clear();
+    gl1.clear();
     // gl2.clear();
     gl3.clear();
-    // gl4.clear();
-    // gl5.clear();
+    gl4.clear();
+    gl5.clear();
     gl6.clear();
     gl7.clear();
   }
@@ -211,6 +211,7 @@ require([
     } else {
       newHelicopters.push(helicopter);
     }
+
     return newHelicopters;
   }
-}); // End require()
+});

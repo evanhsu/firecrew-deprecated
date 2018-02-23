@@ -5,6 +5,7 @@
 /public/js/vendor*.js
 /public/js/manifest*.js
 /public/css/app*.css
+/public/logos/*
 /storage/*.key
 /vendor
 /.idea

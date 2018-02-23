@@ -47,7 +47,7 @@ class CrewsWithAdminUsersSeeder extends Seeder
         ));
 
         $crew = Crew::create(array(
-            'name' => 'Price Valley',
+            'name' => 'Price Valley Helirappellers',
             'phone' => '280-324-2909',
             'address_street1' => "9999 Reservoir Way",
             'address_city' => "Sun Valley",

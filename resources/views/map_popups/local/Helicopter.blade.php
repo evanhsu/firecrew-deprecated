@@ -7,8 +7,8 @@
 <table class="popup-table">
     <tr>
         <td class="logo-cell" aria-label="Logo" title="Crew Logo">
-            @if (file_exists(public_path('images/'.$crew->logo_filename)))
-                <img src="{{ asset('images/'.$crew->logo_filename) }}" />
+            @if (file_exists(public_path($crew->logo_filename)))
+                <img src="{{ asset($crew->logo_filename) }}" />
             @endif
         </td>
 

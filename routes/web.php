@@ -1,21 +1,8 @@
 <?php
-
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', array('as' => 'summary', 'uses' => 'Status\SummaryController@index'));
+Route::get('/', array('as' => 'sales', 'uses' => 'PagesController@sales'));
+Route::get('/summary', array('as' => 'summary', 'uses' => 'Status\SummaryController@index'));
 Route::get('/map', array('as' => 'map', 'uses' => 'MapController@getMap'));
 Route::get('/home', 'HomeController@index');
 Route::get('/privacy', 'PagesController@privacy');
