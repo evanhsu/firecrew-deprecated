@@ -56,6 +56,10 @@
 
 		<section class="sign-up-section row">
 			<div class="col-sm-12">
+				<header class="section-header"><h2>Add your organization to get started</h2></header>
+				<p class="section-content">
+					<a href="#" class="btn btn-primary btn-lg" role="button">Get Started</a>
+				</p>
 			</div>
 		</section>
 	</div>
