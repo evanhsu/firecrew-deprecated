@@ -25,8 +25,13 @@ function drawOneAircraftForm($index, $aircraft, $crew, $template = false) {
 
     if(!$template) $output .= "readonly ";
 
-    $output .= "/>
-            </div>\n";
+    $output .= "/>\n";
+
+    if($template) {
+        $output .= "<div class=\"identifier-validation-message has-error hidden\" id=\"identifier-validation-message-$index\"></div>";
+    }
+
+    $output .= "</div>\n";
 
     if(!$template) {
         $output .= "<button class=\"btn btn-default release-aircraft-button\" data-aircraft-id=\"".$index."\" type=\"button\">Release</button>\n";
@@ -295,6 +300,27 @@ function freshnessNotify($freshness) {
                 $('#add-aircraft-button').attr("disabled",false).prop("title","Assign another aircraft to this crew");
             }
         }
+
+        function enableSaveButton(enable) {
+            if(enable) {
+                $('button[type=submit').attr("disabled",false).prop("title","Save all changes");
+            } else {
+                $('button[type=submit').attr("disabled",true).prop("title","Fix the invalid tailnumber before saving");
+            }
+        }
+
+        function validateTailnumbers(field) {
+            const pattern = RegExp('^[NC]\-?[0-9a-z]{3,5}$', 'i');
+            if(!pattern.test(field.value)) {
+                enableSaveButton(false);
+                $(field).siblings('.identifier-validation-message').removeClass('hidden').html('Invalid tailnumber');
+                $(field).parents('.form-group').addClass('has-error');
+            } else {
+                $(field).siblings('.identifier-validation-message').addClass('hidden').html('');
+                $(field).parents('.form-group').removeClass('has-error');
+                enableSaveButton(true);
+            }
+        }
     </script>
     <script>
         (function() {
@@ -322,6 +348,7 @@ function freshnessNotify($freshness) {
             // Or enable the button if text is typed into a blank tailnumber field
             $("#edit_crew_form").on("keyup",".aircraft-identifier", function(event) {
                 setStatusForAddButton();
+                validateTailnumbers(event.target);
             });
 
             // Add click behavior to the "Release" aircraft button

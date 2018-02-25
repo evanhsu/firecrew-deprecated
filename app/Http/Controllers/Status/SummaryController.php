@@ -11,6 +11,15 @@ use Illuminate\Http\Request;
 
 class SummaryController extends Controller
 {
+    public function indexTempRedirect(Request $request)
+    {
+        $request->session()->flash('active_menubutton', 'summary'); // Tell the menubar which button to highlight
+        $request->session()->flash('alert', [
+            'message' => 'Update your bookmark! This page will be moving to https://firecrew.us/summary'
+        ]);
+        return view('summary');
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\Response

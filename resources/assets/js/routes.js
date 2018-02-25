@@ -8,6 +8,7 @@ class Routes extends Component {
 		return (
 			<Switch>
 				<Route path="/crew/:crewId/inventory" component={Inventory} />
+				<Route path="/summary" exact component={StatusSummary} />
 				<Route path="/" exact component={StatusSummary} />
 			</Switch>
 		);
