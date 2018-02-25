@@ -15,7 +15,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', array('as' => 'summary', 'uses' => 'Status\SummaryController@index'));
+Route::get('/', array('uses' => 'Status\SummaryController@indexTempRedirect'));
+Route::get('/summary', array('as' => 'summary', 'uses' => 'Status\SummaryController@index'));
 Route::get('/map', array('as' => 'map', 'uses' => 'MapController@getMap'));
 Route::get('/home', 'HomeController@index');
 Route::get('/privacy', 'PagesController@privacy');
