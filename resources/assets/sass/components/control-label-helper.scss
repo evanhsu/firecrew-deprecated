@@ -2,6 +2,8 @@
 	padding-right: 0 !important;
 }
 
-.control-label-helper {
-	float: left;
+@media screen and (min-width: $screen-md-min) {
+	.control-label-helper {
+		float: left;
+	}
 }

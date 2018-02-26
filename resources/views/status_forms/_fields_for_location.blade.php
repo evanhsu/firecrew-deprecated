@@ -1,4 +1,22 @@
-<h2>Location</h2>
+<h2>Location <small>(Required)</small></h2>
+
+<div class="form-group clearfix" style="padding-left: 15px">
+    <label for="location_name" class="control-label control-label-with-helper">Location Name</label>
+    <a role="button" class="" tabindex="0" data-toggle="popover" title="Location Name" data-trigger="focus" data-content="The name of the city, town, or landmark nearest to your location.">
+        <span class="glyphicon glyphicon-question-sign"></span>
+    </a>
+    <div style="max-width: 244px;">
+        <input 
+            type="text" 
+            name="location_name" 
+            id="location_name" 
+            class="form-control" 
+            value="{{ $status->location_name }}"
+            placeholder="Toketee, OR"
+            aria-label="Location name"
+        >
+    </div>
+</div>
 
 <div class="form-group clearfix" style="padding-left: 15px">
     <label for="latitude_deg" class="control-label sr-only">Degrees of Latitude</label>
