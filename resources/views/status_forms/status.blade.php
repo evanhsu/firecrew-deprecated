@@ -44,3 +44,12 @@
 
     </div>
 @endsection
+
+@section('scripts-postload')
+@parent
+<script>
+    $(function () {
+      $('[data-toggle="popover"]').popover()
+    })
+</script>
+@endsection
