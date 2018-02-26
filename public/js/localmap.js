@@ -76,11 +76,11 @@ require([
   });
 
 
-  // const gl1 = new GraphicsLayer({ id: 'Short Haul', infoTemplate });
-  // var gl2 = new GraphicsLayer({ id: 'Response Range' });
+  const gl1 = new GraphicsLayer({ id: 'Short Haul', infoTemplate });
+  // const gl2 = new GraphicsLayer({ id: 'Response Range' });
   const gl3 = new GraphicsLayer({ id: 'Rappel', infoTemplate });
-  // const gl4 = new GraphicsLayer({ id: 'Hotshots', infoTemplate });
-  // const gl5 = new GraphicsLayer({ id: 'Smokejumpers', infoTemplate });
+  const gl4 = new GraphicsLayer({ id: 'Hotshots', infoTemplate });
+  const gl5 = new GraphicsLayer({ id: 'Smokejumpers', infoTemplate });
   const gl6 = new GraphicsLayer({ id: 'Helitack', infoTemplate });
   const gl7 = new GraphicsLayer({ id: 'Type 1 Heli', infoTemplate });
 
@@ -93,7 +93,7 @@ require([
     function () {
       // Add our layers to the map
       // map.addLayer(gl1);
-      //map.addLayer(gl2);
+      // map.addLayer(gl2);
       map.addLayer(gl3);
       // map.addLayer(gl4);
       // map.addLayer(gl5);
@@ -109,11 +109,11 @@ require([
       */
       const layers = [
         // {
-          // layer: gl1,
+        //   layer: gl1,
         // },
-        /*{
-            layer: gl2
-        },*/
+        // {
+        //     layer: gl2
+        // },
         {
           layer: gl3,
         },
@@ -155,23 +155,23 @@ require([
     const helicopter = new Helicopter(heliAttributes);
 
     switch (helicopter.resourceType) {
-      case 'ShortHaulHelicopter':
-        gl1.add(helicopter.mapGraphic());
-        gl1.add(helicopter.mapResponseRingGraphic());
-        gl1.add(helicopter.mapLabel());
-        break;
+      // case 'ShortHaulHelicopter':
+      //   gl1.add(helicopter.mapGraphic());
+      //   gl1.add(helicopter.mapResponseRingGraphic());
+      //   gl1.add(helicopter.mapLabel());
+      //   break;
       case 'RappelHelicopter':
         gl3.add(helicopter.mapGraphic());
         gl3.add(helicopter.mapLabel());
         break;
-      case 'HotshotCrew':
-        gl4.add(helicopter.mapGraphic());
-        gl4.add(helicopter.mapLabel());
-        break;
-      case 'SmokejumperAirplane':
-        gl5.add(helicopter.mapGraphic());
-        gl5.add(helicopter.mapLabel());
-        break;
+      // case 'HotshotCrew':
+      //   gl4.add(helicopter.mapGraphic());
+      //   gl4.add(helicopter.mapLabel());
+      //   break;
+      // case 'SmokejumperAirplane':
+      //   gl5.add(helicopter.mapGraphic());
+      //   gl5.add(helicopter.mapLabel());
+      //   break;
       case 'HelitackHelicopter':
         gl6.add(helicopter.mapGraphic());
         gl6.add(helicopter.mapLabel());
