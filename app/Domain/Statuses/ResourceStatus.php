@@ -18,6 +18,7 @@ class ResourceStatus extends Model
     protected $fillable = [
         'latitude',
         'longitude',
+        'location_name',
         'staffing_category1',
         'staffing_value1',
         'staffing_category2',
@@ -44,7 +45,7 @@ class ResourceStatus extends Model
     {
         parent::boot();
         self::created(function ($model) {
-            $model->crew()->update(['updated_at' => $model->created_at]);
+            $model->crew()->touch();
         });
     }
 

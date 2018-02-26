@@ -19,7 +19,10 @@ function drawOneAircraftForm($index, $aircraft, $crew, $template = false) {
     if($template) $output .= " dynamic-form-template";
     $output .= "\">
         <div class=\"form-group\">
-            <label for=\"aircraft-identifier\" class=\"control-label col-sm-2\">Tailnumber</label>
+            <label for=\"aircraft-identifier\" class=\"control-label  control-label-with-helper col-sm-2\">Tailnumber</label>
+            <a role=\"button\" class=\"control-label-helper\" tabindex=\"0\" data-toggle=\"popover\" title=\"Tailnumber\" data-trigger=\"focus\" data-content=\"Enter the full tailnumber for this aircraft (beginning with the 'N' for US registrations)\">
+                <span class=\"glyphicon glyphicon-question-sign\"></span>
+            </a>
             <div class=\"col-sm-4 col-md-3\">
                 <input type=\"text\" class=\"form-control aircraft-identifier\" name=\"crew[statusableResources][".$index."][identifier]\" value=\"".$aircraft->identifier."\" ";
 
@@ -34,7 +37,7 @@ function drawOneAircraftForm($index, $aircraft, $crew, $template = false) {
     $output .= "</div>\n";
 
     if(!$template) {
-        $output .= "<button class=\"btn btn-default release-aircraft-button\" data-aircraft-id=\"".$index."\" type=\"button\">Release</button>\n";
+        $output .= "<button class=\"btn btn-default release-aircraft-button\" data-aircraft-id=\"".$index."\" type=\"button\" title=\"Remove this aircraft from your crew. None of the aircraft data will be deleted, and the aircraft can be added to your crew again later by simply clicking the 'Add an Aircraft' button and entering this tailnumber.\">Release</button>\n";
     }
 
      $output .= "
@@ -377,6 +380,10 @@ function freshnessNotify($freshness) {
                 }
                 
             });
+
+            $(function () {
+              $('[data-toggle="popover"]').popover()
+            })
 
         })();
     </script>
