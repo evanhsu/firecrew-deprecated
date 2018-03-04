@@ -26,7 +26,6 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::group(['middleware' => 'auth'], function () {
 
-
 // AIRCRAFT
     Route::get('/aircraft', array('as' => 'aircraft_index', 'uses' => 'AircraftController@index'));
     Route::get('/aircraft/{tailnumber}/status', array('as' => 'current_status_for_aircraft', 'uses' => 'AircraftController@showCurrentStatus'));
@@ -67,12 +66,13 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 
-
-// STATUS
-
 // ACCOUNTS
     Route::get('/account', array('as' => 'users_index', 'uses' => 'AccountController@index'));
     Route::post('/account', array('as' => 'register_user', 'uses' => 'Auth\RegisterController@postRegister'));
+
+    Route::get('/account/me', array('as' => 'edit_user_me', 'uses' => 'AccountController@editMe'));
+    Route::post('/account/me', array('as' => 'update_user_me', 'uses' => 'AccountController@updateMe'));
+
     Route::get('/account/{id}', array('as' => 'edit_user', 'uses' => 'AccountController@edit'));
     Route::post('/account/{id}', array('as' => 'update_user', 'uses' => 'AccountController@update'));
     Route::post('/account/{id}/destroy', array('as' => 'destroy_user', 'uses' => 'AccountController@destroy'));

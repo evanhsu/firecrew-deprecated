@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AccountController extends Controller
 {
@@ -17,13 +18,31 @@ class AccountController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function newUserValidator(array $data)
     {
         return Validator::make($data, [
-            'firstname' => 'required|max:255',
-            'lastname' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'name' => 'required|max:255',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users'),
+            ],
             'password' => 'required|min:6',
+        ]);
+    }
+
+    protected function editUserValidator(array $data, $user)
+    {
+        return Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id, 'id'),
+            ],
+            'password' => 'nullable|min:6',
         ]);
     }
 
@@ -45,6 +64,19 @@ class AccountController extends Controller
 
     } // End index()
 
+    public function editMe() {
+        $user = Auth::user();
+        return view('auth.edit')->with([
+            'user' => $user,
+            'postRoute' => route('edit_user_me'),
+        ]);
+    }
+
+    public function updateMe(Request $request) {
+        $user = Auth::user();
+
+        return $this->updateUser($request, $user);
+    }
 
     public function edit($id) {
 
@@ -57,11 +89,21 @@ class AccountController extends Controller
         }
 
         // Authorization complete - continue...
-        return 'Edit account: '.$id;
+        return view('auth.edit')->with([
+            'user' => $target_user,
+            'postRoute' => route('edit_user', ['user' => $target_user->id]),
+        ]);
     } // End edit()
 
-    public function update($id) {
-        return $this->response()->error('Not implemented', 500);
+    public function update(Request $request, $id) {
+        $user = User::findOrFail($id);
+
+        if(Auth::user()->cannot('act-as-admin-for-crew', $user->crew_id)) {
+            // The current user does not have permission to perform admin functions for this crew
+            return redirect()->back()->withErrors("You're not authorized to access that crew!");
+        }
+
+        return $this->updateUser($request, $user);
     }
 
     public function destroy($id) {
@@ -85,8 +127,6 @@ class AccountController extends Controller
         }
 
     } // End destroy()
-
-
 
     /**
      * Show the "Create New User" form.
@@ -127,7 +167,7 @@ class AccountController extends Controller
         }
         // Authorization complete - continue...
         // Run the form input through the validator
-        $validator = $this->validator($request->all());
+        $validator = $this->newUserValidator($request->all());
 
         if ($validator->fails()) {
             /* $this->throwValidationException(
@@ -163,7 +203,7 @@ class AccountController extends Controller
         // $password = $this->randomPassword();
 
         $user = User::create([
-            'name' => $data['firstname']." ".$data['lastname'],
+            'name' => $data['name'],
             'email'     => $data['email'],
             'password' => Hash::make($data['password']),
             'crew_id'   => $data['crew_id'],
@@ -178,6 +218,30 @@ class AccountController extends Controller
 
         return $user;
 
+    }
+
+    protected function updateUser(Request $request, User $user) {
+        // Validate
+        $validator = $this->editUserValidator($request->all(), $user);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        if(is_null($request->password)) {
+            $data = $request->except(['password']);
+        } else {
+            $data = $request->all();
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        if(!$user->update($data)) {
+            return redirect()->back()->withErrors("Something went wrong - Account couldn't be updated right now");
+        }
+
+        return redirect()->back()->with("alert", ["message" => "Changes saved successfully"]);
     }
 
     private function randomPassword() {
