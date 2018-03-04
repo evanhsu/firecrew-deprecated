@@ -21,15 +21,19 @@
 
 	    <div class="dropdown">
 
-			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				Create a New User for...
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-				@foreach($crews as $crew)
-					<li><a href="{{ route('new_user_for_crew', $crew->id) }}">{{ $crew->name }}</a></li>
-				@endforeach
-			</ul>
+			<div class="list-group col-sm-12 col-md-6">
+				<a href="#" class="list-group-item active" id="crewListCollapseButton" data-toggle="collapse" data-target="#crewMenu" aria-expanded="false" aria-controls="crewMenu">
+					Create new account for...
+					<span class="glyphicon glyphicon-menu-down" style="float:right;" aria-hidden="true"></span>
+				</a>
+				<div class="list-group collapse" id="crewMenu">
+					@foreach($crews as $crew)
+						<a class="list-group-item" href="{{ route('new_user_for_crew', $crew->id) }}">
+							{{ $crew->name }}
+						</a>
+					@endforeach
+				</div>
+			</div>
 		</div>
 
 	</div>

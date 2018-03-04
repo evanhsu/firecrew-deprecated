@@ -64,6 +64,7 @@
         @endif
 
         @yield('content')
+        <div class="clearfix" style=""></div>
     </div>
 
     @section('scripts-postload')

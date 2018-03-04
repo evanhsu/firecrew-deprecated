@@ -36,6 +36,7 @@ const HeaderRow = () => (
 
 const CrewRow = ({ crewRow, isSelected, handleClick }) => {
   const crewRowStyle = styles.getCrewRowStyle({crewRow, isSelected});
+  console.log(crewRow.toJS());
   return (
     <tr 
       style={crewRowStyle.root}
@@ -88,7 +89,7 @@ const CrewResourceRow = ({ resource }) => (
   <span className="row" style={styles.getCrewResourceRowStyle()}>
     <span className="col-xs-1">{ `${resource.getIn(['latest_status', 'staffing_value1'], '')}/${resource.getIn(['latest_status', 'staffing_value2'], '')}` }</span>
     <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
-    <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) }</span>
+    <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) || resource.getIn(['latest_status', 'location_name'])}</span>
     <span className="col-xs-5">
       { resource.getIn(['latest_status', 'manager_name']) && `Contact: ${resource.getIn(['latest_status', 'manager_name'])}` }
       { resource.getIn(['latest_status', 'manager_phone']) && ` (${resource.getIn(['latest_status', 'manager_phone'])})` }<br />

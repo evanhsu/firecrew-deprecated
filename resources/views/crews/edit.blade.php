@@ -19,17 +19,25 @@ function drawOneAircraftForm($index, $aircraft, $crew, $template = false) {
     if($template) $output .= " dynamic-form-template";
     $output .= "\">
         <div class=\"form-group\">
-            <label for=\"aircraft-identifier\" class=\"control-label col-sm-2\">Tailnumber</label>
+            <label for=\"aircraft-identifier\" class=\"control-label  control-label-with-helper col-sm-2\">Tailnumber</label>
+            <a role=\"button\" class=\"control-label-helper\" tabindex=\"0\" data-toggle=\"popover\" title=\"Tailnumber\" data-trigger=\"focus\" data-content=\"Enter the full tailnumber for this aircraft (beginning with the 'N' for US registrations)\">
+                <span class=\"glyphicon glyphicon-question-sign\"></span>
+            </a>
             <div class=\"col-sm-4 col-md-3\">
                 <input type=\"text\" class=\"form-control aircraft-identifier\" name=\"crew[statusableResources][".$index."][identifier]\" value=\"".$aircraft->identifier."\" ";
 
     if(!$template) $output .= "readonly ";
 
-    $output .= "/>
-            </div>\n";
+    $output .= "/>\n";
+
+    if($template) {
+        $output .= "<div class=\"identifier-validation-message has-error hidden\" id=\"identifier-validation-message-$index\"></div>";
+    }
+
+    $output .= "</div>\n";
 
     if(!$template) {
-        $output .= "<button class=\"btn btn-default release-aircraft-button\" data-aircraft-id=\"".$index."\" type=\"button\">Release</button>\n";
+        $output .= "<button class=\"btn btn-default release-aircraft-button\" data-aircraft-id=\"".$index."\" type=\"button\" title=\"Remove this aircraft from your crew. None of the aircraft data will be deleted, and the aircraft can be added to your crew again later by simply clicking the 'Add an Aircraft' button and entering this tailnumber.\">Release</button>\n";
     }
 
      $output .= "
@@ -295,6 +303,27 @@ function freshnessNotify($freshness) {
                 $('#add-aircraft-button').attr("disabled",false).prop("title","Assign another aircraft to this crew");
             }
         }
+
+        function enableSaveButton(enable) {
+            if(enable) {
+                $('button[type=submit').attr("disabled",false).prop("title","Save all changes");
+            } else {
+                $('button[type=submit').attr("disabled",true).prop("title","Fix the invalid tailnumber before saving");
+            }
+        }
+
+        function validateTailnumbers(field) {
+            const pattern = RegExp('^[NC]\-?[0-9a-z]{3,5}$', 'i');
+            if(!pattern.test(field.value)) {
+                enableSaveButton(false);
+                $(field).siblings('.identifier-validation-message').removeClass('hidden').html('Invalid tailnumber');
+                $(field).parents('.form-group').addClass('has-error');
+            } else {
+                $(field).siblings('.identifier-validation-message').addClass('hidden').html('');
+                $(field).parents('.form-group').removeClass('has-error');
+                enableSaveButton(true);
+            }
+        }
     </script>
     <script>
         (function() {
@@ -322,6 +351,7 @@ function freshnessNotify($freshness) {
             // Or enable the button if text is typed into a blank tailnumber field
             $("#edit_crew_form").on("keyup",".aircraft-identifier", function(event) {
                 setStatusForAddButton();
+                validateTailnumbers(event.target);
             });
 
             // Add click behavior to the "Release" aircraft button
@@ -350,6 +380,10 @@ function freshnessNotify($freshness) {
                 }
                 
             });
+
+            $(function () {
+              $('[data-toggle="popover"]').popover()
+            })
 
         })();
     </script>

@@ -9,14 +9,20 @@
     <div class="row">
         <h2>Duty Officer</h2>
         <div class="form-group row">
-            <label for="duty_officer_name" class="col-sm-2 col-md-1 control-label">Name</label>
+            <label for="duty_officer_name" class="col-sm-2 col-md-1 control-label control-label-with-helper">Name</label>
+            <a role="button" class="control-label-helper" tabindex="0" data-toggle="popover" title="Duty Officer Name" data-trigger="focus" data-content="The name of the individual currently acting as duty officer for this crew, i.e. the person who should be contacted about staffing.">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
             <div class="col-sm-4 col-md-4">
                 <input type="text" name="duty_officer_name" id="duty_officer_name" class="form-control"
                        value="{{ $status->duty_officer_name }}">
             </div>
         </div>
         <div class="form-group row">
-            <label for="duty_officer_phone" class="col-sm-2 col-md-1 control-label">Phone</label>
+            <label for="duty_officer_phone" class="col-sm-2 col-md-1 control-label control-label-with-helper">Phone</label>
+            <a role="button" class="control-label-helper" tabindex="0" data-toggle="popover" title="Duty Officer Phone Number" data-trigger="focus" data-content="A reliable phone number for contacting the duty officer.">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
             <div class="col-sm-4 col-md-4">
                 <input type="text" name="duty_officer_phone" id="duty_officer_phone" class="form-control"
                        value="{{ $status->duty_officer_phone }}" placeholder="XXX-XXX-XXXX">
