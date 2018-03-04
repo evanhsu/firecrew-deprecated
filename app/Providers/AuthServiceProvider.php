@@ -40,6 +40,12 @@ class AuthServiceProvider extends ServiceProvider
             return ($user->isGlobalAdmin() || ($user->crew_id === $crewId));
         });
 
+        Gate::define('destroy-user', function ($user, $userToDestroy) {
+            return $user->isGlobalAdmin() || 
+                $user->isAdminForCrew($userToDestroy->crew_id) ||
+                $user->id === $userToDestroy->id;
+        });
+
         Gate::define('act-as-admin-for-crew', function ($user, $crew) {
             // Allow $crew to be passed in as either a Crew object OR an Integer crew_id
             // If $crew is NULL, return FALSE.... UNLESS the $user is a Global Admin

@@ -110,7 +110,7 @@ class AccountController extends Controller
         // Delete the User with ID $id
         $user_to_destroy = User::findOrFail($id);
 
-        if(Auth::user()->cannot('destroyUser', $user_to_destroy)) {
+        if(Auth::user()->cannot('destroy-user', $user_to_destroy)) {
             // The current user does not have permission to destroy the requested user
             return redirect()->back()->withErrors("You're not authorized to destroy that Account!");
         }
