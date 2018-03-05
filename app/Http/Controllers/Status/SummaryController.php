@@ -17,7 +17,7 @@ class SummaryController extends Controller
         $request->session()->flash('alert', [
             'message' => 'Update your bookmark! This page will be moving to https://firecrew.us/summary'
         ]);
-        return view('summary');
+        return redirect(route('summary'));
     }
 
     /**
