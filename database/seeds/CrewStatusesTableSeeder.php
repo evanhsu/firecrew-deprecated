@@ -25,7 +25,7 @@ class CrewStatusesTableSeeder extends Seeder
             'latitude'              => 42.454223,
             'longitude'             => -123.310388,
             'popup_content'         => "",
-            'intel'                 => "Here's what's happening with the GCSHC",
+            'intel'                 => "This is update #1 for GCSHC",
             'personnel_1_name'      => "Charlie Barley",
             'personnel_1_role'      => "HMGB(t)",
             'personnel_1_location'  => "National Training Academy",
@@ -46,7 +46,7 @@ class CrewStatusesTableSeeder extends Seeder
             'latitude'              => 42.454223,
             'longitude'             => -123.310388,
             'popup_content'         => "",
-            'intel'                 => "This is update #2 for GCSHC",
+            'intel'                 => "Placing equipment orders on 7/6.",
             'personnel_1_name'      => "Charlie Barley",
             'personnel_1_role'      => "HMGB(t)",
             'personnel_1_location'  => "National Training Academy",
@@ -66,14 +66,14 @@ class CrewStatusesTableSeeder extends Seeder
         /* Price Valley                 */
         /********************************/
 
-        $crew = Crew::where('name', 'Price Valley')->first();
+        $crew = Crew::where('name', 'Price Valley Helirappellers')->first();
         $user = $crew->users()->first();
         $statusArray = array(
             'crew_id'               => $crew->id,
             'latitude'              => 42.454223,
             'longitude'             => -123.310388,
             'popup_content'         => "",
-            'intel'                 => "This is the latest news from PV. Base is empty, lightning in the forecast.",
+            'intel'                 => "Base is empty, lightning in the forecast.",
             'personnel_1_name'      => "Prince Vallez",
             'personnel_1_role'      => "HERS(t)",
             'personnel_1_location'  => "Wenatchee",
@@ -100,8 +100,8 @@ class CrewStatusesTableSeeder extends Seeder
             'latitude'              => 42.454223,
             'longitude'             => -123.310388,
             'popup_content'         => "",
-            'intel'                 => "Here's the news for the Prineville Hotshot Crew.",
-            'personnel_1_name'      => "Dick Tracy",
+            'intel'                 => "Assigned to Gasquet. Last day 7/21.",
+            'personnel_1_name'      => "Ralph Jameson",
             'personnel_1_role'      => "FINV",
             'personnel_1_location'  => "Investigator workshop",
             'personnel_1_note'      => "Re-upping quals",
@@ -122,12 +122,12 @@ class CrewStatusesTableSeeder extends Seeder
             'latitude'              => 42.454223,
             'longitude'             => -123.310388,
             'popup_content'         => "",
-            'intel'                 => "Here's the news for the Redding Smokejumpers",
-            'personnel_1_name'      => "Brock Lesner",
+            'intel'                 => "",
+            'personnel_1_name'      => "Brant Lesley",
             'personnel_1_role'      => "TFLD",
             'personnel_1_location'  => "Brightenward Fire",
             'personnel_1_note'      => "",
-            'personnel_2_name'      => "Chauncy Billups",
+            'personnel_2_name'      => "Chad Billups",
             'personnel_2_role'      => "SOF2",
             'personnel_2_location'  => "Stickman Fire",
             'personnel_2_note'      => "",

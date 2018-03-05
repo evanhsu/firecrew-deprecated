@@ -77,7 +77,7 @@ require([
 
 
   const gl1 = new GraphicsLayer({ id: 'Short Haul', infoTemplate });
-  // const gl2 = new GraphicsLayer({ id: 'Response Range' });
+  const gl2 = new GraphicsLayer({ id: 'Response Range' });
   const gl3 = new GraphicsLayer({ id: 'Rappel', infoTemplate });
   const gl4 = new GraphicsLayer({ id: 'Hotshots', infoTemplate });
   const gl5 = new GraphicsLayer({ id: 'Smokejumpers', infoTemplate });
@@ -112,7 +112,7 @@ require([
         //   layer: gl1,
         // },
         // {
-        //     layer: gl2
+        //   layer: gl2
         // },
         {
           layer: gl3,
@@ -211,6 +211,7 @@ require([
     } else {
       newHelicopters.push(helicopter);
     }
+
     return newHelicopters;
   }
-}); // End require()
+});

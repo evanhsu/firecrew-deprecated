@@ -1,21 +1,9 @@
 <?php
-
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-
 use Illuminate\Support\Facades\Route;
 
+// Route::get('/', array('as' => 'sales', 'uses' => 'PagesController@sales'));
 Route::get('/', array('uses' => 'Status\SummaryController@indexTempRedirect'));
+
 Route::get('/summary', array('as' => 'summary', 'uses' => 'Status\SummaryController@index'));
 Route::get('/map', array('as' => 'map', 'uses' => 'MapController@getMap'));
 Route::get('/home', 'HomeController@index');
@@ -37,7 +25,6 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::group(['middleware' => 'auth'], function () {
-
 
 // AIRCRAFT
     Route::get('/aircraft', array('as' => 'aircraft_index', 'uses' => 'AircraftController@index'));
@@ -79,12 +66,13 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 
-
-// STATUS
-
 // ACCOUNTS
     Route::get('/account', array('as' => 'users_index', 'uses' => 'AccountController@index'));
     Route::post('/account', array('as' => 'register_user', 'uses' => 'Auth\RegisterController@postRegister'));
+
+    Route::get('/account/me', array('as' => 'edit_user_me', 'uses' => 'AccountController@editMe'));
+    Route::post('/account/me', array('as' => 'update_user_me', 'uses' => 'AccountController@updateMe'));
+
     Route::get('/account/{id}', array('as' => 'edit_user', 'uses' => 'AccountController@edit'));
     Route::post('/account/{id}', array('as' => 'update_user', 'uses' => 'AccountController@update'));
     Route::post('/account/{id}/destroy', array('as' => 'destroy_user', 'uses' => 'AccountController@destroy'));

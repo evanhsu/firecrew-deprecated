@@ -2,7 +2,7 @@
 
 use App\Domain\StatusableResources\RappelHelicopter;
 use App\Domain\StatusableResources\ShortHaulHelicopter;
-use App\Domain\StatusableResources\SmokeJumperAirplane;
+use App\Domain\StatusableResources\SmokejumperAirplane;
 use App\Domain\Crews\Crew;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,32 +16,37 @@ class StatusableResourcesTableSeeder extends Seeder
 
         $crew = Crew::where("name", "=", "Grand Canyon Short Haul Crew")->first();
         ShortHaulHelicopter::create(array(
-            'identifier'  => 'N1111',
+            'identifier'  => 'N17HJ',
             'model'       => 'Astar B350',
             'crew_id'     => $crew->id
         ));
         ShortHaulHelicopter::create(array(
-            'identifier'  => 'N2222',
+            'identifier'  => 'N213WT',
             'model'       => 'MD-900',
             'crew_id'     => $crew->id
         ));
 
 
-        $crew = Crew::where("name", "Price Valley")->first();
+        $crew = Crew::where("name", "Price Valley Helirappellers")->first();
         Rappelhelicopter::create(array(
-            'identifier'  => 'N3333',
-            'model'       => 'Bell 407',
+            'identifier'  => 'N313CH',
+            'model'       => 'Bell 205',
+            'crew_id'     => $crew->id
+        ));
+        Rappelhelicopter::create(array(
+            'identifier'  => 'N314CH',
+            'model'       => 'Bell 205',
             'crew_id'     => $crew->id
         ));
 
 
         $crew = Crew::where("name", "Redding Smokejumpers")->first();
-        SmokeJumperAirplane::create(array(
+        SmokejumperAirplane::create(array(
             'identifier'  => 'J-89',
             'model'       => 'C-130',
             'crew_id'     => $crew->id
         ));
-        SmokeJumperAirplane::create(array(
+        SmokejumperAirplane::create(array(
             'identifier'  => 'J-83',
             'model'       => 'DHC-6',
             'crew_id'     => $crew->id

@@ -36,7 +36,6 @@ const HeaderRow = () => (
 
 const CrewRow = ({ crewRow, isSelected, handleClick }) => {
   const crewRowStyle = styles.getCrewRowStyle({crewRow, isSelected});
-  console.log(crewRow.toJS());
   return (
     <tr 
       style={crewRowStyle.root}

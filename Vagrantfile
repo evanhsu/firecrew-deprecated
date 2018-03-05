@@ -33,6 +33,7 @@ Vagrant.configure("2") do |config|
        srv.hostmanager.ignore_private_ip = false
        srv.hostmanager.include_offline = false
        srv.vm.network "private_network", :ip => "0.0.0.0", :auto_network => true
+       srv.vm.network "forwarded_port", guest: 80, host: 8080
 
        # VirtualBox settings
        srv.vm.provider :virtualbox do |vb|

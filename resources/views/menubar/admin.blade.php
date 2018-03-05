@@ -40,7 +40,7 @@ function is_active($button, $active_menubutton)
 
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <a href="{{ route('edit_user', Auth::user()->id) }}">My Account</a>
+                            <a href="{{ route('edit_user_me') }}">My Account</a>
                         </li>
                         <li>
                             <a href="{{ route('logout') }}"

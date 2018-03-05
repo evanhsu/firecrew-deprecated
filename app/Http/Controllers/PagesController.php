@@ -20,9 +20,18 @@ class PagesController extends Controller
 
     public function privacy(Request $request)
     {
-    	// Tell the menubar which button to highlight
+    	// Tell the menubar which button to highlight (none)
     	$request->session()->flash('active_menubutton', '');
 
     	return view('privacy');
     }
+
+    public function sales(Request $request)
+    {
+        // Tell the menubar which button to highlight (none)
+        $request->session()->flash('active_menubutton', '');
+
+        return view('sales');
+    }
 }
+

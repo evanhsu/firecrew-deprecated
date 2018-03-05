@@ -19,7 +19,7 @@ class ResourceStatusesTableSeeder extends Seeder
 
         $rightNow = Carbon::now();
 
-        $heli = ShortHaulHelicopter::where("identifier", "N1111")->first();
+        $heli = ShortHaulHelicopter::where("identifier", "N17HJ")->first();
         $crew = $heli->crew;
         $user = $crew->users()->first();
         $oldtime = Carbon::now()->subday(); // A timestamp from yesterday
@@ -28,8 +28,8 @@ class ResourceStatusesTableSeeder extends Seeder
             'statusable_resource_name' => $heli->identifier,
             'latitude' => 42.454223,
             'longitude' => -123.310388,
-            'staffing_value1' => "3",
-            'staffing_value2' => "4",
+            'staffing_value1' => "6",
+            'staffing_value2' => "0",
             'manager_name' => "Bob Nielson",
             'manager_phone' => "789-566-4430",
             'comments1' => "This is update 1 of 2 from the db seeder",
@@ -54,14 +54,14 @@ class ResourceStatusesTableSeeder extends Seeder
         $statusArray = array(
             'statusable_resource_type' => $heli->resource_type,
             'statusable_resource_name' => $heli->identifier,
-            'latitude' => 42.464223,
-            'longitude' => -121.210388,
-            'staffing_value1' => "3",
-            'staffing_value2' => "4",
+            'latitude' => 45.464223,
+            'longitude' => -117.210388,
+            'staffing_value1' => "6",
+            'staffing_value2' => "0",
             'manager_name' => "Bob Nielson",
             'manager_phone' => "789-566-4430",
-            'comments1' => "This is update 2 of 2 from the db seeder",
-            'comments2' => "This is upcoming",
+            'comments1' => "Assigned to Gasquet. Shroeder is currently trainee.",
+            'comments2' => "",
             'assigned_fire_name' => "Gasquet Complex",
             'assigned_fire_number' => "WA-FRE-150038",
             'assigned_supervisor' => "John Thompson",
@@ -79,7 +79,7 @@ class ResourceStatusesTableSeeder extends Seeder
         $status = $heli->statuses()->create($statusArray);
 
 
-        $heli = ShortHaulHelicopter::where("identifier", "N2222")->first();
+        $heli = ShortHaulHelicopter::where("identifier", "N213WT")->first();
         $crew = $heli->crew;
         $user = $crew->users()->first();
         $statusArray = array(
@@ -87,12 +87,12 @@ class ResourceStatusesTableSeeder extends Seeder
             'statusable_resource_name' => $heli->identifier,
             'latitude' => 44.084223,
             'longitude' => -119.310388,
-            'staffing_value1' => "3",
-            'staffing_value2' => "4",
+            'staffing_value1' => "8",
+            'staffing_value2' => "2",
             'manager_name' => "Jim Lewis",
             'manager_phone' => "250-778-5443",
-            'comments1' => "This is update 1 of 1 from the db seeder",
-            'comments2' => "This is upcoming",
+            'comments1' => "Last flight was 7/4.",
+            'comments2' => "Proficiencies scheduled for 7/13",
             'assigned_fire_name' => "Big Windy",
             'assigned_fire_number' => "OR-RSF-150208",
             'assigned_supervisor' => "Bill Newman",
@@ -110,7 +110,36 @@ class ResourceStatusesTableSeeder extends Seeder
         $status = $heli->statuses()->create($statusArray);
 
 
-        $heli = RappelHelicopter::where("identifier", "N3333")->first();
+        $heli = RappelHelicopter::where("identifier", "N313CH")->first();
+        $crew = $heli->crew;
+        $user = $crew->users()->first();
+        $statusArray = array(
+            'statusable_resource_type' => $heli->resource_type,
+            'statusable_resource_name' => $heli->identifier,
+            'latitude' => 46.384223,
+            'longitude' => -115.310388,
+            'staffing_value1' => "6",
+            'staffing_value2' => "0",
+            'manager_name' => "Steve Borland",
+            'manager_phone' => "334-998-6756",
+            'comments1' => "Unscheduled maintenance - currently unavailable.",
+            'comments2' => "Hopefully we'll be back up before tomorrow morning...",
+            'assigned_fire_name' => "",
+            'assigned_fire_number' => "",
+            'assigned_supervisor' => "",
+            'assigned_supervisor_phone' => "",
+            'Distance' => 100,
+            'label_text' => ".",
+            'created_by_name' => $user->name,
+            'created_by_id' => $user->id,
+            'created_at' => $rightNow,
+            'updated_at' => $rightNow,
+            'crew_name' => $crew->name,
+            'popup_content' => ""
+        );
+        $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
+        $status = $heli->statuses()->create($statusArray);
+        $heli = RappelHelicopter::where("identifier", "N313CH")->first();
         $crew = $heli->crew;
         $user = $crew->users()->first();
         $statusArray = array(
@@ -122,8 +151,38 @@ class ResourceStatusesTableSeeder extends Seeder
             'staffing_value2' => "4",
             'manager_name' => "Steve Borland",
             'manager_phone' => "334-998-6756",
-            'comments1' => "This is update 1 of 1 from the db seeder",
-            'comments2' => "This is upcoming",
+            'comments1' => "Unscheduled maintenance - currently unavailable.",
+            'comments2' => "Hopefully we'll be back up before tomorrow morning...",
+            'assigned_fire_name' => "",
+            'assigned_fire_number' => "",
+            'assigned_supervisor' => "",
+            'assigned_supervisor_phone' => "",
+            'Distance' => 100,
+            'label_text' => ".",
+            'created_by_name' => $user->name,
+            'created_by_id' => $user->id,
+            'created_at' => $rightNow,
+            'updated_at' => $rightNow,
+            'crew_name' => $crew->name,
+            'popup_content' => ""
+        );
+        $statusArray['popup_content'] = $this->createPopupinfo($statusArray);
+        $status = $heli->statuses()->create($statusArray);
+
+        $heli = RappelHelicopter::where("identifier", "N314CH")->first();
+        $crew = $heli->crew;
+        $user = $crew->users()->first();
+        $statusArray = array(
+            'statusable_resource_type' => $heli->resource_type,
+            'statusable_resource_name' => $heli->identifier,
+            'latitude' => 43.384223,
+            'longitude' => -115.310388,
+            'staffing_value1' => "8",
+            'staffing_value2' => "4",
+            'manager_name' => "Steve Borland",
+            'manager_phone' => "334-998-6756",
+            'comments1' => "",
+            'comments2' => "",
             'assigned_fire_name' => "",
             'assigned_fire_number' => "",
             'assigned_supervisor' => "",
@@ -141,7 +200,7 @@ class ResourceStatusesTableSeeder extends Seeder
         $status = $heli->statuses()->create($statusArray);
 
 
-        $resource = SmokeJumperAirplane::where("identifier", "J-83")->first();
+        $resource = SmokejumperAirplane::where("identifier", "J-83")->first();
         $crew = $resource->crew;
         $user = $crew->users()->first();
         $statusArray = array(
@@ -149,12 +208,12 @@ class ResourceStatusesTableSeeder extends Seeder
             'statusable_resource_name' => $resource->identifier,
             'latitude' => 38.511060,
             'longitude' => -118.441425,
-            'staffing_value1' => "3",
+            'staffing_value1' => "12",
             'staffing_value2' => "4",
             'manager_name' => "Mark Kennedy",
             'manager_phone' => "789-432-2120",
-            'comments1' => "This is update 1 of 1 from the db seeder",
-            'comments2' => "This is upcoming",
+            'comments1' => "Ready and waiting. Rear-cargo capable, FYI.",
+            'comments2' => "",
             'assigned_fire_name' => "",
             'assigned_fire_number' => "",
             'assigned_supervisor' => "",
@@ -172,7 +231,7 @@ class ResourceStatusesTableSeeder extends Seeder
         $status = $resource->statuses()->create($statusArray);
 
 
-        $resource = SmokeJumperAirplane::where("identifier", "J-89")->first();
+        $resource = SmokejumperAirplane::where("identifier", "J-89")->first();
         $crew = $resource->crew;
         $user = $crew->users()->first();
         $oldtime = Carbon::now()->subDays(3); // A stale timestamp
@@ -181,12 +240,12 @@ class ResourceStatusesTableSeeder extends Seeder
             'statusable_resource_name' => $resource->identifier,
             'latitude' => 45.281331,
             'longitude' => -116.225388,
-            'staffing_value1' => "3",
-            'staffing_value2' => "4",
+            'staffing_value1' => "18",
+            'staffing_value2' => "",
             'manager_name' => "Pat Stone",
             'manager_phone' => "530-448-8581",
-            'comments1' => "This is update 1 of 1 from the db seeder",
-            'comments2' => "This is upcoming",
+            'comments1' => "Flying every day since 7/2",
+            'comments2' => "",
             'assigned_fire_name' => "Morning Fire",
             'assigned_fire_number' => "MT-FFT-150038",
             'assigned_supervisor' => "Gary Pickett",
