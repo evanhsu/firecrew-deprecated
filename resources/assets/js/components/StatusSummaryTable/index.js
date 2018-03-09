@@ -83,10 +83,18 @@ CrewRow.propTypes = {
   isSelected: PropTypes.bool,
 };
 
+const staffingValues = (resource) => {
+  if(resource.get('resource_type') === 'RappelHelicopter') {
+    return `${resource.getIn(['latest_status', 'staffing_value1'], '')}/${resource.getIn(['latest_status', 'staffing_value2'], '')}`;
+  }
+
+  return '';
+};
 
 const CrewResourceRow = ({ resource }) => (
   <span className="row" style={styles.getCrewResourceRowStyle()}>
-    <span className="col-xs-1">{ `${resource.getIn(['latest_status', 'staffing_value1'], '')}/${resource.getIn(['latest_status', 'staffing_value2'], '')}` }</span>
+    <span className="col-xs-1">
+      { staffingValues(resource) }</span>
     <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
     <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) || resource.getIn(['latest_status', 'location_name'])}</span>
     <span className="col-xs-5">
