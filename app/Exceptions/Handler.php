@@ -48,10 +48,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // Custom error 500 view on production
-        if (app()->environment('production')) {
-            return response()->view('errors.500', [], 500);
-        }
         return parent::render($request, $exception);
     }
 
