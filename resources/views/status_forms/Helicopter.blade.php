@@ -12,7 +12,7 @@
         @include("status_forms._fields_for_location")
     </div>
 
-    <div class="col-md-6">
+    <div class="col-xs-12 col-md-6">
         <h2>Staffing</h2>
         @if(!is_null($resource->staffingCategory1()))
         <div class="form-group">
