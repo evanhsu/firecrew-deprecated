@@ -47,7 +47,7 @@ require([
              Helicopter) {
 
   // Subscribe to the Pusher broadcast channel for ResourceStatus updates
-  window.Echo.channel('publicStatusUpdates').listen('ResourceStatusUpdated', (event) => {
+  window.Echo.channel('publicStatusUpdates').listen('ResourceStatusUpdated', function(event) {
     fireResources = mergeHelicopter(event.resourceStatus, fireResources);
     clearLayers();
     addHelicoptersToMap(fireResources);
