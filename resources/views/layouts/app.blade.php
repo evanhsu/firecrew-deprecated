@@ -68,7 +68,7 @@
     </div>
 
     @section('scripts-postload')
-        <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,es6"></script>{{-- Polyfills for the Google crawler --}}
+        <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,es6,fetch"></script>{{-- Polyfills for the Google crawler --}}
         <script src="{{ mix('/js/app.js') }}"></script>
     <!-- Scripts -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> -->

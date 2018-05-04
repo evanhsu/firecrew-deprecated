@@ -98,7 +98,7 @@ define(["dojo/_base/declare",
       },
 
       getIconFilename: function () {
-        return `${this.iconPath}${this.baseFilenames[this.params.statusable_resource_type]}-${this.isFresh() ? 'fresh' : 'stale'}.png`;
+        return this.iconPath + this.baseFilenames[this.params.statusable_resource_type] + '-' + (this.isFresh() ? 'fresh' : 'stale') + '.png';
       },
 
       mapGraphic: function () {
@@ -163,8 +163,7 @@ define(["dojo/_base/declare",
             esri.symbol.SimpleLineSymbol.STYLE_SHORTDOT,
             ringColor,
             3),
-          // Fill-color for interior of the circle
-          null,
+          null // Fill-color for interior of the circle
         );
 
         var responseRingParams = {

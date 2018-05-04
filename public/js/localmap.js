@@ -76,13 +76,13 @@ require([
   });
 
 
-  const gl1 = new GraphicsLayer({ id: 'Short Haul', infoTemplate });
+  const gl1 = new GraphicsLayer({ id: 'Short Haul', infoTemplate: infoTemplate });
   const gl2 = new GraphicsLayer({ id: 'Response Range' });
-  const gl3 = new GraphicsLayer({ id: 'Rappel', infoTemplate });
-  const gl4 = new GraphicsLayer({ id: 'Hotshots', infoTemplate });
-  const gl5 = new GraphicsLayer({ id: 'Smokejumpers', infoTemplate });
-  const gl6 = new GraphicsLayer({ id: 'Helitack', infoTemplate });
-  const gl7 = new GraphicsLayer({ id: 'Type 1 Heli', infoTemplate });
+  const gl3 = new GraphicsLayer({ id: 'Rappel', infoTemplate: infoTemplate });
+  const gl4 = new GraphicsLayer({ id: 'Hotshots', infoTemplate: infoTemplate });
+  const gl5 = new GraphicsLayer({ id: 'Smokejumpers', infoTemplate: infoTemplate });
+  const gl6 = new GraphicsLayer({ id: 'Helitack', infoTemplate: infoTemplate });
+  const gl7 = new GraphicsLayer({ id: 'Type 1 Heli', infoTemplate: infoTemplate });
 
 
   //Add each Feature point to the GraphicsLayer
@@ -138,7 +138,7 @@ require([
       layerList.startup();
 
       // Draw each helicopter on the map
-      addHelicoptersToMap(fireResources);
+      setTimeout(addHelicoptersToMap(fireResources), 0);
     });
 
   function clearLayers() {
