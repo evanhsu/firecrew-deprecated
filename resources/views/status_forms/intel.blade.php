@@ -7,10 +7,10 @@
     {{ csrf_field() }}
 
     <div class="row">
-        <h2>Duty Officer</h2>
+        <h2>Operations Contact</h2>
         <div class="form-group row">
             <label for="duty_officer_name" class="col-sm-2 col-md-1 control-label control-label-with-helper">Name</label>
-            <a role="button" class="control-label-helper" tabindex="0" data-toggle="popover" title="Duty Officer Name" data-trigger="focus" data-content="The name of the individual currently acting as duty officer for this crew, i.e. the person who should be contacted about staffing.">
+            <a role="button" class="control-label-helper" tabindex="0" data-toggle="popover" title="Operations Contact Name" data-trigger="focus" data-content="The name of the individual currently acting as Operations for this crew, i.e. the person who should be contacted about staffing.">
                 <span class="glyphicon glyphicon-question-sign"></span>
             </a>
             <div class="col-sm-4 col-md-4">
@@ -19,8 +19,8 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="duty_officer_phone" class="col-sm-2 col-md-1 control-label control-label-with-helper">Phone</label>
-            <a role="button" class="control-label-helper" tabindex="0" data-toggle="popover" title="Duty Officer Phone Number" data-trigger="focus" data-content="A reliable phone number for contacting the duty officer.">
+            <label for="duty_officer_name" class="col-sm-2 col-md-1 control-label control-label-with-helper">Phone</label>
+            <a role="button" class="control-label-helper" tabindex="0" data-toggle="popover" title="Operations Contact Phone Number" data-trigger="focus" data-content="A reliable phone number for contacting Operations.">
                 <span class="glyphicon glyphicon-question-sign"></span>
             </a>
             <div class="col-sm-4 col-md-4">

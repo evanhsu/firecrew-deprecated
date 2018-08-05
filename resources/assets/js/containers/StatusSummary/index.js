@@ -26,10 +26,10 @@ class StatusSummary extends Component {
     this.timeout();
   }
 
-  reRender = () => {
+  reRender() {
     this.forceUpdate();
     this.timeout();
-  };
+  }
 
   timeout() {
     setTimeout(this.reRender, 10000);
