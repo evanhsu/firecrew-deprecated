@@ -10,9 +10,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import Perf from 'react-addons-perf';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import rootReducer from './reducers';
-import Inventory from './containers/Inventory';
-import StatusSummary from './containers/StatusSummary';
-import Routes from './routes.js';
+import Routes from './routes';
 
 require('./bootstrap');
 
