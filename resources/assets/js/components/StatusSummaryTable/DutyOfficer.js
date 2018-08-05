@@ -9,7 +9,7 @@ const DutyOfficer = (props) => {
   if(props.dutyOfficer.get('duty_officer_name') && props.dutyOfficer.get('duty_officer_phone')) { 
     return (
       <span>
-        <b>Duty Officer:</b><br />
+        <b>Operations:</b><br />
         {props.dutyOfficer.get('duty_officer_name')}<br />
         {props.dutyOfficer.get('duty_officer_phone')}<br />
       </span>
@@ -18,7 +18,7 @@ const DutyOfficer = (props) => {
   if(props.dutyOfficer.get('duty_officer_name')) {
     return (
       <span>
-        <b>Duty Officer:</b><br />
+        <b>Operations:</b><br />
         {props.dutyOfficer.get('duty_officer_name')}<br />
       </span>
     );
@@ -26,7 +26,7 @@ const DutyOfficer = (props) => {
   if(props.dutyOfficer.get('duty_officer_phone')) {
     return (
       <span>
-        <b>Duty Officer:</b><br />
+        <b>Operations:</b><br />
         {props.dutyOfficer.get('duty_officer_phone')}<br />
       </span>
     );

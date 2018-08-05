@@ -96,7 +96,7 @@ const CrewResourceRow = ({ resource }) => (
     <span className="col-xs-1">
       { staffingValues(resource) }</span>
     <span className="col-xs-3">{ resource.get('identifier') } ({ resource.get('model') })</span>
-    <span className="col-xs-3">{ resource.getIn(['latest_status', 'assigned_fire_name']) || resource.getIn(['latest_status', 'location_name'])}</span>
+    <span className="col-xs-3">{ resource.getIn(['latest_status', 'location_name'])}</span>
     <span className="col-xs-5">
       { resource.getIn(['latest_status', 'manager_name']) && `Contact: ${resource.getIn(['latest_status', 'manager_name'])}` }
       { resource.getIn(['latest_status', 'manager_phone']) && ` (${resource.getIn(['latest_status', 'manager_phone'])})` }<br />
