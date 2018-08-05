@@ -11,7 +11,7 @@ Class MapController extends Controller
         // Display the main map page.
         // The menubar will be selected by the MenubarComposer (app/Http/ViewComposers/MenubarComposer.php)
         $request->session()->flash('active_menubutton', 'map'); // Tell the menubar which button to highlight
-        return view('reactmap');
+        return view('map');
     } // End getMap()
 
     public function getMapJSON()
