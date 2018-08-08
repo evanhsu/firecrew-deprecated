@@ -1,12 +1,12 @@
 import { fromJS } from 'immutable';
 // import { Item } from '../objectDefinitions/Item';
 
-export const fetchItems = () =>
+export const fetchItems = (crewId) =>
   // Requires the `redux-thunk` library for making asynchronous calls.
   function (dispatch) {
     dispatch(requestItems());
 
-    return fetch('/api/crews/1/items', { credentials: 'same-origin' })
+    return fetch(`/api/crews/${crewId}/items`, { credentials: 'same-origin' })
       .then((response) => {
         if (response.status === 200) {
           return response.json();
