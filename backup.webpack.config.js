@@ -95,11 +95,7 @@ module.exports.module = {
       loader: `babel-loader${Mix.babelConfig()}`,
       query: {
         babelrc: false,
-        presets: [
-          ['es2015', { modules: false }],
-          ['react'],
-          ['stage-0'],
-        ],
+        presets: ['env', 'react'],
       },
     },
 
