@@ -3,16 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Crews\Crew;
+use App\Services\CrewsService;
 use App\Services\ItemsService;
 use App\Domain\Items\Item;
 use App\Http\Transformers\ItemTransformer;
 use Dingo\Api\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class ItemsController extends Controller
 {
+    /**
+     * @var ItemsService
+     */
     protected $items;
+    /**
+     * @var CrewsService
+     */
+    protected $crews;
 
     public function __construct(ItemsService $items)
     {
@@ -22,7 +31,7 @@ class ItemsController extends Controller
     public function create(Request $request) 
     {
         $this->items->create(
-            $request->intersect([
+            array_filter($request->only([
                 'type',
                 'category',
                 'crew_id',
@@ -40,7 +49,7 @@ class ItemsController extends Controller
                 'restock_trigger',
                 'restock_to_quantity',
                 'source',
-            ])
+            ]))
         );
 
         return $this->response->created();
@@ -48,11 +57,13 @@ class ItemsController extends Controller
 
     /**
      *  Returns a flat collection of ALL items belonging to the specified Crew
-     *
+     * @param Request $request
+     * @param $crewId
+     * @return \Dingo\Api\Http\Response
      */
     public function indexForCrew(Request $request, $crewId) {
 
-        $crew = Crew::find($crewId);
+        $crew = $this->findCrewOrFail($crewId);
         if($request->input('category')) {
             $items = $this->items->ofCategory($crew, $request->input('category'));
         } else {
@@ -67,7 +78,7 @@ class ItemsController extends Controller
     }
 
     public function categoriesForCrew($crewId) {
-        $crew = Crew::find($crewId);
+        $crew = $this->findCrewOrFail($crewId);
         $categories = $this->items->categories($crew);
 
         return $categories;
@@ -88,7 +99,7 @@ class ItemsController extends Controller
     }
 
     public function update(Request $request, $itemId) {
-        $attributes = $request->intersect([
+        $attributes = array_filter($request->only([
                 'type',
                 'category',
                 'crew_id',
@@ -106,7 +117,7 @@ class ItemsController extends Controller
                 'restock_trigger',
                 'restock_to_quantity',
                 'source',
-        ]);
+        ]));
         // Front-end form must use 'item_size' because 'size' is a reserved javascript object property
         $attributes['size'] = $attributes['item_size'];
 
@@ -134,5 +145,13 @@ class ItemsController extends Controller
         $item->decrementQuantity();
 
         return $this->response->accepted();
+    }
+
+    private function findCrewOrFail($crewId) {
+        $crew = Crew::find($crewId);
+        if(!$crew) {
+            throw new NotFoundHttpException("Crew $crewId doesn't exist");
+        }
+        return $crew;
     }
 }

@@ -51,4 +51,3 @@ if (document.getElementById('react-root')) {
     document.getElementById('react-root')
   );
 }
-

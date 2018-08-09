@@ -17,7 +17,7 @@ import { fetchItems } from '../CategoryItemsTable/actions';
 
 class Inventory extends Component {
   componentDidMount() {
-    this.props.fetchItems();
+    this.props.fetchItems(this.props.match.params.crewId);
   }
   
   render() {
@@ -52,6 +52,7 @@ Inventory.propTypes = {
   categories: ImmutablePropTypes.list,
   categoryMenuDrawerOpen: PropTypes.bool,
   fetchItems: PropTypes.func,
+  match: PropTypes.any,
   toggleCategoryMenuDrawer: PropTypes.func.isRequired,
 };
 
@@ -70,7 +71,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     toggleCategoryMenuDrawer: () => dispatch(toggleCategoryMenuDrawer()),
-    fetchItems: () => dispatch(fetchItems()),
+    fetchItems: (crewId) => dispatch(fetchItems(crewId)),
   };
 }
 
