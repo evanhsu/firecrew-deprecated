@@ -15,8 +15,8 @@ class Timestamp extends Component {
     super(props);
 
     this.state = {
-      timeString: props.timestamp === undefined ? null : localDateString(props.timestamp),
-      relativeTime: props.timestamp === undefined ? '' : Moment.utc(props.timestamp).fromNow(),
+      timeString: '',
+      relativeTime: '',
     }
   }
 
@@ -25,13 +25,23 @@ class Timestamp extends Component {
   }
 
   timeout() {
-    setTimeout(() => this.updateRelativeTime(), 10000);
+    setTimeout(() => this.updateRelativeTime(), 60000);
   }
 
   updateRelativeTime = () => {
     this.setState({
-      relativeTime: props.timestamp === undefined ? '' : Moment.utc(props.timestamp).fromNow(),
-    })
+      relativeTime: props.timestamp === undefined ? '' : Moment.utc(this.props.timestamp).fromNow(),
+    });
+
+    this.timeout();
+  };
+
+  timeString = () => {
+    return this.props.timestamp === undefined ? null : localDateString(this.props.timestamp);
+  };
+
+  relativeTime = () => {
+    return this.props.timestamp === undefined ? '' : Moment.utc(props.timestamp).fromNow();
   };
 
   render() {
@@ -39,7 +49,7 @@ class Timestamp extends Component {
       return null;
     }
 
-    return (<span style={{ fontSize: 11 }}>Update: {this.state.timeString} ({this.state.relativeTime})</span>);
+    return (<span style={{ fontSize: 11 }}>Update: {this.timeString()} ({this.relativeTime()})</span>);
 
   }
 }
