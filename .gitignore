@@ -16,3 +16,4 @@ Homestead.yaml
 app/Console/ETL/*.sql
 yarn-error.log
 ansible_vault_password
+ansible/
