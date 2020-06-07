@@ -203,12 +203,10 @@ class CrewController extends Controller
         $crew = Crew::find($id);
         $crew_name = $crew->name;
 
-        // Release all Aircrafts from this crew (null the crew_id field in the aircrafts table)
-        if ($crew->is_an_aircraft_crew()) {
-            $aircrafts = $crew->aircrafts;
-            foreach ($aircrafts as $aircraft) {
-                $aircraft->release();
-            }
+        // Release all "statusable_resources" from this crew (null the crew_id field in the statusable_resources table)
+        $resources = $crew->statusableResources;
+        foreach ($resources as $resource) {
+            $resource->release();
         }
 
         // Delete all Users belonging to this crew

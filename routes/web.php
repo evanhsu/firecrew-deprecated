@@ -41,13 +41,13 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/',                 array('as' => 'crews_index', 'uses' => 'CrewController@index'));
             Route::post('/',                array('as' => 'store_crew', 'uses' => 'CrewController@store'));
             Route::get('/new',              array('as' => 'new_crew', 'uses' => 'CrewController@create'));
-            Route::post('/destroy',         array('as' => 'destroy_crew', 'uses' => 'CrewController@destroy'));
 
             Route::prefix('{crewId}')->group(function () {
                 Route::get('/',             array('as' => 'crew', 'uses' => 'CrewController@show'));
                 Route::post('/',            array('as' => 'update_crew', 'uses' => 'CrewController@update')); // TODO: Update method to PATCH
                 Route::get('/identity',     array('as' => 'edit_crew', 'uses' => 'CrewController@edit'));
                 Route::get('/accounts',     array('as' => 'users_for_crew', 'uses' => 'CrewAccountController@index'));
+                Route::post('/destroy',         array('as' => 'destroy_crew', 'uses' => 'CrewController@destroy'));
             });
         });
 

@@ -110,9 +110,13 @@ class AbstractStatusableResource extends Model
 
     public function release()
     {
-        // Disassociate this aircraft from it's Crew (set Aircraft->crew_id to NULL)
+        // Disassociate this "resource" from it's Crew (set StatusableResource->crew_id to NULL)
         $this->crew()->dissociate();
-        if ($this->save()) return true;
-        else return false;
+        if ($this->save()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
