@@ -2,27 +2,6 @@
 # yarn lockfile v1
 
 
-"@types/arcgis-js-api@^4.7.0":
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/@types/arcgis-js-api/-/arcgis-js-api-4.7.0.tgz#45b6f70eca3632bbfb8bfdd5e7d6498995949d88"
-
-"@types/node@*":
-  version "10.5.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.1.tgz#d578446f4abff5c0b49ade9b4e5274f6badaadfc"
-
-"@types/react-dom@^16.0.5":
-  version "16.0.6"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.6.tgz#f1a65a4e7be8ed5d123f8b3b9eacc913e35a1a3c"
-  dependencies:
-    "@types/node" "*"
-    "@types/react" "*"
-
-"@types/react@*", "@types/react@^16.3.13":
-  version "16.4.6"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.6.tgz#5024957c6bcef4f02823accf5974faba2e54fada"
-  dependencies:
-    csstype "^2.2.0"
-
 abbrev@1:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.0.9.tgz#91b4792588a7738c25f35dd6f63752a2f8776135"
@@ -1693,10 +1672,6 @@ csso@~2.3.1:
     clap "^1.0.9"
     source-map "^0.5.3"
 
-csstype@^2.2.0:
-  version "2.5.5"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.5.tgz#4125484a3d42189a863943f23b9e4b80fedfa106"
-
 currently-unhandled@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/currently-unhandled/-/currently-unhandled-0.4.1.tgz#988df33feab191ef799a61369dd76c17adf957ea"
@@ -2087,10 +2062,6 @@ esrecurse@^4.1.0:
   dependencies:
     estraverse "^4.1.0"
     object-assign "^4.0.1"
-
-esri-loader@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/esri-loader/-/esri-loader-2.3.0.tgz#0d4b6af4bd17a4f57224e1aad50ae7f0fa473111"
 
 estraverse@^4.0.0, estraverse@^4.1.0, estraverse@^4.1.1, estraverse@^4.2.0:
   version "4.2.0"
@@ -4470,15 +4441,6 @@ react-addons-transition-group@^15.4.0:
   dependencies:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
-
-react-arcgis@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-arcgis/-/react-arcgis-3.3.0.tgz#54a5b02a6cfc0597f147dc3ad84fa82ad337175e"
-  dependencies:
-    "@types/arcgis-js-api" "^4.7.0"
-    "@types/react" "^16.3.13"
-    "@types/react-dom" "^16.0.5"
-    esri-loader "^2.3.0"
 
 react-dom@^15.4.2:
   version "15.4.2"
