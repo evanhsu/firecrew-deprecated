@@ -15,8 +15,10 @@ class AddLocationNameToCrewStatusesTable extends Migration
     {
         Schema::table('crew_statuses', function (Blueprint $table) {
             //
-            $table->string('location_name')->nullable();
-        });
+            Schema::table('crew_statuses', function (Blueprint $table) {
+                //
+                $table->string('location_name')->nullable();
+            });        });
     }
 
     /**

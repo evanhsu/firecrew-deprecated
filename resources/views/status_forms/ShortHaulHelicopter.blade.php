@@ -13,7 +13,7 @@
     </ul>
 </nav>
 <form action="{{ route('store_status') }}" method="POST" class="form-horizontal">
-    @include("status_forms._aircraft_form_headers")
+    @include("firecrew.resources.views.status_forms._aircraft_form_headers")
     <input type="hidden" name="Distance" value="100" />
     
 
